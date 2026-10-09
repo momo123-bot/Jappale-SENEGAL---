@@ -3,12 +3,13 @@ Remise du code source et de la documentation - version du 8 octobre 2026
 (Projet de hackathon : ce n'est pas une publication officielle de l'ANSD.)
 
 CE QUE CONTIENT CETTE ARCHIVE
-- docs/ : le site. Pour l'essayer sans rien installer : ouvrir docs/index.html (double-clic) dans un navigateur. Il fonctionne hors connexion.
+- docs/ : le site (sept pages). Pour l'essayer sans rien installer : ouvrir docs/index.html (double-clic) dans un navigateur. Il fonctionne hors connexion.
 - code/ : les scripts (Python) qui produisent les chiffres, de la donnée source jusqu'au site.
 - donnees/ : les fichiers de données utilisés, leur dictionnaire et le registre des anomalies relevées dans les couches de données.
 - methodologie/ : la documentation (note de présentation, gestion des données, méthode, limites, retour à l'ANSD, perspectives, déclaration d'accessibilité, fiche technique, procédure de déploiement).
 - tests/ : les contrôles automatiques (calculs, interface, navigateur, accessibilité).
 - documents/ : documents complémentaires.
+- logos/ : le kit complet du logo Jàppale Sénégal (SVG et PNG, fond clair, fond sombre, fond blanc, favicon), avec son LISEZMOI.txt.
 - Procedure_de_deploiement_Jappale_Senegal.pdf : la procédure de déploiement détaillée (deux pages).
 - Note_de_presentation_Jappale_Senegal.pdf : le projet en une page, pour une lecture rapide.
 - README.md : la présentation du projet.
@@ -20,7 +21,7 @@ PAR OÙ COMMENCER
 3. La procédure de déploiement (le PDF ci-dessus, ou methodologie/PROCEDURE_DEPLOIEMENT.md).
 
 DÉPLOYER LE SITE
-Il suffit de publier le contenu du dossier docs/ sur n'importe quel hébergement de pages statiques, par exemple GitHub Pages.
+Le site est statique (HTML, CSS, JavaScript) : il n'y a ni serveur ni base de données. Il suffit de publier le contenu du dossier docs/ sur n'importe quel hébergement de pages statiques, par exemple GitHub Pages.
 
 ILLUSTRATIONS
 Les pages Comprendre, Explorer et Agir ont une illustration décorative en dégradé, avec une version claire et une version pour le thème sombre, choisies automatiquement (docs/illustrations.css et docs/images/rubrique-*.webp). Elles sont purement décoratives et ne remplacent aucune donnée. Elles se déploient avec le dossier docs/, sans étape supplémentaire.

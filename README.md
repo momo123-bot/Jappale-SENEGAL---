@@ -33,6 +33,10 @@ Les autres documents de `methodologie/` sont des annexes, pour qui veut vérifie
 - **Vérifier un déploiement en une commande** : `python3 tests/verifier_deploiement.py` (ou avec l'adresse du site en ligne).
 - **Données ouvertes** : `docs/donnees-ouvertes/` (licence : `donnees/LICENCE_DONNEES.md`).
 
+## Logos
+
+Le kit complet du logo est dans le dossier `logos/` (SVG et PNG, versions fond clair, fond sombre et fond blanc, favicon, icône iPhone). `logos/LISEZMOI.txt` indique quel fichier utiliser pour quel usage. Le site utilise la variante fond blanc (`logos/fond-blanc/`) pour son icône d'onglet, et les logos horizontaux de `docs/`.
+
 ## Illustrations des rubriques
 
 Les pages Comprendre, Explorer et Agir portent chacune une illustration décorative en dégradé (`docs/images/rubrique-*.webp`, styles dans `docs/illustrations.css`). Chacune existe en deux versions : claire (`rubrique-*.webp`) et lumineuse pour fond sombre (`rubrique-*-sombre.webp`), choisies automatiquement selon le thème. Elles ne remplacent aucune donnée, ne reçoivent aucun clic et sont masquées à l'impression. Pour les changer, remplacer les six fichiers `rubrique-*.webp` en gardant les mêmes noms. Pour les retirer, supprimer la ligne `illustrations.css` dans `index.html`, `synthese.html`, `explorer.html` et `simulateur.html`.
