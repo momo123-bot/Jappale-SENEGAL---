@@ -12,6 +12,8 @@ Ce document décrit l'identité visuelle du site, pour que toute personne qui re
 | `docs/jappale-logo-horizontal-sombre.png` | Logo horizontal pour fond sombre |
 | `docs/favicon.svg`, `docs/favicon.ico`, `docs/apple-touch-icon.png` | Icône d'onglet et d'écran d'accueil |
 
+Le kit complet (toutes les variantes, avec leur mode d'emploi) est dans le dossier `logos/` à la racine du projet.
+
 Règles : ne pas déformer le logo, laisser autour de lui un espace libre au moins égal à la hauteur de la lettre J, ne pas le placer sur un fond qui en réduit le contraste.
 
 ## Couleurs
