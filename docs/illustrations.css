@@ -1,0 +1,44 @@
+/* Illustrations en dégradé : une image par rubrique (Comprendre, Explorer, Agir).
+   Purement décoratives (aucune donnée n'est remplacée) : elles ne reçoivent aucun clic et se fondent dans le fond de la page.
+   Couleurs de la charte : #437FC7, #6DAFFE, #EDF6FF, #B9732F (les illustrations de rubrique ont été recolorées dans ces teintes). */
+
+/* ---------- Rubriques : illustration en dégradé à droite de l'en-tête ---------- */
+.page-head--comprendre, .page-head--agir { position: relative; isolation: isolate; }
+.page-head--comprendre::after, .page-head--agir::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: -8px; right: -6px; bottom: -4px; width: min(40%, 420px);
+  background-repeat: no-repeat; background-position: right center; background-size: contain;
+  -webkit-mask-image: linear-gradient(to left, #000 38%, rgba(0,0,0,.5) 66%, transparent 100%);
+          mask-image: linear-gradient(to left, #000 38%, rgba(0,0,0,.5) 66%, transparent 100%);
+}
+.page-head--comprendre::after { background-image: url("images/rubrique-comprendre.webp"); }
+.page-head--agir::after       { background-image: url("images/rubrique-agir.webp"); }
+/* Thème clair = illustrations claires et douces ; thème sombre = versions lumineuses dédiées (bleu clair et ocre de la charte sombre), lisibles sur fond sombre */
+.page-head--comprendre::after, .page-head--agir::after { opacity: .85; }
+:root[data-theme="dark"] .page-head--comprendre::after { background-image: url("images/rubrique-comprendre-sombre.webp"); }
+:root[data-theme="dark"] .page-head--agir::after       { background-image: url("images/rubrique-agir-sombre.webp"); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .page-head--comprendre::after { background-image: url("images/rubrique-comprendre-sombre.webp"); }
+  :root:not([data-theme="light"]) .page-head--agir::after       { background-image: url("images/rubrique-agir-sombre.webp"); }
+}
+@media (max-width: 760px) {
+  .page-head--comprendre::after, .page-head--agir::after { width: 62%; opacity: .22; top: 0; bottom: auto; height: 230px; }
+}
+@media print { .page-head--comprendre::after, .page-head--agir::after, #stage::after { display: none !important; } }
+
+/* ---------- Explorer : illustration dans l'océan, à gauche de la carte ---------- */
+#stage::after {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 0; top: 64px; bottom: 56px; width: min(32vw, 440px);
+  background: url("images/rubrique-explorer.webp") 30% 62% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 70%, transparent 100%),
+                      linear-gradient(to right, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 70%, transparent 100%),
+                      linear-gradient(to right, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
+          mask-composite: intersect;
+  opacity: .5;
+}
+:root[data-theme="dark"] #stage::after { background-image: url("images/rubrique-explorer-sombre.webp"); opacity: .45; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #stage::after { background-image: url("images/rubrique-explorer-sombre.webp"); opacity: .45; } }
+@media (max-width: 900px) { #stage::after { display: none; } }

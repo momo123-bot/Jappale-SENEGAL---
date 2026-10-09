@@ -1,0 +1,68 @@
+/* Page Comparer. S'appuie sur accueil.css (jetons, navigation) et communes.css (en-tête, boutons, tableaux). */
+.selection { background: var(--panel-2); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+
+.ajout label { display: block; font-size: 0.8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+.ajout-ligne { display: flex; gap: 8px; max-width: 560px; }
+.ajout-ligne input, .ajout-ligne select { flex: 1; min-width: 0; font: inherit; font-size: 0.875rem; padding: 10px 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); }
+.ajout .btn:disabled { opacity: .45; cursor: not-allowed; }
+.ajout .note { margin: 6px 0 0; font-size: 0.8125rem; color: var(--ochre); min-height: 1em; }
+
+.choix { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.choix li { display: flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px 6px 12px; font-size: 0.875rem; }
+.choix a { color: var(--ink); font-weight: 700; text-decoration: none; }
+.choix a:hover { color: var(--blue); text-decoration: underline; }
+.choix small { color: var(--ink-soft); font-size: 0.8125rem; }
+.choix button { border: 0; background: var(--panel-2); color: var(--ink-soft); width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.9375rem; line-height: 1; }
+.choix button:hover { color: var(--ink); }
+.pastille { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--c); flex-shrink: 0; }
+.selection-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.exemple-note { margin: 14px 0 0; font-size: 0.8438rem; color: var(--ink-soft); font-style: italic; }
+.vide { margin-top: 16px; }
+
+#resultats { margin-top: 28px; }
+.graphes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.graphe { margin: 0; border: 1px solid var(--line); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.graphe figcaption { font-family: var(--f-display); font-weight: 700; font-size: 0.9375rem; margin-bottom: 2px; }
+.g-ligne { display: grid; grid-template-columns: minmax(70px, 32%) 1fr auto; gap: 10px; align-items: center; font-size: 0.8438rem; }
+.g-nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-soft); }
+.g-piste { position: relative; display: block; height: 12px; background: var(--panel-2); border-radius: 6px; }
+.g-piste i { display: block; height: 100%; border-radius: 6px; }
+.g-piste em { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ochre); }
+.g-pistes { display: flex; flex-direction: column; gap: 4px; }
+.g-futur i { background: repeating-linear-gradient(135deg, var(--c) 0 4px, transparent 4px 7px); border: 1px solid var(--c); box-sizing: border-box; }
+.g-val { font-weight: 700; text-align: right; white-space: nowrap; }
+.g-val small { display: block; font-weight: 600; color: var(--ink-soft); font-size: 0.8125rem; }
+.g-unite { font-size: 0.8125rem; color: var(--ink-soft); margin-top: 2px; }
+
+.titre-tableau { font-size: 1.375rem; margin: 34px 0 12px; }
+#resultats .table-wrap { max-height: none; }
+.comparatif { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 640px; }
+.comparatif thead th { background: var(--panel-2); text-align: left; padding: 12px; border-bottom: 1px solid var(--line); vertical-align: bottom; }
+.comparatif thead th:first-child { font-size: 0.8125rem; color: var(--ink-soft); }
+.comparatif thead a { color: var(--ink); font-family: var(--f-display); font-size: 0.9375rem; text-decoration: none; margin-left: 6px; }
+.comparatif thead a:hover { color: var(--blue); }
+.comparatif thead small { display: block; font-weight: 400; font-size: 0.8125rem; color: var(--ink-soft); margin-top: 2px; }
+.comparatif tbody th { text-align: left; font-weight: 600; color: var(--ink-soft); padding: 10px 12px; border-bottom: 1px solid var(--line); width: 30%; }
+.comparatif td { padding: 10px 12px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.comparatif tr:last-child th, .comparatif tr:last-child td { border-bottom: 0; }
+.comparatif td.pire { font-weight: 700; color: color-mix(in srgb, var(--ochre) 70%, var(--ink)); background: color-mix(in srgb, var(--ochre) 10%, transparent); }
+
+@media (max-width: 980px) { .graphes { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .ajout-ligne { flex-direction: column; } }
+
+/* ===== Guide : trois étapes, un message, la réponse en une phrase ===== */
+.guide { background: var(--bg); border: 1px solid var(--line); border-left: 4px solid var(--blue); border-radius: 12px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.guide p { margin: 0; flex: 1 1 280px; line-height: 1.5; font-size: 0.9375rem; }
+.ajout-ligne.attention input { border-color: var(--blue); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 22%, transparent); }
+.enbref { background: var(--panel-2); border-radius: 16px; padding: 18px 20px; margin-bottom: 18px; line-height: 1.6; font-size: 1rem; }
+.enbref p { margin: 0; }
+.enbref small { display: block; margin-top: 8px; color: var(--ink-soft); font-size: 0.8125rem; }
+#plus { margin-top: 22px; border: 1px solid var(--line); border-radius: 14px; padding: 0 18px; }
+#plus[open] { padding-bottom: 18px; }
+#plus > summary { cursor: pointer; font-weight: 700; color: var(--blue); padding: 14px 0; list-style: none; }
+#plus > summary::-webkit-details-marker { display: none; }
+#plus > summary::after { content: " (afficher)"; font-weight: 400; color: var(--ink-soft); }
+#plus[open] > summary::after { content: " (masquer)"; }
+#plus .titre-tableau { margin-top: 26px; }
+#sujetCmp { margin: 0 0 14px; }

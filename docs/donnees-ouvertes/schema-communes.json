@@ -1,0 +1,162 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "communes.json : une entrée par commune",
+ "type": "array",
+ "items": {
+  "type": "object",
+  "properties": {
+   "id_commune": {
+    "type": "string",
+    "description": "Identifiant stable du projet : région, département et commune en minuscules sans accents, séparés par des tirets. À remplacer par un code officiel de commune dès qu'il existera (voir l'anomalie A06)."
+   },
+   "commune": {
+    "type": "string",
+    "description": "Nom de la commune (découpage du RGPH-5), écrit sans accents comme dans la source. Deux communes portent le même nom dans cinq cas : les distinguer par le département."
+   },
+   "departement": {
+    "type": "string",
+    "description": "Département."
+   },
+   "region": {
+    "type": "string",
+    "description": "Région."
+   },
+   "population_2023": {
+    "type": "integer",
+    "description": "Habitants (RGPH-5, ANSD, 2023)."
+   },
+   "latitude": {
+    "type": [
+     "number",
+     "null"
+    ],
+    "description": "Degrés décimaux ; vide (null) pour deux communes non géolocalisées."
+   },
+   "longitude": {
+    "type": [
+     "number",
+     "null"
+    ],
+    "description": "Degrés décimaux ; vide (null) pour deux communes non géolocalisées."
+   },
+   "postes_sante_existants": {
+    "type": "integer",
+    "description": "Postes de santé rattachés à la commune (couche Géo Sénégal, ANSD). Le total national est un ordre de grandeur : voir les limites."
+   },
+   "postes_sante_necessaires": {
+    "type": "integer",
+    "description": "Postes nécessaires selon la norme du Ministère de la Santé : 1 poste pour 10 000 habitants."
+   },
+   "postes_sante_manquants": {
+    "type": "integer",
+    "description": "Postes nécessaires moins postes existants, jamais négatif. Estimation, pas une mesure."
+   },
+   "postes_sante_manquants_recale_2022": {
+    "type": "integer",
+    "description": "Postes manquants si le nombre de postes de la région est ramené aux statistiques officielles de 2022 (réduction proportionnelle dans la région), arrondi à l'unité. La fourchette du manque va de postes_sante_manquants à cette valeur. Arrondi commune par commune : la somme sur les 553 communes (772) est inférieure au total non arrondi (environ 796)."
+   },
+   "postes_sante_manquants_2033": {
+    "type": "integer",
+    "description": "Scénario 2033 indicatif ; vide (null) si non calculable."
+   },
+   "population_2033_projection_ansd": {
+    "type": [
+     "integer",
+     "null"
+    ],
+    "description": "Population 2033 selon la projection officielle de l'ANSD (Projections démographiques 2023-2073) ; vide (null) pour 9 communes où le tableau de projections et le recensement ne s'accordent pas (anomalie A13)."
+   },
+   "postes_sante_manquants_2033_projection_ansd": {
+    "type": [
+     "integer",
+     "null"
+    ],
+    "description": "Postes de santé manquants en 2033 avec la population de la projection officielle ; vide (null) si elle n'est pas utilisée. À comparer à postes_sante_manquants_2033, qui vient de l'extrapolation du site."
+   },
+   "postes_sante_manquants_vue_bassin": {
+    "type": [
+     "integer",
+     "null"
+    ],
+    "description": "Postes manquants en partageant les postes des communes situées à moins de 15 km, arrondi à l'unité ; vide si non calculable."
+   },
+   "centres_sante_departement": {
+    "type": "integer",
+    "description": "Centres de santé du département (échelle département, pas commune)."
+   },
+   "centres_sante_necessaires_departement": {
+    "type": "integer",
+    "description": "Centres nécessaires dans le département : 1 centre pour 50 000 habitants."
+   },
+   "hopitaux_departement": {
+    "type": "integer",
+    "description": "Hôpitaux du département (échelle département). Voir les limites : la couche mêle hôpitaux, annexes et établissements spécialisés."
+   },
+   "hopitaux_necessaires_departement": {
+    "type": "integer",
+    "description": "Hôpitaux nécessaires dans le département : 1 hôpital pour 150 000 habitants."
+   },
+   "etablissements_secondaires": {
+    "type": "integer",
+    "description": "Collèges et lycées, publics et privés, recensés dans la commune. Aucune norme officielle de densité n'a été trouvée."
+   },
+   "hopital_le_plus_proche": {
+    "type": [
+     "string",
+     "null"
+    ],
+    "description": "Nom de l'hôpital le plus proche ; vide si non calculé."
+   },
+   "distance_hopital_km": {
+    "type": [
+     "integer",
+     "null"
+    ],
+    "description": "Distance à vol d'oiseau jusqu'à cet hôpital, en kilomètres. Ce n'est pas un temps de trajet."
+   },
+   "distance_secondaire_km": {
+    "type": [
+     "number",
+     "null"
+    ],
+    "description": "Distance à vol d'oiseau jusqu'au collège ou lycée le plus proche, en kilomètres, arrondie à 0,1 ; 0 si la commune en compte au moins un ; vide (null) si la commune n'est pas géolocalisée."
+   },
+   "fiabilite_rattachement": {
+    "type": "string",
+    "description": "verifiee si des infrastructures ont pu être rattachées à la commune, a_confirmer sinon (deux communes)."
+   },
+   "croissance": {
+    "type": "string",
+    "description": "mesuree_2013_2023 si la croissance de la commune a été mesurée entre deux recensements, sinon indicative (scénario 2033 indicatif)."
+   }
+  },
+  "required": [
+   "id_commune",
+   "commune",
+   "departement",
+   "region",
+   "population_2023",
+   "latitude",
+   "longitude",
+   "postes_sante_existants",
+   "postes_sante_necessaires",
+   "postes_sante_manquants",
+   "postes_sante_manquants_recale_2022",
+   "postes_sante_manquants_2033",
+   "population_2033_projection_ansd",
+   "postes_sante_manquants_2033_projection_ansd",
+   "postes_sante_manquants_vue_bassin",
+   "centres_sante_departement",
+   "centres_sante_necessaires_departement",
+   "hopitaux_departement",
+   "hopitaux_necessaires_departement",
+   "etablissements_secondaires",
+   "hopital_le_plus_proche",
+   "distance_hopital_km",
+   "distance_secondaire_km",
+   "fiabilite_rattachement",
+   "croissance"
+  ],
+  "additionalProperties": false
+ }
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>(function(){var t=null,k="jappale-theme-v3",tel=false;try{tel=(navigator.maxTouchPoints>0||"ontouchstart" in window)&&screen.width>0&&Math.min(screen.width,screen.height)<=640;}catch(e){}try{t=sessionStorage.getItem(k)||(tel?null:localStorage.getItem(k));}catch(e){}t=t||window.__THEME||"dark";document.documentElement.dataset.theme=t;})();</script><style>html{background:#FFFFFF}html[data-theme="dark"]{background:#0F1A2B;color-scheme:dark}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Communes - Jàppale Sénégal</title>
+<meta name="description" content="Les 553 communes du Sénégal : population, postes de santé existants et nécessaires, déficit 2023 et scénario 2033, établissements secondaires.">
+<link rel="stylesheet" href="polices.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#437FC7">
+<link rel="stylesheet" href="accueil.css">
+<link rel="stylesheet" href="communes.css">
+<link rel="stylesheet" href="confort.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<script>(function () { var ok = typeof Symbol === "function" && typeof Promise === "function" && typeof Object.assign === "function" && typeof Object.entries === "function" && typeof Array.prototype.includes === "function" && typeof window.fetch === "function" && typeof window.URLSearchParams === "function" && window.CSS && typeof CSS.supports === "function" && CSS.supports("display", "grid"); if (ok) return; var d = document.createElement("div"); d.id = "navigateurAncien"; d.setAttribute("role", "alert"); d.style.cssText = "padding:14px 16px;background:#fff3cd;color:#111;font:16px/1.45 Arial,Helvetica,sans-serif;border-bottom:2px solid #b8860b"; d.appendChild(document.createTextNode("Ce navigateur est trop ancien pour afficher correctement ce site. Ouvrez-le avec une version récente de Chrome, Firefox ou Safari, ou sur un autre appareil.")); document.body.insertBefore(d, document.body.firstChild); })();</script>
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg class="logo-mark" viewBox="0 0 110 110" aria-hidden="true"><rect class="lm-fond" x="4" y="4" width="102" height="102" rx="24"/><path class="lm-j" d="M64 24 V60 A28 28 0 0 1 36 88 H25" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle class="lm-point" cx="25" cy="88" r="9"/></svg>Jàppale <em>Sénégal</em></a>
+    <ul class="links" id="links">
+      <li><a href="synthese.html">Comprendre</a></li>
+      <li><a href="explorer.html">Explorer</a></li>
+      <li><a href="simulateur.html">Agir</a></li>
+    <li class="confort-li"><button type="button" class="confort-btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Affichage : texte, contraste, thème</button></li>
+    </ul>
+    <div class="nav-tools">
+      <form id="navForm" role="search">
+        <input class="nav-search" id="navSearch" type="search" list="listeCommunes" placeholder="Chercher une commune" aria-label="Chercher une commune">
+      </form>
+      <button type="button" class="icon-btn confort-icone" id="confortBtn" aria-expanded="false" aria-controls="confortPanneau" aria-label="Affichage : taille du texte, contraste, thème" title="Affichage : taille du texte, contraste, thème"><span class="confort-lib">Affichage</span></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Changer de thème" title="Changer de thème">◑</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </div>
+</nav>
+<datalist id="listeCommunes"></datalist>
+
+<main id="contenu" tabindex="-1" class="wrap page">
+
+  <!-- ===== Liste des communes ===== -->
+  <section id="vueListe" aria-labelledby="titreListe">
+    <header class="page-head">
+      <div class="eyebrow" id="listeEyebrow">Communes, RGPH-5 2023</div>
+      <img class="page-ill" src="images/toutes-communes.webp" alt="" width="88" height="88" loading="lazy" decoding="async">
+      <h1 id="titreListe">Toutes les communes</h1>
+      <span class="rule"></span>
+      <p class="lede">Population, postes de santé existants et nécessaires, déficit aujourd'hui et en 2033, établissements secondaires. Cliquez sur une commune pour ouvrir sa fiche, ou sur un en-tête de colonne pour trier.</p>
+    </header>
+
+    <form class="filtres" id="filtres">
+      <div class="champ champ-large">
+        <label for="fRecherche">Commune</label>
+        <input id="fRecherche" type="search" list="listeCommunes" placeholder="Nom de la commune" autocomplete="off">
+      </div>
+      <div class="champ">
+        <label for="fRegion">Région</label>
+        <select id="fRegion"><option value="">Toutes</option></select>
+      </div>
+      <div class="champ">
+        <label for="fDepartement">Département</label>
+        <select id="fDepartement"><option value="">Tous</option></select>
+      </div>
+      <div class="champ">
+        <label for="fNiveau">Déficit santé</label>
+        <select id="fNiveau">
+          <option value="">Tous les niveaux</option>
+          <option value="critique">Critique (plus de 15 postes)</option>
+          <option value="modere">Modéré (6 à 15 postes)</option>
+          <option value="faible">Faible (1 à 5 postes)</option>
+          <option value="aucun">Aucun poste manquant</option>
+        </select>
+      </div>
+      <button type="reset" class="btn-ghost" id="fReset">Réinitialiser</button>
+    </form>
+
+    <p class="resume" id="resume" role="status"></p>
+
+    <div class="table-wrap" tabindex="0">
+      <table class="tableau" id="tableau">
+        <thead>
+          <tr>
+            <th scope="col"><button type="button" data-tri="n">Commune</button></th>
+            <th scope="col"><button type="button" data-tri="d">Département</button></th>
+            <th scope="col"><button type="button" data-tri="r">Région</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="p">Population</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="np">Postes existants / nécessaires</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="dp">Manquants 2023</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="dp33">Scénario 2033</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="dpb">Vue bassin</button></th>
+            <th scope="col" class="nb"><button type="button" data-tri="ne">Établ. secondaires</button></th>
+          </tr>
+        </thead>
+        <tbody id="lignes"></tbody>
+      </table>
+    </div>
+    <p class="vide" id="vide" hidden>Aucune commune ne correspond à ces filtres.</p>
+  </section>
+
+  <!-- ===== Fiche d'une commune ===== -->
+  <section id="vueFiche" hidden aria-live="polite"></section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Jàppale Sénégal, hackathon des 20 ans de l'ANSD, 2026</span>
+    <span>Données : RGPH-5 (ANSD), infrastructures Géo Sénégal</span>
+  </div>
+  <div class="wrap pied-liens">
+    <nav aria-label="Liens utiles"><b>Liens utiles</b>
+      <a href="https://www.ansd.sn" target="_blank" rel="noopener">ANSD</a>
+      <a href="https://www.geosenegal.gouv.sn" target="_blank" rel="noopener">Géo Sénégal</a>
+      <a href="https://www.vie-publique.sn" target="_blank" rel="noopener">Vie publique Sénégal</a>
+      <a href="methode.html">Source et méthode</a>
+      <a href="methode.html#ouvertes">Télécharger les données</a>
+      <a href="communes.html">Toutes les communes</a>
+      <a href="comparer.html">Comparer des communes</a>
+      <a href="synthese.html">À propos</a>
+    <a href="methode.html#accessibilite">Accessibilité</a>
+      <a href="index.html#credits">Crédits</a>
+      <a href="index.html#contact">Nous contacter</a>
+      <a href="explorer.html#assistant">Poser une question</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="regions.js"></script>
+<script src="site.js"></script>
+<script src="wolof.js"></script>
+<script src="complements.js"></script>
+<script src="pilote.js"></script>
+<script src="fiche-export.js"></script>
+<script src="communes.js"></script>
+<script src="assistant.js"></script>
+<script src="assistant-llm.js"></script>
+<script src="assistant-page.js"></script>
+<script src="confort.js"></script>
+</body>
+</html>

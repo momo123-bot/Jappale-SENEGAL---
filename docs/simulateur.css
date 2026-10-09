@@ -1,0 +1,44 @@
+/* Page « Simuler un budget » : un vrai écran, pas un petit rectangle sur la carte. */
+.sim-form { display: grid; gap: 22px; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); margin-bottom: 26px; }
+.sim-ligne { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px 18px; align-items: end; }
+.sim-form label { display: grid; gap: 6px; font-weight: 600; font-size: .92rem; }
+.sim-form select, .sim-form input[type="number"] { font: inherit; font-weight: 400; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); width: 100%; box-sizing: border-box; }
+.sim-form select:focus, .sim-form input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+.sim-form select:disabled { opacity: .5; }
+/* L'année de référence est un réglage, pas une action : elle a son bloc, son titre et son explication, séparés du bouton de calcul. */
+.sim-annee-bloc { display: grid; gap: 8px; justify-items: start; padding-top: 20px; border-top: 1px dashed var(--line); }
+.sim-annee-titre { font-weight: 600; font-size: .92rem; }
+.sim-annee-bloc small { color: var(--ink-soft); font-size: .84rem; max-width: 70ch; }
+.sim-annee-bloc .bascule button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }   /* sombre, pour ne pas ressembler au bouton bleu d'action */
+.sim-valider { padding-top: 20px; border-top: 1px dashed var(--line); }
+.sim-valider .btn { min-width: 220px; }
+.sim-resultats { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+.sim-col-gauche { display: grid; gap: 22px; min-width: 0; }
+.sim-compare h2, .sim-liste-bloc h2, .sim-carte-bloc h2 { font-size: 1.05rem; margin: 0 0 12px; }
+.sim-equiv { margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--blue) 10%, transparent); }
+.sim-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sim-liste li { position: relative; overflow: hidden; display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+.sim-liste li:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--blue) 55%, transparent); box-shadow: 0 12px 26px rgba(10, 15, 30, .18); }
+.sim-liste .rang { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: var(--on-blue); font-family: var(--f-display); font-weight: 700; font-size: .85rem; }
+.sim-liste li:hover .rang { background: var(--ochre); color: #fff; }
+.sim-liste .sim-nom { min-width: 0; display: grid; }
+.sim-liste .sim-nom a { font-weight: 700; color: var(--ink); text-decoration: none; }
+.sim-liste .sim-nom a:hover { color: var(--blue); text-decoration: underline; }
+.sim-liste small { color: var(--ink-soft); }
+.sim-liste .sim-gain { text-align: right; display: grid; }
+.sim-liste .sim-gain b { font-family: var(--f-display); }
+.sim-liste .sim-barre { position: absolute; left: 0; bottom: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--ochre)); opacity: .75; }
+.sim-actions { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.sim-carte-bloc { position: sticky; top: 84px; padding: 18px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); }
+.sim-carte-bloc svg { width: 100%; height: auto; display: block; border-radius: 12px; background: linear-gradient(135deg, var(--sea-a), var(--sea-b)); }
+.sim-region { fill: var(--land); stroke: var(--line); stroke-width: .8; vector-effect: non-scaling-stroke; }
+.sim-point { fill: var(--ink-soft); opacity: .35; }
+.sim-choix circle { fill: var(--clay, var(--ochre)); stroke: #fff; stroke-width: .9; vector-effect: non-scaling-stroke; }
+.sim-choix text { fill: #101826; font-family: var(--f-display); font-weight: 700; pointer-events: none; }   /* chiffre foncé sur pastille orange : bon contraste dans les deux thèmes */
+.sim-legende { margin: 10px 0 0; color: var(--ink-soft); font-size: .82rem; }
+.sim-notes { margin-top: 28px; color: var(--ink-soft); font-size: .88rem; display: grid; gap: 8px; max-width: 80ch; }
+.sim-notes p { margin: 0; }
+.sim-vide { padding: 18px; border: 1px dashed var(--line); border-radius: 14px; color: var(--ink-soft); }
+.sim-csv { margin-top: 12px; display: grid; gap: 8px; }
+.sim-csv textarea { width: 100%; min-height: 140px; font: .8rem var(--f-mono); padding: 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); box-sizing: border-box; }
+@media (max-width: 900px) { .sim-resultats { grid-template-columns: 1fr; } .sim-carte-bloc { position: static; } }

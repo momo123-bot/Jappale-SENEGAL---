@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>(function(){var t=null,k="jappale-theme-v3",tel=false;try{tel=(navigator.maxTouchPoints>0||"ontouchstart" in window)&&screen.width>0&&Math.min(screen.width,screen.height)<=640;}catch(e){}try{t=sessionStorage.getItem(k)||(tel?null:localStorage.getItem(k));}catch(e){}t=t||window.__THEME||"dark";document.documentElement.dataset.theme=t;})();</script><style>html{background:#FFFFFF}html[data-theme="dark"]{background:#0F1A2B;color-scheme:dark}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jàppale Sénégal - Accès aux services de santé et d'éducation</title>
+<meta name="description" content="Mesurer et prioriser l'accès des populations sénégalaises aux services de santé et d'éducation, commune par commune, à partir des données ouvertes de l'ANSD.">
+<link rel="stylesheet" href="polices.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#437FC7">
+<link rel="stylesheet" href="accueil.css">
+<link rel="stylesheet" href="confort.css">
+<link rel="stylesheet" href="illustrations.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<script>(function () { var ok = typeof Symbol === "function" && typeof Promise === "function" && typeof Object.assign === "function" && typeof Object.entries === "function" && typeof Array.prototype.includes === "function" && typeof window.fetch === "function" && typeof window.URLSearchParams === "function" && window.CSS && typeof CSS.supports === "function" && CSS.supports("display", "grid"); if (ok) return; var d = document.createElement("div"); d.id = "navigateurAncien"; d.setAttribute("role", "alert"); d.style.cssText = "padding:14px 16px;background:#fff3cd;color:#111;font:16px/1.45 Arial,Helvetica,sans-serif;border-bottom:2px solid #b8860b"; d.appendChild(document.createTextNode("Ce navigateur est trop ancien pour afficher correctement ce site. Ouvrez-le avec une version récente de Chrome, Firefox ou Safari, ou sur un autre appareil.")); document.body.insertBefore(d, document.body.firstChild); })();</script>
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg class="logo-mark" viewBox="0 0 110 110" aria-hidden="true"><rect class="lm-fond" x="4" y="4" width="102" height="102" rx="24"/><path class="lm-j" d="M64 24 V60 A28 28 0 0 1 36 88 H25" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle class="lm-point" cx="25" cy="88" r="9"/></svg>Jàppale <em>Sénégal</em></a>
+    <ul class="links" id="links">
+      <li><a href="synthese.html">Comprendre</a></li>
+      <li><a href="explorer.html">Explorer</a></li>
+      <li><a href="simulateur.html">Agir</a></li>
+    <li class="confort-li"><button type="button" class="confort-btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Affichage : texte, contraste, thème</button></li>
+    </ul>
+    <div class="nav-tools">
+      <form id="navForm" role="search">
+        <input class="nav-search" id="navSearch" type="search" list="listeCommunes" placeholder="Chercher une commune" aria-label="Chercher une commune">
+      </form>
+      <button type="button" class="icon-btn confort-icone" id="confortBtn" aria-expanded="false" aria-controls="confortPanneau" aria-label="Affichage : taille du texte, contraste, thème" title="Affichage : taille du texte, contraste, thème"><span class="confort-lib">Affichage</span></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Changer de thème" title="Changer de thème">◑</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </div>
+</nav>
+
+<main id="contenu" tabindex="-1">
+  <div class="hero-zone"><div class="wrap hero">
+    <div class="hero-titre">
+      <div class="eyebrow">Accès aux services de santé et d'éducation, RGPH-5 2023</div>
+      <h1>Santé et éducation&nbsp;: que manque-t-il à votre commune&nbsp;?</h1>
+      <p class="lede">Trouvez votre commune, comprenez sa situation, décidez où investir en priorité.</p>
+      <div class="hero-actions"><a class="lien-bouton hero-saut" href="#finder">Chercher ma commune</a><a class="lien-bouton hero-saut" href="synthese.html">Lire la synthèse en une page</a></div>
+    </div>
+
+    <div class="mapcard">
+      <div class="sujet" role="group" aria-label="Sujet affiché">
+        <button type="button" class="on" data-sujet="sante" aria-pressed="true">Santé</button>
+        <button type="button" data-sujet="education" aria-pressed="false">Éducation</button>
+      </div>
+      <svg viewBox="0 15 420 290" role="group" aria-label="Carte des communes du Sénégal : chaque point est une commune, colorée selon la part des postes de santé qui manquent">
+        <defs><linearGradient id="sea" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--sea-a)"/><stop offset="1" style="stop-color:var(--sea-b)"/></linearGradient></defs>
+        <rect x="0" y="0" width="420" height="400" fill="url(#sea)"/>
+        <g id="regions"></g>
+      </svg>
+      <div class="reg-info" id="regInfo" aria-live="polite"></div>
+      <div class="map-legend">
+        <span><i style="background:var(--m-fort)"></i>La moitié ou plus des postes nécessaires manquent</span>
+        <span><i style="background:var(--m-moyen)"></i>Entre un cinquième et la moitié</span>
+        <span><i style="background:var(--blue)"></i>Moins d'un cinquième</span>
+        <span class="note">Un point est une commune : sa taille suit la population. Touchez un point pour voir la commune, une région pour la parcourir.</span>
+      </div>
+    </div>
+
+    <div class="hero-reste">
+      <p class="constat" data-repli="Voir le chiffre et ses limites" data-repli-seul>Besoin estimé aujourd'hui : <b class="hl num" id="hDeficit">…</b> postes de santé supplémentaires, selon la norme d'un poste pour 10 000 habitants. Projection indicative pour 2033, à nombre de postes constant : <b class="num" id="hDeficit33">…</b> (<b class="num" id="hDeficit33o">…</b> avec la projection officielle de l'ANSD). Ce besoin est un minimum : recalé sur les nombres officiels de postes de 2022, il serait d'environ <b class="hl">800</b>.</p>
+      <form class="finder" id="finder">
+        <label for="finderInput">Comment est servie votre commune ?</label>
+        <div class="finder-row">
+          <input id="finderInput" type="text" list="listeCommunes" placeholder="Nom de la commune" autocomplete="off">
+          <button class="btn" type="submit">Voir la fiche</button>
+        </div>
+        <div class="chips">Exemples :
+          <button type="button" class="chip" data-commune="Touba Mosquee">Touba Mosquée</button>
+          <button type="button" class="chip" data-commune="Keur Massar Nord">Keur Massar Nord</button>
+          <button type="button" class="chip" data-commune="Thies Nord">Thiès Nord</button>
+          <button type="button" class="chip" data-commune="Kanel">Kanel</button>
+          <button type="button" class="chip" data-commune="Saraya">Saraya</button>
+          <button type="button" class="chip" data-commune="Oussouye">Oussouye</button>
+        </div>
+        <p class="couverture">Les 553 communes du Sénégal sont couvertes, des grandes villes aux zones les plus reculées.</p>
+        <a class="btn-ghost agir-lien" href="simulateur.html">Que peut-on faire ? Où agir en priorité</a>
+        <p id="finderMsg" class="chips" role="status" hidden></p>
+      </form>
+      <p class="langue"><button type="button" id="langueBtn" lang="wo" aria-pressed="false">Wolof</button> </p>
+      <ol class="etapes" aria-label="Mode d'emploi en trois étapes"><li>Tapez le nom de votre commune.</li><li>Lisez sa fiche : habitants, postes de santé, distance à l'hôpital.</li><li>Imprimez-la, ou montrez-la à la mairie.</li></ol>
+      <datalist id="listeCommunes"></datalist>
+    </div>
+  </div></div>
+
+  <div class="figures">
+    <div class="wrap" id="chiffres">
+      <div class="fig"><img class="ic" src="images/habitant.webp" alt="" width="64" height="64" loading="lazy" decoding="async"><b class="num" id="fPop">…</b><span id="fPopTxt">habitants recensés</span><small>RGPH-5 2023</small></div>
+      <div class="fig"><img class="ic" src="images/sante.webp" alt="" width="64" height="64" loading="lazy" decoding="async"><b class="num" id="fPostes">…</b><span>postes de santé géolocalisés, dont 39 centres médico-sociaux</span><small>Géo Sénégal / ANSD</small>
+        <a class="lien-bouton lien-alerte" href="methode.html#ecart-postes">Chiffre à confirmer</a></div>
+      <div class="fig"><img class="ic" src="images/chercher-commune.webp" alt="" width="64" height="64" loading="lazy" decoding="async"><b class="num alert" id="fCommunes">…</b><span>communes sous la norme d'un poste pour 10 000 habitants</span><small>Norme Ministère de la Santé</small></div>
+      <div class="fig"><img class="ic" src="images/simuler.webp" alt="" width="64" height="64" loading="lazy" decoding="async"><b class="num alert" id="fDeficit33">…</b><span>postes manquants en 2033, avec la croissance mesurée depuis 2013</span><small>Projection indicative</small></div>
+    </div>
+  </div>
+
+  <section class="block wrap" id="objectif" data-repli="Lire en trente secondes">
+    <div class="block-head"><div><div class="eyebrow">En trente secondes</div><h2 class="question">À quoi sert ce site, et à qui ?</h2><span class="rule"></span></div></div>
+    <div class="apropos">
+      <div class="apropos-card"><h3>Pourquoi ce site</h3><p>Pour décider où construire un poste de santé ou un collège, on dispose surtout de chiffres nationaux ou régionaux. Or le manque se vit commune par commune : à Touba, 1,1 million d'habitants se partagent 38 postes de santé, là où la norme en demande 113. Jàppale rend cette réalité visible pour les 553 communes du Sénégal.</p></div>
+      <div class="apropos-card"><h3>Pour qui</h3><p><b>D'abord les décideurs</b> qui veulent construire un poste de santé ou un établissement scolaire : ministères, partenaires au développement, collectivités. <b>Ensuite</b> les autres élus locaux, les journalistes, les chercheurs et les enseignants. Tout habitant peut aussi vérifier la situation de sa commune. Il n'est pas nécessaire d'être statisticien.</p></div>
+      <div class="apropos-card"><h3>Ce que vous y trouvez</h3><p>Pour chaque commune : combien de postes de santé manquent selon la norme, et combien d'habitants y vivent. Pour un budget donné : les communes à financer en premier. Pour chaque chiffre : sa source et sa méthode, que vous pouvez vérifier.</p><a class="lien-bouton" href="synthese.html">Lire la synthèse en une page</a></div>
+    </div>
+  </section>
+
+  <section class="block wrap" data-repli="Voir les communes les plus touchées">
+    <div class="block-head">
+      <div class="head-img"><img id="topImg" class="top-img" src="images/sante.webp" alt="" width="72" height="72" loading="lazy" decoding="async"><div><div class="eyebrow" id="topEyebrow">Postes de santé manquants aujourd'hui</div><h2 id="topTitre">Les communes où le manque est le plus fort</h2><span class="rule"></span></div></div>
+      <a class="lien-bouton" href="communes.html">Voir toutes les communes</a>
+    </div>
+    <div class="top-outils">
+      <div class="sujet" role="group" aria-label="Sujet affiché">
+        <button type="button" class="on" data-sujet="sante" aria-pressed="true">Santé</button>
+        <button type="button" data-sujet="education" aria-pressed="false">Éducation</button>
+      </div>
+      <p class="top-note" id="topNote"></p>
+    </div>
+    <ol class="top" id="top"></ol>
+  </section>
+
+  <section class="block wrap">
+    <div class="block-head"><div><div class="eyebrow">Par où commencer</div><h2>Choisir son parcours</h2><span class="rule"></span></div></div>
+    <div class="paths">
+      <a class="path" href="explorer.html"><img class="path-img" src="images/toutes-communes.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who"><img class="who-ic" src="images/elu.webp" alt="" width="20" height="20"> Élus, collectivités</span><h3>Explorer la carte</h3><p>Repérez les zones sous-équipées, en santé ou en éducation, et zoomez jusqu'à la commune.</p><span class="go">Ouvrir la carte</span></div></a>
+      <a class="path" href="communes.html"><img class="path-img" src="images/chercher-commune.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Tout public</span><h3>Chercher une commune</h3><p>Les 553 communes : population, postes de santé, établissements.</p><span class="go">Voir les communes</span></div></a>
+      <a class="path" href="comparer.html"><img class="path-img" src="images/comparer.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Journalistes, chercheurs</span><h3>Comparer</h3><p>Mettez deux à quatre communes ou régions côte à côte.</p><span class="go">Comparer</span></div></a>
+      <a class="path" href="methode.html"><img class="path-img" src="images/methode.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Partenaires, techniciens</span><h3>Méthode et données</h3><p>D'où viennent les chiffres, comment ils sont calculés, ce qu'ils ne disent pas.</p><span class="go">Lire la méthode</span></div></a>
+      <a class="path" href="simulateur.html"><img class="path-img" src="images/simuler.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Ministères, partenaires</span><h3>Simuler un budget</h3><p>Combien de postes pouvez-vous financer ? Voyez où les construire.</p><span class="go">Lancer le simulateur</span></div></a>
+      <a class="path" href="explorer.html#assistant"><img class="path-img" src="images/question.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Tout public</span><h3>Poser une question</h3><p>« Combien de postes manquent à Matam ? » L'assistant répond, sans connexion.</p><span class="go">Ouvrir l'assistant</span></div></a>
+    </div>
+  </section>
+
+  <section class="block wrap" data-repli="Voir les sources">
+    <div class="block-head"><div><div class="eyebrow">Sources</div><h2>Des données publiques, un calcul vérifiable</h2><span class="rule"></span></div></div>
+    <div class="sources">
+      <div><b>RGPH-5 (2023)</b><span>Répertoire des localités, ANSD</span></div>
+      <div><b>RGPHAE (2013)</b><span>Croissance réelle par commune, ANSD</span></div>
+      <div><b>Infrastructures</b><span>Santé et éducation géolocalisées, Géo Sénégal</span></div>
+      <div><b>Normes</b><span>OMS, Ministère de la Santé, Livret Éducation 2020</span></div>
+    </div>
+  </section>
+
+  <section class="block wrap" id="apropos" data-repli="Lire sur le projet">
+    <div class="block-head"><div><div class="eyebrow">Le projet</div><h2>Un projet pour décider avec des données</h2><span class="rule"></span></div></div>
+    <div class="apropos">
+      <div class="apropos-card"><img class="about-img" src="images/pourquoi.webp" alt="" width="120" height="120" loading="lazy" decoding="async"><h3>Pourquoi</h3><p>Voir, commune par commune, où l'accès aux soins et à l'école manque le plus, pour décider où investir.</p></div>
+      <div class="apropos-card"><img class="about-img" src="images/donnees.webp" alt="" width="120" height="120" loading="lazy" decoding="async"><h3>Les données</h3><p>Recensement 2023 de l'ANSD et structures géolocalisées de Géo Sénégal. Tout est ouvert et vérifiable.</p><a class="lien-bouton" href="methode.html">Méthode et données</a></div>
+      <div class="apropos-card"><img class="about-img" src="images/habitant.webp" alt="" width="120" height="120" loading="lazy" decoding="async"><h3>Pour qui</h3><p>D'abord les décideurs ; ensuite élus locaux, journalistes et chercheurs ; les habitants aussi.</p></div>
+    </div>
+    <div class="apropos-photos">
+      <figure class="apropos-photo">
+        <img src="images/poste-de-sante.webp" alt="Façade du poste de santé Serigne Saliou Mbacké, construit et équipé par la Sonatel" width="474" height="300" loading="lazy" decoding="async">
+        <figcaption><b>Le poste de santé : la structure que le site compte.</b>La norme du Ministère de la Santé est d'un poste pour 10 000 habitants.<small>Photo : @sonatel</small></figcaption>
+      </figure>
+      <figure class="apropos-photo">
+        <img src="images/lycee.webp" alt="Cour d'un lycée, avec ses bâtiments à étage" width="474" height="300" loading="lazy" decoding="async">
+        <figcaption><b>Le lycée : l'autre structure que le site compte.</b>Les collèges et les lycées forment l'éducation secondaire. Le site les compte sans dire combien il en manque : aucune norme officielle n'existe pour le secondaire.<small>Photo : libre accès</small></figcaption>
+      </figure>
+    </div>
+    <p class="apropos-note" id="credits">Projet réalisé pour le hackathon des 20 ans de l'ANSD, 2026. Crédits : photo du poste de santé, @sonatel. Les illustrations et la photo du lycée sont en libre accès.</p>
+  </section>
+
+  <section class="block wrap" id="contact">
+    <div class="block-head"><div><div class="eyebrow">Contact</div><h2>Nous contacter</h2><span class="rule"></span></div></div>
+    <div class="contact">
+      <div class="contact-aside">
+        <img class="contact-img" src="images/pour-qui.webp" alt="" width="120" height="120" loading="lazy" decoding="async">
+        <h3>Une question, une erreur à signaler ?</h3>
+        <p id="contactIntro">Une question sur les chiffres ? L'assistant répond tout de suite. Pour signaler une donnée qui vous semble fausse, citez la commune et la valeur.</p>
+        <a class="lien-bouton" href="explorer.html#assistant">Ou posez la question à l'assistant</a>
+      </div>
+      <form id="contactForm" novalidate>
+        <div class="cf-ligne">
+          <label><span class="lib">Nom <span class="req" aria-hidden="true">*</span></span><input type="text" name="nom" required autocomplete="family-name"></label>
+          <label><span class="lib">Prénom <span class="req" aria-hidden="true">*</span></span><input type="text" name="prenom" required autocomplete="given-name"></label>
+        </div>
+        <label><span class="lib">E-mail <span class="req" aria-hidden="true">*</span></span><input type="email" name="email" required autocomplete="email"></label>
+        <label><span class="lib">Message <span class="req" aria-hidden="true">*</span></span><textarea name="info" rows="5" required placeholder="Votre question ou la donnée à vérifier"></textarea></label>
+        <details class="cf-plus">
+          <summary>Ajouter un téléphone, une structure ou préciser l'objet (facultatif)</summary>
+          <div class="cf-ligne">
+            <label>Téléphone<input type="tel" name="tel" autocomplete="tel"></label>
+            <label>Structure ou organisation<input type="text" name="structure" autocomplete="organization"></label>
+          </div>
+          <label>Objet<select name="objet"><option>Question</option><option>Signaler une erreur de donnée</option><option>Proposition de partenariat</option><option>Autre</option></select></label>
+        </details>
+        <p class="cf-note" id="contactNote">Les champs marqués d'une étoile sont obligatoires.</p>
+        <div class="contact-actions"><button class="btn" type="submit" id="contactBtn">Préparer mon message</button></div>
+        <div id="contactMsg" role="status" aria-live="polite" hidden></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Jàppale Sénégal, hackathon des 20 ans de l'ANSD, 2026</span>
+    <span>Fonctionne hors connexion. Méthode et données documentées.</span>
+    <span>Projet de hackathon : pas une publication officielle de l'ANSD.</span>
+  </div>
+  <div class="wrap pied-liens">
+    <nav aria-label="Liens utiles"><b>Liens utiles</b>
+      <a href="https://www.ansd.sn" target="_blank" rel="noopener">ANSD</a>
+      <a href="https://www.geosenegal.gouv.sn" target="_blank" rel="noopener">Géo Sénégal</a>
+      <a href="https://www.vie-publique.sn" target="_blank" rel="noopener">Vie publique Sénégal</a>
+      <a href="methode.html">Source et méthode</a>
+      <a href="methode.html#ouvertes">Télécharger les données</a>
+      <a href="communes.html">Toutes les communes</a>
+      <a href="comparer.html">Comparer des communes</a>
+      <a href="synthese.html">À propos</a>
+    <a href="methode.html#accessibilite">Accessibilité</a>
+      <a href="index.html#credits">Crédits</a>
+      <a href="index.html#contact">Nous contacter</a>
+      <a href="explorer.html#assistant">Poser une question</a>
+    </nav>
+  </div>
+</footer>
+
+<aside aria-label="Assistant"><a class="assist" href="explorer.html#assistant">Poser une question</a></aside>
+
+<script src="data.js"></script>
+<script src="regions.js"></script>
+<script src="site.js"></script>
+<script src="wolof.js"></script>
+<script src="accueil.js"></script>
+<script src="assistant.js"></script>
+<script src="assistant-llm.js"></script>
+<script src="assistant-page.js"></script>
+<script src="confort.js"></script>
+</body>
+</html>

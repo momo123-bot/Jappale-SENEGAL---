@@ -1,0 +1,102 @@
+/* Page Méthode et données. S'appuie sur accueil.css (jetons, navigation) et communes.css (en-tête de page, tableaux). */
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.methode { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; align-items: start; margin-top: 12px; }
+.sommaire { position: sticky; top: calc(84px + env(safe-area-inset-top, 0px)); }
+.sommaire ol { list-style: none; margin: 10px 0 0; padding: 0; counter-reset: s; border-left: 2px solid var(--line); }
+.sommaire li { counter-increment: s; }
+.sommaire a { display: block; padding: 6px 0 6px 14px; margin-left: -2px; border-left: 2px solid transparent; font-size: 0.875rem; color: var(--ink-soft); text-decoration: none; }
+.sommaire a::before { content: counter(s) ". "; font-variant-numeric: tabular-nums; }
+.sommaire a:hover, .sommaire a.actif { color: var(--ink); border-left-color: var(--sky); }
+
+.contenu { max-width: 760px; min-width: 0; }
+.contenu section { padding-block: 8px 34px; border-bottom: 1px solid var(--line); margin-bottom: 30px; }
+.contenu section:last-child { border-bottom: 0; }
+.contenu h2 { font-size: 1.5rem; margin-bottom: 14px; }
+.contenu h3 { font-size: 1rem; margin: 22px 0 6px; }
+.contenu p { margin: 10px 0 0; line-height: 1.65; }
+.contenu .note { font-size: 0.8438rem; color: var(--ink-soft); }
+.contenu code { font-family: var(--f-mono); font-size: 0.8125rem; background: var(--panel-2); padding: 1px 5px; border-radius: 4px; }
+
+.chiffres { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 36px; }
+.chiffres div { background: var(--panel-2); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.chiffres b { font-family: var(--f-display); font-size: 1.5rem; }
+.chiffres span { font-size: 0.8125rem; color: var(--ink-soft); }
+
+.contenu .table-wrap { max-height: none; margin-top: 14px; }
+table.doc { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+table.doc th { text-align: left; background: var(--panel-2); font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); padding: 10px 12px; border-bottom: 1px solid var(--line); }
+table.doc td { padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.doc tr:last-child td { border-bottom: 0; }
+table.doc .nb { text-align: right; white-space: nowrap; }
+.etat { display: inline-block; font-size: 0.8125rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; margin-right: 4px; }
+.etat.ok { background: color-mix(in srgb, var(--sky) 24%, transparent); }
+.etat.warn { background: color-mix(in srgb, var(--ochre) 24%, transparent); color: color-mix(in srgb, var(--ochre) 60%, var(--ink)); }
+
+.formule { margin-top: 14px; background: var(--panel-2); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; padding: 12px 16px; font-family: var(--f-mono); font-size: 0.8438rem; display: flex; flex-direction: column; gap: 4px; }
+.formule span { font-weight: 700; color: var(--blue); }
+.exemple { background: color-mix(in srgb, var(--sky) 12%, transparent); border-radius: 12px; padding: 12px 16px; font-size: 0.9062rem; }
+
+.etapes { margin: 14px 0 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+.etapes li::marker { font-family: var(--f-display); font-weight: 700; color: var(--blue); }
+
+.jauge { display: flex; height: 16px; border-radius: 8px; overflow: hidden; margin-top: 16px; }
+.jauge i { display: block; height: 100%; }
+.legende-jauge { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.8438rem; }
+.legende-jauge i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: 0; }
+
+.limites { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; line-height: 1.6; }
+.limites li::marker { color: var(--ochre); }
+
+#telecharger { margin-top: 16px; }
+.dictionnaire { margin-top: 18px; }
+.dictionnaire summary { cursor: pointer; font-weight: 700; color: var(--blue); }
+
+@media (max-width: 980px) {
+  .methode { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sommaire { position: static; background: var(--panel-2); border-radius: 14px; padding: 14px 16px; }
+  .sommaire ol { columns: 2; border-left: 0; }
+  .sommaire a { padding-left: 0; border-left: 0; }
+  .chiffres { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .sommaire ol { columns: 1; }
+}
+
+/* ===== Lecture guidée : l'essentiel d'abord, le détail à la demande ===== */
+.essentiel { background: var(--panel-2); border-radius: 16px; padding: 20px 24px; margin: 8px 0 34px; }
+.essentiel h2 { font-size: 1.25rem; margin-bottom: 10px; }
+.essentiel ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; line-height: 1.55; }
+.essentiel li::marker { font-family: var(--f-display); font-weight: 700; color: var(--blue); }
+.essentiel .btn-ghost { margin-top: 14px; }
+.contenu .sens { font-size: 1rem; line-height: 1.6; margin: 0 0 12px; padding: 12px 16px; background: color-mix(in srgb, var(--sky) 12%, transparent); border-radius: 12px; }
+details.detail { margin-top: 10px; border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; }
+details.detail[open] { padding-bottom: 16px; }
+details.detail > summary, details.dictionnaire > summary { cursor: pointer; font-weight: 700; color: var(--blue); padding: 12px 0; list-style: none; }
+details.detail > summary::-webkit-details-marker, details.dictionnaire > summary::-webkit-details-marker { display: none; }
+details.detail > summary::after, details.dictionnaire > summary::after { content: " (afficher)"; font-weight: 400; color: var(--ink-soft); }
+details.detail[open] > summary::after, details.dictionnaire[open] > summary::after { content: " (masquer)"; }
+.ecart { margin: 14px 0; padding: 14px 18px; border-left: 3px solid var(--ochre); background: color-mix(in srgb, var(--ochre) 10%, transparent); border-radius: 0 12px 12px 0; line-height: 1.6; }
+.ecart b { display: block; }
+.ecart p { margin: 6px 0 0; }
+/* Un titre qui est une question ne reçoit pas le point décoratif : « ?. » est une faute de ponctuation */
+
+/* Glossaire : les phrases du site en clair, puis les mots expliqués simplement */
+#mots h3 { font-size: 1.0625rem; margin: 26px 0 10px; }
+.phrases { display: grid; gap: 10px; }
+.phrase { margin: 0; padding: 12px 16px; background: var(--panel-2); border-left: 3px solid var(--blue); border-radius: 0 12px 12px 0; }
+.phrase .dit { margin: 0 0 4px; font-weight: 700; }
+.phrase .veut { margin: 0; line-height: 1.55; }
+.glossaire { margin: 0; }
+.glossaire > div { padding: 11px 0; border-bottom: 1px solid var(--line); }
+.glossaire dt { font-weight: 700; margin: 0 0 3px; }
+.glossaire dd { margin: 0; line-height: 1.55; }
+.details-statut { margin-left: 12px; color: var(--ink-soft); font-size: .88rem; }
+.trois-questions { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 16px 0; }
+.trois-questions > div { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+.trois-questions h3 { margin: 0 0 8px; font-size: 1rem; line-height: 1.3; }
+.trois-questions p { margin: 0; color: var(--ink-soft); font-size: .95rem; }
+
+/* Mouvement réduit : pas de défilement doux. */
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

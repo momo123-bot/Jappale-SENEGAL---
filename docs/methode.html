@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>(function(){var t=null,k="jappale-theme-v3",tel=false;try{tel=(navigator.maxTouchPoints>0||"ontouchstart" in window)&&screen.width>0&&Math.min(screen.width,screen.height)<=640;}catch(e){}try{t=sessionStorage.getItem(k)||(tel?null:localStorage.getItem(k));}catch(e){}t=t||window.__THEME||"dark";document.documentElement.dataset.theme=t;})();</script><style>html{background:#FFFFFF}html[data-theme="dark"]{background:#0F1A2B;color-scheme:dark}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Méthode et données - Jàppale Sénégal</title>
+<meta name="description" content="Sources, normes, chaîne de traitement, fiabilité, recoupements avec les publications de l'ANSD et limites de Jàppale Sénégal. Données téléchargeables en CSV.">
+<link rel="stylesheet" href="polices.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#437FC7">
+<link rel="stylesheet" href="accueil.css">
+<link rel="stylesheet" href="communes.css">
+<link rel="stylesheet" href="methode.css">
+<link rel="stylesheet" href="confort.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<script>(function () { var ok = typeof Symbol === "function" && typeof Promise === "function" && typeof Object.assign === "function" && typeof Object.entries === "function" && typeof Array.prototype.includes === "function" && typeof window.fetch === "function" && typeof window.URLSearchParams === "function" && window.CSS && typeof CSS.supports === "function" && CSS.supports("display", "grid"); if (ok) return; var d = document.createElement("div"); d.id = "navigateurAncien"; d.setAttribute("role", "alert"); d.style.cssText = "padding:14px 16px;background:#fff3cd;color:#111;font:16px/1.45 Arial,Helvetica,sans-serif;border-bottom:2px solid #b8860b"; d.appendChild(document.createTextNode("Ce navigateur est trop ancien pour afficher correctement ce site. Ouvrez-le avec une version récente de Chrome, Firefox ou Safari, ou sur un autre appareil.")); document.body.insertBefore(d, document.body.firstChild); })();</script>
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg class="logo-mark" viewBox="0 0 110 110" aria-hidden="true"><rect class="lm-fond" x="4" y="4" width="102" height="102" rx="24"/><path class="lm-j" d="M64 24 V60 A28 28 0 0 1 36 88 H25" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle class="lm-point" cx="25" cy="88" r="9"/></svg>Jàppale <em>Sénégal</em></a>
+    <ul class="links" id="links">
+      <li><a href="synthese.html">Comprendre</a></li>
+      <li><a href="explorer.html">Explorer</a></li>
+      <li><a href="simulateur.html">Agir</a></li>
+    <li class="confort-li"><button type="button" class="confort-btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Affichage : texte, contraste, thème</button></li>
+    </ul>
+    <div class="nav-tools">
+      <form id="navForm" role="search">
+        <input class="nav-search" id="navSearch" type="search" list="listeCommunes" placeholder="Chercher une commune" aria-label="Chercher une commune">
+      </form>
+      <button type="button" class="icon-btn confort-icone" id="confortBtn" aria-expanded="false" aria-controls="confortPanneau" aria-label="Affichage : taille du texte, contraste, thème" title="Affichage : taille du texte, contraste, thème"><span class="confort-lib">Affichage</span></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Changer de thème" title="Changer de thème">◑</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </div>
+</nav>
+<datalist id="listeCommunes"></datalist>
+
+<main id="contenu" tabindex="-1" class="wrap page">
+  <header class="page-head">
+    <div class="eyebrow">Version web de la note méthodologique</div>
+    <img class="page-ill" src="images/comment-calcule.webp" alt="" width="88" height="88" loading="lazy" decoding="async">
+      <h1 class="question">Comment sont calculés les chiffres ?</h1>
+    <span class="rule"></span>
+    <p class="lede">Cette page explique d'où viennent les chiffres du site et comment ils sont calculés. Lisez d'abord l'essentiel ci-dessous : les détails techniques se déplient à la demande.</p>
+  </header>
+
+  <section class="essentiel" aria-labelledby="essentielTitre">
+    <h2 id="essentielTitre">L'essentiel en cinq points</h2>
+    <ol>
+      <li>Les chiffres viennent de données publiques de l'ANSD : le recensement de 2023 et les équipements de santé et d'éducation géolocalisés.</li>
+      <li>Le manque de postes de santé compare chaque commune à une norme : un poste pour 10 000 habitants.</li>
+      <li>La vue bassin tient compte des postes des communes voisines, situées à moins de 15 km.</li>
+      <li>Nous avons vérifié nos chiffres clés auprès de publications officielles. Deux écarts restent à clarifier : le nombre de postes de santé, important, et celui des hôpitaux publics, faible.</li>
+      <li>Ce sont des estimations qui aident à décider. Elles ne remplacent pas une vérification sur le terrain.</li>
+    </ol>
+    <button type="button" class="btn-ghost" id="toutDeplier" aria-pressed="false">Afficher tous les détails</button>
+    <span class="details-statut" id="detailsStatut" role="status" aria-live="polite"></span>
+  </section>
+
+  <div class="methode">
+    <nav class="sommaire" aria-label="Sommaire">
+      <div class="eyebrow">Une question ?</div>
+      <ol>
+        <li><a href="#mots">Que veulent dire les mots du site ?</a></li>
+        <li><a href="#axes">Que fait ce projet pour les données de l'ANSD ?</a></li>
+      <li><a href="#sources">D'où viennent les chiffres ?</a></li>
+        <li><a href="#normes">Comment est calculé le manque de postes ?</a></li>
+        <li><a href="#chaine">Comment les chiffres sont-ils produits ?</a></li>
+        <li><a href="#fiabilite">Les données sont-elles bien reliées aux communes ?</a></li>
+        <li><a href="#bassin">Que veut dire la vue bassin ?</a></li>
+        <li><a href="#previsions">Sur quoi reposent les prévisions ?</a></li>
+          <li><a href="#scenario">Que veut dire le scénario 2033 ?</a></li>
+        <li><a href="#education">Et pour l'éducation ?</a></li>
+        <li><a href="#algorithme">Comment le simulateur choisit-il ?</a></li>
+        <li><a href="#recoupements">Nos chiffres sont-ils confirmés ?</a></li>
+        <li><a href="#retour">Qu'avons-nous signalé à l'ANSD ?</a></li>
+        <li><a href="#limites">Ce que nous ne savons pas encore</a></li>
+      <li><a href="#accessibilite">Le site est-il utilisable par tous ?</a></li>
+        <li><a href="#perspectives">Et après le hackathon ?</a></li>
+        <li><a href="#donnees">Besoin de toutes les données ?</a></li>
+        <li><a href="#ouvertes">Peut-on réutiliser les données ?</a></li>
+      </ol>
+    </nav>
+
+    <div class="contenu">
+
+      <div class="chiffres">
+        <div><b class="num" data-k="communes">…</b><span>communes (découpage RGPH-5)</span></div>
+        <div><b class="num" data-k="population">…</b><span>habitants (RGPH-5 2023)</span></div>
+        <div><b class="num">3 771</b><span>infrastructures rattachées sur 3 771</span></div>
+        <div><b class="num" data-k="coordonnees">…</b><span>communes géolocalisées</span></div>
+      </div>
+
+        <!-- 0 -->
+  <section id="mots">
+    <h2>Que veulent dire les mots du site ?</h2>
+    <p class="sens">Les phrases les plus importantes du site, puis les mots plus techniques, expliqués simplement. Si un mot vous échappe, il est probablement ici.</p>
+    <h3>Les phrases du site, en clair</h3>
+    <div class="phrases">
+      <blockquote class="phrase"><p class="dit">« Besoin estimé aujourd'hui : 553 postes de santé supplémentaires »</p><p class="veut"><b>En clair :</b> Si chaque commune avait un poste de santé pour 10 000 habitants, il faudrait 553 postes de plus que ceux recensés. C'est un besoin calculé avec une règle, pas un nombre compté sur le terrain.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« Touba Mosquée : 75 postes manquants sur 113 nécessaires »</p><p class="veut"><b>En clair :</b> Touba compte environ 1,1 million d'habitants. La règle demande 113 postes, et 38 sont recensés. Il en manque donc 75, soit 113 moins 38.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« 93 en vue bassin »</p><p class="veut"><b>En clair :</b> Les 38 postes de Touba servent aussi les communes voisines, à moins de 15 km. Quand on en tient compte, il reste moins de postes pour les habitants de Touba, et le manque monte à 93.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« La couleur des points sur la carte (bronze, bronze clair, bleu) »</p><p class="veut"><b>En clair :</b> Elle dit quelle part du besoin n'est pas couverte. Bronze : la moitié ou plus des postes nécessaires manquent. Bronze clair : entre un cinquième et la moitié. Bleu : moins d'un cinquième.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« +16,3 % de population desservie en plus »</p><p class="veut"><b>En clair :</b> Avec le même budget de 10 structures, la méthode du simulateur sert 16,3 % d'habitants de plus qu'un simple classement des communes par déficit.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« 6 structures au lieu de 10 »</p><p class="veut"><b>En clair :</b> Pour servir à peu près autant d'habitants, la méthode du simulateur a besoin de 6 structures, là où un simple classement en demande 10.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« 215 communes sur 551 sans aucun établissement secondaire recensé »</p><p class="veut"><b>En clair :</b> Dans les données utilisées, 215 communes (parmi les 551 dont les structures ont pu être rattachées) n'ont ni collège ni lycée. Ce n'est pas un déficit : il n'existe aucune norme officielle pour le secondaire, donc nous comptons seulement, sans dire combien il en manque. Le primaire n'est pas couvert, et l'enseignement supérieur est présenté à part.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« Chiffre à confirmer : 2 124 postes de santé, ou 1 680 ? »</p><p class="veut"><b>En clair :</b> Deux sources ne donnent pas le même nombre de postes de santé : 2 124 dans les données géolocalisées, 1 680 dans une brochure du Ministère. Nous n'avons pas encore expliqué cet écart. Avec le chiffre du Ministère, le manque serait plus élevé (environ 686 postes au lieu de 553), mais les 10 communes les plus touchées resteraient les mêmes.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« Projection indicative pour 2033, à nombre de postes constant : 1 040 »</p><p class="veut"><b>En clair :</b> Si la population continue de croître comme entre 2013 et 2023, et si aucun poste n'est construit, il manquerait environ 1 040 postes en 2033 (898 avec la projection officielle de l'ANSD). C'est une projection pour réfléchir, pas une prévision officielle.</p></blockquote>
+      <blockquote class="phrase"><p class="dit">« Données vérifiées, ou donnée à confirmer »</p><p class="veut"><b>En clair :</b> Données vérifiées : des structures ont pu être rattachées à la commune. Donnée à confirmer : aucune n'a pu l'être, donc le manque est probablement surestimé. Cela ne concerne que très peu de communes (deux aujourd'hui).</p></blockquote>
+    </div>
+    <h3>Les mots, expliqués simplement</h3>
+    <dl class="glossaire">
+      <div><dt>À nombre de postes constant</dt><dd>On suppose qu'aucun nouveau poste n'est construit. Cela permet de voir ce que deviendrait le manque si rien ne change. Ce n'est pas une prévision.</dd></div>
+      <div><dt>À population desservie égale</dt><dd>On compare combien de structures chaque méthode demande pour servir à peu près le même nombre d'habitants. « 6 structures au lieu de 10 » veut dire que la méthode du simulateur en demande moins.</dd></div>
+      <div><dt>À vol d'oiseau</dt><dd>Distance en ligne droite entre deux points, comme volerait un oiseau. Elle ne tient compte ni des routes, ni des pistes, ni de la saison des pluies : le trajet réel est plus long.</dd></div>
+      <div><dt>Algorithme</dt><dd>Une suite d'étapes précises, que l'ordinateur suit toujours dans le même ordre. Ici : choisir la commune qui ferait servir le plus d'habitants, l'enlever du calcul, puis recommencer jusqu'à épuiser le budget.</dd></div>
+      <div><dt>Algorithme glouton</dt><dd>Un algorithme qui fait à chaque étape le meilleur choix du moment, sans revenir en arrière. Il est simple et rapide, mais il ne garantit pas la meilleure solution possible parmi toutes.</dd></div>
+      <div><dt>ANSD</dt><dd>Agence nationale de la statistique et de la démographie du Sénégal. Elle publie le recensement dont viennent nos chiffres.</dd></div>
+      <div><dt>Bassin (vue bassin)</dt><dd>Une commune et ses voisines situées à moins de 15 km, qui se partagent les postes de santé. Un poste proche aide une commune qui n'en a pas, mais il ne peut pas servir tout le monde : sa capacité est répartie entre les communes, selon la proximité. Ce n'est pas un découpage officiel.</dd></div>
+      <div><dt>Campus (université publique)</dt><dd>Un site d'enseignement supérieur public. Dans la couche source, plusieurs lignes d'une même commune situées à moins de 1,5 km (amphithéâtres, écoles doctorales, annexes) forment un seul campus. Les établissements privés et les chantiers ne sont pas comptés.</dd></div>
+      <div><dt>Centre de santé, hôpital</dt><dd>Ces structures servent plusieurs communes : la règle les compte par département (un centre pour 50 000 habitants, un hôpital pour 150 000). « Aucun hôpital » veut dire aucun dans le département, pas que personne n'y a accès : l'hôpital le plus proche est indiqué avec sa distance à vol d'oiseau.</dd></div>
+      <div><dt>Chevauchement</dt><dd>Quand deux emplacements serviraient en partie les mêmes habitants. Le simulateur réduit le gain d'une commune proche d'une commune déjà choisie, pour ne pas compter deux fois les mêmes personnes.</dd></div>
+      <div><dt>Classement simple</dt><dd>Choisir les communes une par une, de la plus en déficit à la moins en déficit, sans regarder si elles sont voisines. C'est la méthode à laquelle le simulateur se compare.</dd></div>
+      <div><dt>Constat (éducation)</dt><dd>Un chiffre compté, sans règle pour dire s'il est suffisant. Pour la santé, une norme dit combien de postes il faut. Pour les collèges et les lycées, nous n'avons trouvé aucune norme officielle : nous comptons seulement.</dd></div>
+      <div><dt>Croissance mesurée ou estimée</dt><dd>Mesurée : calculée à partir des deux recensements, 2013 et 2023. Estimée : quand ce calcul n'est pas possible pour une commune, on lui donne la croissance médiane du pays (2,94 % par an).</dd></div>
+      <div><dt>CSV</dt><dd>Un fichier de tableau très simple, que l'on ouvre dans Excel ou Google Sheets.</dd></div>
+      <div><dt>Déficit (postes manquants)</dt><dd>L'écart entre le nombre de postes que la norme demande et le nombre de postes recensés. C'est un besoin théorique : il dit où regarder en premier, pas ce qu'il faut construire exactement.</dd></div>
+      <div><dt>Données ouvertes</dt><dd>Des données que tout le monde peut consulter, télécharger et réutiliser. Les nôtres et le code qui les traite sont publics.</dd></div>
+      <div><dt>ENO (espace numérique ouvert)</dt><dd>Un site de l'Université numérique Cheikh Hamidou Kane, anciennement Université virtuelle du Sénégal, où les étudiants suivent des cours à distance et se retrouvent en présentiel. Ce n'est pas un campus d'université : il est compté à part.</dd></div>
+      <div><dt>Estimation</dt><dd>Un chiffre calculé avec des hypothèses. Il peut s'écarter de la réalité, contrairement à un chiffre compté sur le terrain.</dd></div>
+      <div><dt>Fiabilité des données</dt><dd>Indique si les chiffres d'une commune reposent sur des données bien reliées (« vérifiées ») ou moins sûres (« à confirmer »), et si sa croissance a été mesurée ou estimée. Ce n'est pas un jugement sur le travail de l'ANSD.</dd></div>
+      <div><dt>Géo Sénégal</dt><dd>Plateforme de données géographiques du Sénégal, où se trouvent les positions des postes de santé et des établissements scolaires que nous utilisons.</dd></div>
+      <div><dt>Géolocalisé</dt><dd>Dont on connaît la position sur la carte, grâce à sa latitude et à sa longitude.</dd></div>
+      <div><dt>Homonymes</dt><dd>Des communes qui portent le même nom dans des départements différents. Le site ajoute le département pour les distinguer.</dd></div>
+      <div><dt>Hypothèse</dt><dd>Une supposition posée pour pouvoir calculer, par exemple un rayon de 15 km autour d'un poste, ou un coût égal pour chaque structure. Elles sont toutes écrites dans cette page.</dd></div>
+      <div><dt>Médiane</dt><dd>La valeur du milieu : la moitié des communes est au-dessus, l'autre moitié en dessous. Elle ne se laisse pas tromper par quelques cas extrêmes.</dd></div>
+      <div><dt>Norme</dt><dd>Un repère officiel qui dit combien d'équipements il faut pour une population donnée. Pour les postes de santé : un pour 10 000 habitants, d'après des recommandations de l'OMS reprises par l'ANSD.</dd></div>
+      <div><dt>OMS</dt><dd>Organisation mondiale de la santé. Ses recommandations sont à la base des normes que reprend l'ANSD.</dd></div>
+      <div><dt>Population desservie</dt><dd>Les habitants qui vivent assez près d'une nouvelle structure pour en profiter. Le simulateur cherche à en servir le plus possible avec un budget donné.</dd></div>
+      <div><dt>Poste de santé, centre de santé, hôpital</dt><dd>Trois niveaux de structures. Le poste est la structure de base d'une commune (norme : un pour 10 000 habitants). Le centre de santé est d'un niveau supérieur et dessert plusieurs communes (un pour 50 000), l'hôpital aussi (un pour 150 000). Une commune sans poste mais avec un centre est donc servie sur place : son déficit de postes est à lire avec prudence.</dd></div>
+      <div><dt>Pour 100 000 habitants (rapporté à la population)</dt><dd>Permet de comparer des communes de tailles très différentes : on ramène chaque chiffre à une même population de 100 000 habitants.</dd></div>
+      <div><dt>Priorisation</dt><dd>Décider par quoi commencer. L'outil classe les besoins pour aider à choisir. Il ne décide pas à la place des élus.</dd></div>
+      <div><dt>Projection, scénario (2033)</dt><dd>Une estimation de l'avenir fondée sur ce qu'on observe aujourd'hui : ici, la croissance de la population entre 2013 et 2023, qui ralentit peu à peu vers la moyenne du pays. Ce n'est pas une prévision officielle.</dd></div>
+      <div><dt>Prototype</dt><dd>Une première version complète et utilisable, mais pas définitive. Elle aide à décider. Elle ne remplace ni une étude de planification, ni une vérification sur le terrain.</dd></div>
+      <div><dt>Rattaché (à une commune)</dt><dd>Relié à une commune. Le recensement et la liste des équipements n'ont pas de numéro commun : on les relie par le nom de la commune, avec des vérifications.</dd></div>
+      <div><dt>Recoupement</dt><dd>Comparer un chiffre avec une autre source indépendante pour voir si les deux concordent. Nous avons recoupé nos chiffres clés avec des publications de l'ANSD et du Ministère de la Santé.</dd></div>
+      <div><dt>Reproductible</dt><dd>N'importe qui peut refaire tous les calculs à partir des données de départ et retrouver les mêmes résultats.</dd></div>
+      <div><dt>RGPH-5</dt><dd>Le cinquième recensement général de la population et de l'habitat, réalisé en 2023. Il donne la population de chaque commune.</dd></div>
+      <div><dt>RGPHAE</dt><dd>Le recensement de 2013, qui comptait aussi l'agriculture et l'élevage. Nous le comparons à 2023 pour mesurer la croissance de chaque commune.</dd></div>
+      <div><dt>Secondaire (enseignement)</dt><dd>Les collèges et les lycées, publics et privés. Le primaire est en dessous, l'enseignement supérieur (universités) au-dessus : le site ne les mélange pas.</dd></div>
+      <div><dt>Sensibilité (test de sensibilité)</dt><dd>On change volontairement un chiffre incertain pour voir si les conclusions changent. Avec le nombre de postes du Ministère (1 680 au lieu de 2 124), les 10 communes les plus touchées restent les mêmes.</dd></div>
+    </dl>
+  </section>
+
+      <section id="axes">
+        <h2>Que fait ce projet pour les données de l'ANSD ?</h2>
+      <p class="sens">Le thème du hackathon demande d'améliorer la production, l'accessibilité, la valorisation et l'utilisation des données de l'ANSD. Voici ce que le projet apporte sur chacun de ces quatre points, et où le vérifier.</p>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th>Axe du thème</th><th>Ce que fait Jàppale Sénégal</th><th>Où le vérifier</th></tr></thead>
+          <tbody>
+            <tr><td>Production</td><td>Nous repérons les anomalies des couches de données de l'ANSD : 15 anomalies chiffrées, chacune avec une recommandation, et une fiche minimale de métadonnées proposée.</td><td>Section « Qu'avons-nous signalé à l'ANSD ? » ci-dessous</td></tr>
+            <tr><td>Accessibilité</td><td>Une fiche par commune pour les 553 communes, lisible sur téléphone et sans vocabulaire technique ; un bouton « Affichage » (texte jusqu'à 150 %, contraste renforcé, animations réduites, thème), la lecture à voix haute de la fiche, un mode d'emploi en trois étapes et un audit d'accessibilité automatisé sans violation ; une comparaison entre communes ; les limites écrites en clair.</td><td>Pages Communes et Comparer</td></tr>
+            <tr><td>Valorisation</td><td>Le recensement et les équipements deviennent une estimation du manque de postes de santé, avec ses fourchettes et ses analyses de sensibilité, une analyse de l'isolement scolaire et une fiche de décision imprimable pour chaque commune.</td><td>Pages Explorer, Simuler et fiche d'une commune</td></tr>
+            <tr><td>Utilisation</td><td>Les valeurs du site sont publiées en JSON ouvert, avec dictionnaire et licence ; le code et les calculs sont reproductibles.</td><td>Section « Peut-on réutiliser les données ? » ci-dessous</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+
+  <!-- 1 -->
+      <section id="sources">
+        <h2>D'où viennent les chiffres ?</h2>
+      <p class="sens">Tous les calculs partent de données publiques de l'ANSD : le recensement de 2023 pour la population, un fichier de 2013 pour mesurer la croissance, et les équipements de santé et d'éducation géolocalisés par Géo Sénégal. Seul le fond de carte vient d'ailleurs.</p>
+      <details class="detail"><summary>Voir le tableau des sources</summary>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th>Source</th><th>Contenu</th><th>Rôle dans le calcul</th></tr></thead>
+          <tbody>
+            <tr><td>Répertoire des localités RGPH-5 (2023), ANSD</td><td>Population par commune, quartier, village (46 fichiers CSV)</td><td>Référentiel de population, année de référence</td></tr>
+            <tr><td>RGPHAE 2013, ANSD (fichier de projections démographiques)</td><td>Population par commune d'arrondissement ou communauté rurale, 2013</td><td>Calcul du taux de croissance réel 2013-2023</td></tr>
+            <tr><td>Infrastructures géolocalisées, Géo Sénégal / ANSD (2023)</td><td>Position (UTM zone 28N), type, statut public ou privé et commune de rattachement de chaque poste, centre, hôpital, collège, lycée et université</td><td>Référentiel des équipements ; source des coordonnées communales</td></tr>
+            <tr><td>Livret des normes et standards de l'École, Ministère de l'Éducation nationale (2020)</td><td>Normes d'infrastructures et d'effectifs scolaires</td><td>Référence citée pour l'éducation</td></tr>
+            <tr><td>Natural Earth (domaine public)</td><td>Tracé des 14 régions</td><td>Représentation cartographique</td></tr>
+          <tr><td>Projections démographiques 2023-2073, ANSD (tableaux par commune)</td><td>Population de chaque commune, année par année</td><td>Comparaison avec notre scénario 2033</td></tr>
+          <tr><td>RGPH-5, rapport définitif du thème II (éducation), ANSD</td><td>Taux de scolarisation par région</td><td>Contexte de la fiche et vérification de la distance au collège ou lycée</td></tr>
+          <tr><td>Carte sanitaire, portail e-santé de la CSSDOS (Ministère de la Santé), consultée le 8 octobre 2026</td><td>1 584 postes de santé, 107 centres de santé, 40 hôpitaux, 2 197 cases de santé</td><td>Comparaison avec la couche du site</td></tr>
+        <tr><td>Services sociaux de base géoréférencés, ANSD (RGPH-5, 2023), Dakar, Diourbel et Thiès</td><td>6 449 établissements d'éducation, 2 902 de santé, 705 points d'eau</td><td>Pilote : recoupement de notre couche et bloc « Services de base » de la fiche d'une commune</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Source volontairement écartée : les microdonnées individuelles de la plateforme ANADS, réservées aux organismes du Système statistique national. Le projet fonctionne entièrement à partir de données agrégées et publiques. Les frontières communales GADM ont aussi été écartées, leur licence interdisant la redistribution.</p>
+      </details>
+    </section>
+
+      <!-- 2 -->
+      <section id="normes">
+        <h2>Comment est calculé le manque de postes de santé ?</h2>
+      <p class="sens">Pour chaque commune, on compare le nombre de postes de santé recensés au nombre théoriquement nécessaire, à raison d'un poste pour 10 000 habitants. L'écart est le manque de postes. Les centres de santé et les hôpitaux servent plusieurs communes : leur manque est calculé à l'échelle du département.</p>
+      <details class="detail"><summary>Voir les normes, la formule et un exemple</summary>
+        <p>Le déficit d'accès mesure l'écart entre le nombre de structures de santé théoriquement nécessaires et le nombre de structures réellement recensées, selon les normes de l'OMS reprises par le Ministère de la Santé du Sénégal.</p>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th>Structure</th><th>Norme</th><th>Échelle de calcul</th></tr></thead>
+          <tbody>
+            <tr><td>Poste de santé</td><td class="num">1 pour 10 000 habitants</td><td>Commune</td></tr>
+            <tr><td>Centre de santé</td><td class="num">1 pour 50 000 habitants</td><td>Département</td></tr>
+            <tr><td>Hôpital</td><td class="num">1 pour 150 000 habitants</td><td>Département</td></tr>
+          </tbody>
+        </table></div>
+        <div class="formule">
+          <div><span>Besoin théorique</span> = arrondi supérieur (population ÷ norme)</div>
+          <div><span>Déficit</span> = maximum (0, besoin théorique − structures recensées)</div>
+        </div>
+        <h3>Pourquoi deux échelles</h3>
+        <p>Une première version appliquait les trois normes à chaque commune. L'arrondi supérieur réclamait alors un hôpital à toute commune habitée, même de 10 000 habitants. Le poste de santé, équipement de proximité, reste calculé par commune ; le centre et l'hôpital, équipements de bassin, sont calculés sur la population du département, puis rattachés à titre informatif à chaque commune, sans être additionnés au déficit de postes.</p>
+        <p class="exemple"><b>Exemple : Golf Sud (Guédiawaye), 114 069 habitants.</b> Avant correction, un hôpital manquant lui était attribué en propre. Après correction, l'hôpital Dalal Jamm, situé à Golf Sud, est compté dans le bilan du département de Guédiawaye (372 708 habitants, 2 hôpitaux, 3 requis) : déficit départemental de 1 hôpital, à l'échelle où la décision de construire se prend.</p>
+        <p class="note">Les totaux « postes manquants » de l'accueil additionnent les déficits commune par commune : l'excédent d'une commune ne compense pas le manque d'une autre.</p>
+      </details>
+    
+        <h3>Et pour un département ou une région ?</h3>
+        <p>Les postes de santé sont comptés commune par commune, puis additionnés : le manque d'une région est la somme des manques de ses communes, car un surplus dans une commune ne comble pas le manque d'une autre. Comparer le total d'une région à sa population ne verrait un manque que dans 2 régions sur 14 (Dakar et Diourbel, 265 postes), et aucun à l'échelle du pays (2 124 postes recensés pour 1 813 nécessaires), alors que la somme des manques communaux est de 553 et touche les 14 régions. Les centres de santé et les hôpitaux, qui desservent plusieurs communes, sont comptés par département. La carte propose les vues commune et région ; il n'y a pas de vue département.</p>
+      </section>
+
+      <!-- 3 -->
+      <section id="chaine">
+        <h2>Comment les chiffres sont-ils produits ?</h2>
+      <p class="sens">Huit petits programmes se suivent : chacun reprend le résultat du précédent. N'importe qui peut les relancer et retrouver les mêmes chiffres.</p>
+      <details class="detail"><summary>Voir les huit étapes</summary>
+        <p>Huit scripts Python, exécutés dans l'ordre ; chacun lit le résultat du précédent. L'interface est générée par le dernier, sans recopie manuelle.</p>
+        <ol class="etapes">
+          <li><b>Nettoyage du recensement.</b> Fusion des 46 fichiers RGPH-5, suppression de 76 lignes en double exactes (sans quoi Ziguinchor compterait 27 673 habitants de trop).</li>
+          <li><b>Extraction des infrastructures.</b> Lecture des 6 couches Géo Sénégal et conversion des coordonnées UTM zone 28N en latitude et longitude.</li>
+          <li><b>Calcul du déficit.</b> Rapprochement population / infrastructures puis application des normes, par commune et par département.</li>
+          <li><b>Croissance 2013-2023.</b> Taux annuel réel par commune, à partir du RGPHAE 2013.</li>
+          <li><b>Scénario 2033 et score combiné</b> santé et éducation.</li>
+          <li><b>Arbitrage budgétaire.</b> Sélection des emplacements prioritaires sous contrainte de budget.</li>
+          <li><b>Vue bassin.</b> Partage de la capacité des postes entre communes voisines.</li>
+          <li><b>Données de l'interface.</b> Génération du fichier lu par ce site.</li>
+        </ol>
+        <p class="note">Le calcul de l'arbitrage existe en Python (référence) et en JavaScript (dans le navigateur) ; les gains coïncident à l'unité près pour cinq budgets testés. Plus de 500 contrôles automatiques vérifient les chiffres clés, la cohérence entre le pipeline et l'interface, et la mise en page dans un vrai navigateur.</p>
+      </details>
+    </section>
+
+      <!-- 4 -->
+      <section id="fiabilite">
+        <h2>Les données sont-elles bien reliées à chaque commune ?</h2>
+      <p class="sens">Le recensement et la liste des équipements n'ont aucun numéro commun : on les relie par le nom de la commune. Tous les équipements ont pu être rattachés. Quelques communes restent à confirmer et sont signalées comme telles sur le site.</p>
+      <details class="detail"><summary>Voir les taux de rapprochement</summary>
+        <p>Le recensement et les infrastructures ne partagent aucun identifiant commun. Le rapprochement se fait par le nom administratif, en deux temps : le département, puis la commune à l'intérieur du département.</p>
+        <div class="jauge" role="img" aria-label="Rapprochement des 3 771 infrastructures : 93,9 % par correspondance exacte, 5,0 % par similarité textuelle, 1,1 % par table d'alias">
+          <i style="width:93.9%;background:var(--blue)"></i><i style="width:5%;background:var(--sky)"></i><i style="width:1.1%;background:var(--ochre)"></i>
+        </div>
+        <ul class="legende-jauge">
+          <li><i style="background:var(--blue)"></i>Correspondance exacte : <b>93,9 %</b> (3 541)</li>
+          <li><i style="background:var(--sky)"></i>Similarité textuelle dans le département : <b>5,0 %</b> (188)</li>
+          <li><i style="background:var(--ochre)"></i>Table d'alias validée une à une : <b>1,1 %</b> (42)</li>
+        </ul>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <tbody>
+            <tr><td>Communes disposant de coordonnées</td><td class="num"><span data-k="coordonnees">…</span> sur <span data-k="communes">…</span></td></tr>
+            <tr><td>Communes dont la croissance 2013-2023 est mesurée</td><td class="num"><span data-k="croissance">…</span> sur <span data-k="communes">…</span></td></tr>
+            <tr><td>Entités 2013 rapprochées des communes 2023</td><td class="num">529 sur 544 (97,2 %)</td></tr>
+          </tbody>
+        </table></div>
+        <p>Les <span data-k="sansCoordonnees">…</span> communes sans coordonnées sont <b>Sama Kanta Peulh</b> (département de Sédhiou, 4 357 habitants) et <b>Diouboudou</b> (département de Goudomp, 6 959 habitants), deux collectivités rurales de la région de Sédhiou dont la population correspond à celle publiée par l'ANSD. Aucune des couches de structures de Géo Sénégal n'en contient sous leur nom, ni sous un nom proche : il n'y a donc rien à leur rattacher et leur position est inconnue. Nous ne pouvons pas affirmer qu'elles n'ont aucune structure, seulement que la source n'en contient aucune sous leur nom. Leur déficit affiché (1 poste manquant chacune) est donc probablement surestimé, et leurs zéros en éducation ne sont pas fiables : elles sont signalées « donnée à confirmer » et laissées de côté dans les comptages d'éducation. À vérifier auprès de la Direction régionale de la santé et de l'ANSD. Sept communes affichées à 0 poste au premier calcul ont été corrigées par la table d'alias, par exemple Wouro Sidy, 8 postes recensés sous le nom « Ouro Sidy ».</p>
+        <p class="note">Le taux de rattachement mesure la réussite de la procédure, pas son exactitude : quelques rapprochements par similarité peuvent être inexacts.</p>
+      </details>
+    </section>
+
+      <!-- 5 -->
+      <section id="bassin">
+        <h2>Que veut dire « vue bassin » ?</h2>
+      <p class="sens">Les habitants ne s'arrêtent pas aux limites de leur commune. La vue bassin partage chaque poste entre les communes situées à moins de 15 km. Un poste n'est jamais compté deux fois.</p>
+      <details class="detail"><summary>Voir le détail du calcul</summary>
+        <p>Les habitants ne s'arrêtent pas aux limites communales. La vue bassin répartit la capacité de chaque poste entre toutes les communes situées à moins de 15 km, au prorata de la proximité, puis recalcule le déficit. Une vérification de conservation garantit que le total distribué égale exactement le nombre de postes recensés : aucun poste n'est compté deux fois.</p>
+        <p>Conséquence : une zone dense n'apparaît plus mécaniquement mieux desservie, puisque plusieurs communes peuvent se disputer les mêmes postes. À <span data-k="toubaNom">Touba Mosquee</span>, le déficit passe de <span data-k="toubaCommune">…</span> postes à <span data-k="toubaBassin">…</span> en vue bassin.</p>
+        <p class="note">Les coordonnées d'une commune sont la moyenne des positions des infrastructures qui lui sont rattachées. Les distances sont à vol d'oiseau, pas par la route.</p>
+      </details>
+    </section>
+
+      <!-- 6 -->
+      <section id="previsions">
+        <h2>Sur quoi reposent les prévisions et les scénarios ?</h2>
+        <p class="sens">Ni sur une prévision officielle, ni sur un modèle économique : sur une règle de calcul simple, écrite en clair, que chacun peut refaire.</p>
+        <div class="trois-questions">
+          <div><h3>Est-ce une prévision officielle ?</h3><p>Non. Nous n'avons pas trouvé de projections officielles de population par commune : le site n'en reprend donc aucune. Si l'ANSD en publie, elles doivent passer avant notre scénario.</p></div>
+          <div><h3>Est-ce un modèle économique ou démographique construit pour le projet ?</h3><p>Non plus. Le scénario est une <b>extrapolation de tendance</b> : on prolonge la croissance réellement mesurée de chaque commune entre 2013 et 2023, puis on calcule le déficit de postes à nombre de postes inchangé. Le simulateur applique un algorithme de choix qui maximise la population nouvellement desservie : ce n'est ni un calcul de coûts, ni un calcul d'impact sur la santé.</p></div>
+          <div><h3>Qu'est-ce qui n'est pas modélisé ?</h3><p>Les coûts de construction et de fonctionnement, le personnel, la fréquentation réelle des postes, l'effet sur la santé (maladies, mortalité), les migrations et l'urbanisation à venir, et les postes déjà prévus. Les résultats donnent un <b>ordre de grandeur</b> et un <b>ordre de priorité</b>, pas un impact chiffré.</p></div>
+        </div>
+        <p>Cette transparence est voulue : un technicien peut vérifier chaque étape, et un décideur sait exactement ce que le chiffre veut dire, et ce qu'il ne veut pas dire.</p>
+        <details class="detail">
+          <summary>Voir les formules, pour les techniciens</summary>
+          <p><b>Croissance mesurée.</b> g = (population 2023 ÷ population 2013)<sup>1/10</sup> − 1, calculée pour chaque commune avec la population 2013 de l'ANSD (base du recensement de 2013) et celle du RGPH-5 (2023). La médiane nationale est de 2,94 % par an, pour une référence officielle de 2,9 %.</p>
+          <p><b>Population 2033 « amortie ».</b> Population 2023 × (1 + g)<sup>5</sup> × (1 + (g + m) ÷ 2)<sup>5</sup>, où m est la médiane nationale : le taux mesuré s'applique les 5 premières années, puis le taux moyen entre g et m les 5 suivantes. Les communes dont la croissance n'a pas pu être mesurée reçoivent m.</p>
+          <p><b>Postes nécessaires et déficit.</b> besoin = arrondi supérieur de (population ÷ 10 000) ; déficit = maximum de 0 et (besoin − postes existants), à nombre de postes inchangé.</p>
+          <p><b>Simulateur.</b> À chaque étape, l'algorithme retient la commune qui dessert le plus d'habitants pas encore desservis. Deux communes à moins de 15 km se partagent la capacité : la seconde ne compte que la part de sa population que la première ne couvre pas déjà. Le coût est supposé identique pour chaque structure. C'est une heuristique reproductible, pas une optimisation sous contrainte de budget réel.</p>
+          <p><b>Ce qui a été testé.</b> Le rayon de 15 km est une hypothèse : les trois premiers choix (Touba, Keur Massar Nord, Mbour) sont identiques de 5 à 25 km. Le nombre de postes de la source est discuté (2 124 contre 1 680) : avec le chiffre du Ministère, les dix communes les plus touchées restent les mêmes. Le taux de croissance a lui aussi été testé (<code>tests/analyse_sensibilite_croissance.py</code>) : avec d'autres hypothèses (médiane nationale partout, taux mesuré plus ou moins un point, extrapolation sans amortissement), le déficit de 2033 va d'environ 920 à 1 190 postes au lieu de 1 040, soit de 12 % de moins à 15 % de plus, et au moins huit des dix communes les plus touchées restent les mêmes. Le chiffre de 2033 est donc un ordre de grandeur solide, pas une valeur exacte.</p>
+      <p><b>Comparaison avec la projection officielle.</b> Les Projections démographiques 2023-2073 de l'ANSD donnent 23 504 174 habitants en 2033 (+29,7 % depuis 2023), commune par commune. Pour 544 communes sur 553, la population 2023 du tableau est identique à celle du recensement que nous utilisons ; pour les 9 autres, deux publications de l'ANSD ne s'accordent pas (anomalie A13) et nous gardons notre scénario. Avec la projection officielle, le manque de 2033 serait de 898 postes au lieu de 1 040 (-14 %), un peu sous notre variante la plus basse (environ 920). 8 des 10 communes les plus touchées sont les mêmes : Medina Gounass et Sangalkam n'en font plus partie, Diamaguene Sicap Mbao et Parcelles Assainies y entrent. Notre extrapolation surestime donc probablement la croissance de certaines communes périphériques. Nous affichons les deux, comme fourchette : de 898 à 1 040 postes en 2033.</p>
+          <p><b>Reproduire.</b> Tout le calcul est dans le dossier <code>code</code> du dépôt (huit scripts numérotés) : les relancer redonne les mêmes fichiers, octet pour octet.</p>
+        </details>
+      </section>
+
+      <section id="scenario">
+        <h2>Que veut dire « scénario 2033 » ?</h2>
+      <p class="sens">C'est une estimation de la situation en 2033, si la population continue de croître au rythme observé depuis 2013 et si aucun poste n'est ajouté. Ce n'est pas une prévision officielle.</p>
+      <details class="detail"><summary>Voir le détail du calcul</summary>
+        <p>Le scénario applique à la population 2023 le taux de croissance annuel mesuré entre 2013 et 2023, puis recalcule le déficit à nombre de postes inchangé. C'est un <b>scénario au fil de l'eau, jamais une prévision démographique officielle</b> ; les projections communales de l'ANSD, si elles deviennent disponibles, doivent être utilisées en priorité.</p>
+        <p>Le taux mesuré est appliqué à taux plein pendant 5 ans, puis ramené progressivement vers le taux médian national (2,94 % par an) les 5 années suivantes.</p>
+        <p class="exemple"><b>Cas limite : Sangalkam, +25 % par an mesuré.</b> Population 2033 : 1 033 377 en extrapolation brute, 651 121 avec l'amortissement. Toujours une forte croissance, mais défendable devant un démographe.</p>
+        <p>Trois communes redécoupées en 2021 (Keur Massar, Sicap Liberté, Guinaw Rail Nord, décret n° 2021-687) affichaient des croissances négatives incohérentes : elles sont exclues du calcul et reçoivent le taux médian national, comme toutes les communes dont la croissance n'a pas pu être mesurée. L'interface signale ces scénarios comme indicatifs.</p>
+      </details>
+    </section>
+
+      <!-- 7 -->
+      <section id="education">
+        <h2>Et pour l'éducation ?</h2>
+      <p class="sens">Nous n'avons trouvé aucune norme officielle de densité pour le secondaire. Le site montre donc un constat (collèges et lycées par habitant), et non un manque. L'enseignement supérieur est présenté à part.</p>
+      
+        <p>Aucune norme officielle de densité d'établissements n'a été identifiée pour le secondaire au Sénégal. L'indicateur éducation est donc un <b>constat de capacité</b> (collèges et lycées recensés, publics et privés, rapportés à la population), pas un déficit normé comme en santé. Le primaire n'est pas couvert par les couches disponibles.</p>
+  <p><b>Collèges et lycées.</b> La couche « collège » de Géo Sénégal contient presque uniquement des collèges privés (480 sur 481) ; les collèges publics figurent dans la couche « lycée » (474 publics et 387 privés). Nous additionnons les deux : 1 342 établissements.</p>
+  <p><b>Enseignement supérieur, présenté à part.</b> La couche « université » compte 114 lignes qui ne sont pas 114 universités : des campus, mais aussi des écoles doctorales, des amphithéâtres, des annexes, des espaces numériques, des chantiers et 46 établissements privés. Nous ne la mélangeons plus avec le secondaire. Nous ne retenons que les lignes étiquetées « publique » par la source, hors espaces numériques et hors chantiers, et nous regroupons en un seul campus les lignes d'une même commune situées à moins de 1,5 km : cela donne 25 campus dans 21 communes. Les espaces numériques ouverts de l'Université numérique Cheikh Hamidou Kane, anciennement Université virtuelle du Sénégal, sont comptés à part : 23 sites dans 22 communes.</p>
+  <p>Les chantiers ne sont pas comptés : l'Université Souleymane Niang de Matam, dont l'ouverture est annoncée pour octobre 2026, n'apparaît donc pas encore. L'étiquette « publique » est celle de la source, que nous n'avons pas pu vérifier campus par campus : c'est à confirmer avec le Ministère de l'Enseignement supérieur, de la Recherche et de l'Innovation.</p>
+        <p class="note">Norme connexe citée mais non utilisée pour un calcul : effectif normal d'une classe de 33 élèves (20 à 45 acceptable), Livret des normes et standards de l'École, 2020, section 3.2, page 29. À l'échelle nationale, environ 20 % des géolocalisations d'écoles manqueraient aux données officielles (initiative Giga, UNICEF / UIT).</p>
+      
+        <h3>Faute de norme, la distance</h3>
+        <p>Pour l'éducation, aucune norme de densité ni aucun effectif par établissement n'est public. Une analyse complémentaire mesure donc l'isolement : la distance, à vol d'oiseau, entre chaque commune et le collège ou le lycée le plus proche. 215 communes n'ont aucun établissement secondaire ; 86 communes (1,57 million d'habitants, 8,7 %) sont à plus de 15 km du plus proche, et 54 (1,09 million, 6,0 %) à plus de 20 km. Un choix de cinq sites à créer retient Médina Gounass (Kolda, 91 085 habitants, à 25,6 km du plus proche établissement) et Aouré (Matam) aux trois rayons essayés (10, 15 et 20 km). Médina Gounass figure aussi dans le choix du simulateur de santé pour dix postes. Le seuil de 15 km est une hypothèse. On ne sait pas si un établissement fonctionne ni quelle est sa capacité : c'est une aide à la réflexion, pas un plan de construction. Précision : 65 % des établissements secondaires de la couche sont privés et un seul collège sur 481 est public, les collèges publics figurant dans la couche « lycée » (à confirmer avec l'ANSD) ; en ne comptant que le public, 90 communes au lieu de 88 sont à plus de 15 km.</p>
+        <p>Deux limites de plus, mesurées avec le recensement scolaire. Notre couche compte 1 342 établissements du moyen et du secondaire, dont 475 publics, alors que le recensement en dénombre 2 649, dont 1 556 publics (hors 6 établissements communautaires ou associatifs) : elle n'en couvre que 51 %, et 31 % des publics. L'isolement mesuré ici est donc probablement surestimé. Faute de norme de distance, il existe une norme de taille des classes (livret des normes et standards de l'École) : 20 à 45 élèves, 33 en moyenne. Au niveau national, la moyenne est de 46,0 élèves par classe dans le public (29,2 dans le privé), et 6,8 % des salles de classe publiques sont des abris provisoires (1,0 % dans le privé). L'année de ces tableaux n'est pas précisée dans les fichiers, et ils n'existent qu'au niveau national.</p>
+        <p>Contexte officiel : pour situer la commune, la fiche donne le taux net et le taux brut de scolarisation au secondaire de sa région (RGPH-5, thème II, graphique II-11), avec la moyenne nationale (14,0 % et 30,3 %). Ce sont des chiffres régionaux : ils ne disent pas où manque un collège, mais où la scolarisation est faible.</p>
+</section>
+
+      <!-- 8 -->
+      <section id="algorithme">
+        <h2>Comment le simulateur choisit-il où construire ?</h2>
+      <p class="sens">Avec un budget donné, le simulateur choisit les communes où de nouveaux postes serviront le plus d'habitants, sans compter deux fois les habitants de deux communes voisines.</p>
+      <details class="detail"><summary>Voir les résultats et la méthode</summary>
+        <p>Le simulateur sélectionne un nombre donné de structures finançables en maximisant la population nouvellement desservie, sans compter deux fois les habitants de deux emplacements proches. Méthode : algorithme glouton ; à chaque tour, la commune au gain le plus élevé est retenue, et le gain des candidats restants est réduit selon leur distance aux communes déjà choisies (chevauchement linéaire de 100 % à 0 km à 0 % au-delà de 15 km).</p>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th class="nb">Budget (structures)</th><th class="nb">Glouton (hab.)</th><th class="nb">Classement simple (hab.)</th><th class="nb">Écart</th></tr></thead>
+          <tbody>
+            <tr><td class="nb num">3</td><td class="nb num">1 105 978</td><td class="nb num">1 105 978</td><td class="nb num">+0,0 %</td></tr>
+            <tr><td class="nb num">5</td><td class="nb num">1 302 094</td><td class="nb num">1 245 171</td><td class="nb num">+4,6 %</td></tr>
+            <tr><td class="nb num">10</td><td class="nb num">1 595 049</td><td class="nb num">1 371 193</td><td class="nb num">+16,3 %</td></tr>
+            <tr><td class="nb num">15</td><td class="nb num">1 754 664</td><td class="nb num">1 535 935</td><td class="nb num">+14,2 %</td></tr>
+            <tr><td class="nb num">25</td><td class="nb num">1 967 238</td><td class="nb num">1 600 573</td><td class="nb num">+22,9 %</td></tr>
+          </tbody>
+        </table></div>
+        <p class="note">Estimations calculées avec la même règle pour les deux méthodes, population 2023. Sensibilité au rayon : les trois premiers choix (Touba, Keur Massar Nord, Mbour) sont identiques de 5 à 25 km ; l'ordre des suivants dépend de cette hypothèse, non mesurée sur des données de mobilité. Le coût de chaque structure est supposé identique et le foncier n'est pas pris en compte : le résultat est une proposition d'ordre de priorité, pas une décision.</p>
+      </details>
+    </section>
+
+      <!-- 9 -->
+      <section id="recoupements">
+        <h2>Nos chiffres sont-ils confirmés par d'autres sources ?</h2>
+      <p class="sens">Nous avons comparé nos chiffres clés à des publications de l'ANSD et du Ministère de la Santé. Presque tous concordent. Deux écarts restent à clarifier : le nombre de postes de santé, important, et celui des hôpitaux publics, faible (+4).</p>
+      <div class="ecart" id="ecart-postes">
+        <b>Un chiffre à confirmer : le nombre de postes de santé</b>
+        <p>Nous utilisons 2 124 postes de santé (source : Géo Sénégal, ANSD). Une brochure du Ministère de la Santé en annonce 1 680, son annuaire 2021 compte 1 731 postes publics plus 14 centres médico-sociaux, et son rapport de suivi de la carte sanitaire 2021 en compte 1 531 : les documents du Ministère ne s'accordent pas entre eux. Nous n'avons pas encore pu expliquer l'écart avec notre couche.</p>
+        <p>Ce que cela change : si le Ministère a raison, le manque de postes est plus élevé (environ 686 au lieu de 553, selon un calcul simple). En revanche, le classement ne change pas : les 10 communes les plus touchées sont les mêmes dans les deux cas. Avec les nombres de postes de chaque région pour 2022 (1 584 au total, d'après l'annuaire statistique 2022 cité par le rapport Countdown 2030), le manque serait d'environ 796 postes : neuf des dix communes les plus touchées restent les mêmes et Touba Mosquée reste la première. Le chiffre de 553 est donc un minimum.</p>
+      <p>Une vérification par le ressenti : l'EDS-Continue 2017 (ANSD) a demandé aux femmes de 15 à 49 ans si la distance à l'établissement de santé était un problème important, de 5,1 % à Dakar à 49,6 % à Tambacounda. Notre distance moyenne à l'hôpital le plus proche classe les 14 régions presque comme elles (corrélation de rang de +0,83). En revanche, notre manque de postes pour 100 000 habitants n'est pas lié à ce ressenti (-0,11) : il mesure une charge de population, pas la distance. Les deux lectures répondent à des questions différentes. Précautions : 14 régions seulement, une enquête de 2017, un ressenti, et un échantillon de 158 femmes à Kédougou.</p>
+      <p>Une vérification pour l'éducation : le recensement (RGPH-5, thème II) donne le taux net de scolarisation au secondaire (16-18 ans) de chaque région, de 6,2 % à Kaffrine à 24,8 % à Ziguinchor, pour une moyenne nationale de 14,0 %. Notre distance moyenne au collège ou lycée le plus proche, pondérée par la population, classe les 14 régions presque comme lui, en sens inverse (corrélation de rang de -0,76) : plus on est loin d'un établissement, moins on est scolarisé. Précautions : 14 régions seulement, une couche d'établissements qui ne couvre que 51 % des établissements, et une distance qui n'explique pas à elle seule la scolarisation.</p>
+      <p>Une vérification avec les points géoréférencés de l'ANSD (pilote : Dakar, Diourbel, Thiès). L'ANSD nous a remis 6 449 établissements d'éducation, 2 902 de santé et 705 points d'eau pour ces trois régions. Ils recoupent notre couche : mêmes hôpitaux (29), mêmes centres de santé (66), mêmes lycées (430) et mêmes universités (71). Pour les postes de santé, l'ANSD en compte 586 et nous 616 (121 communes sur 142 à l'identique), contre 426 à l'annuaire 2022 : l'écart avec l'annuaire existe donc aussi dans les données de l'ANSD, ce qui suggère que l'annuaire ne compte qu'une partie des postes ; à confirmer avec l'ANSD.</p>
+      <p>Notre couche est en revanche incomplète pour le secondaire : 788 collèges et lycées contre 1 143 chez l'ANSD (69 %). Tout l'écart vient des collèges : notre couche en contient à peu près autant que l'ANSD de collèges publics, et aucun des collèges privés. Sur ces 142 communes, cela fait 34 communes sans collège ni lycée sur place chez nous contre 7 chez l'ANSD, 10 communes à plus de 15 km chez nous contre 0 chez l'ANSD, et une distance moyenne de 2,8 km contre 0,3 km. L'isolement scolaire affiché pour le reste du pays est donc probablement surestimé de la même façon : sur les 86 communes que nous donnons à plus de 15 km d'un collège ou lycée, 10 se trouvent dans ces trois régions et aucune ne l'est selon l'ANSD.</p>
+      <p>Une source officielle récente pour les postes : le portail e-santé de la CSSDOS (carte sanitaire, Ministère de la Santé), consulté le 8 octobre 2026, affiche 1 584 postes de santé, 107 centres de santé, 40 hôpitaux et 2 197 cases de santé. Le nombre de postes est celui de l'annuaire 2022 ; la couche du site en compte 2 124, soit 34 % de plus. Le portail annonce une carte sanitaire 2026-2030 : ses chiffres pourront remplacer ceux-ci.</p>
+      </div>
+      <details class="detail"><summary>Voir les neuf vérifications</summary>
+        <p>Les chiffres clés ont été confrontés le 30 septembre 2026 à des publications de l'ANSD et du Ministère de la Santé ; les deux dernières lignes l'ont été le 4 octobre 2026.</p>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th>Chiffre</th><th>Notre valeur</th><th>Source indépendante</th><th>Résultat</th></tr></thead>
+          <tbody>
+            <tr><td>Structure administrative</td><td>14 régions, 46 départements, 553 communes</td><td>ANSD, Situation économique et sociale 2022-2023</td><td><span class="etat ok">Identique</span> D'autres sources citent 557 communes (découpage de 2014).</td></tr>
+            <tr><td>Population 2023</td><td class="num">18 125 122</td><td>ANSD, RGPH-5 : 18 126 390</td><td><span class="etat ok">Écart de 0,007 %</span> 13 régions sur 14 coïncident ; Dakar : 1 220 habitants de moins, non expliqué.</td></tr>
+            <tr><td>Croissance annuelle 2013-2023</td><td>Médiane des communes : 2,94 %</td><td>ANSD, RGPH-5 : 2,94 %</td><td><span class="etat ok">Concordant</span></td></tr>
+            <tr><td>Normes de santé</td><td>1 / 10 000, 1 / 50 000, 1 / 150 000</td><td>ANSD, SES 2005 ; question écrite à l'Assemblée nationale, 2025</td><td><span class="etat ok">Identiques</span></td></tr>
+            <tr><td>Population 2013</td><td class="num">13 191 802</td><td>ANSD : 13 508 715</td><td><span class="etat ok">97,7 % couvert</span></td></tr>
+            <tr><td>Postes de santé 2023</td><td>2 124, dont 39 centres médico-sociaux</td><td>Ministère de la Santé : 1 680 (brochure) ; 1 731 postes et 14 centres médico-sociaux (annuaire 2021) ; 1 531 postes publics (rapport de suivi de la carte sanitaire 2021)</td><td><span class="etat warn">Écart de +22 % à +39 %, à clarifier</span> Si le chiffre du Ministère fait foi, les déficits de postes sont sous-estimés.</td></tr>
+            <tr><td>Hôpitaux publics</td><td>44 dans notre couche (2023), plus 6 privés</td><td>Rapport de suivi de la carte sanitaire 2021, Ministère de la Santé : 40 établissements publics de santé (EPS 1, 2 et 3)</td><td><span class="etat warn">Écart de +4, à clarifier</span> Huit régions sur 14 sont identiques ; l'écart va de -2 (Saint-Louis) à +4 (Dakar). Notre couche compte des annexes et trois établissements de médecine traditionnelle ; sans eux, elle compte 38 hôpitaux publics, soit 2 de moins que les 40 officiels. Le nombre de départements sans hôpital (23 sur 46) en dépend : 25 sans les établissements de médecine traditionnelle ; ce n'est pas un chiffre officiel.</td></tr>
+            <tr><td>Commune de Touba Mosquée</td><td class="num">1 120 824</td><td>ANSD, résultats officiels du RGPH-5 présentés le 12 juin 2024</td><td><span class="etat ok">Identique</span></td></tr>
+            <tr><td>Département de Mbacké</td><td class="num">1 359 756</td><td>ANSD, rapport préliminaire du RGPH-5 (octobre 2023) : 1 359 757</td><td><span class="etat ok">Écart d'une personne</span></td></tr>
+            <tr><td>Centres et hôpitaux 2023</td><td>141 centres ; 50 hôpitaux, dont 6 privés</td><td>Ministère de la Santé : 147 centres ; 49 hôpitaux</td><td><span class="etat ok">Ordres de grandeur concordants</span></td></tr>
+          </tbody>
+        </table></div>
+        <p class="note"><b>Pourquoi d'autres sites donnent d'autres chiffres.</b> Certains affichent 18 032 473 habitants pour le Sénégal : c'est le résultat <i>préliminaire</i> du recensement, publié en octobre 2023, remplacé en juillet 2024 par le résultat définitif de 18 126 390. Certains sites d'estimation affichent aussi pour Touba des valeurs bien plus basses (autour de 530 000), issues d'estimations ou de recensements plus anciens : le chiffre officiel du RGPH-5 pour la commune de Touba Mosquée est 1 120 824.</p>
+      </details>
+    </section>
+
+      <section id="retour">
+        <h2>Qu'avons-nous signalé à l'ANSD ?</h2>
+      <p class="sens">En croisant les couches de données, nous avons relevé 15 anomalies. Chacune est chiffrée, vérifiable et accompagnée d'une recommandation : c'est notre contribution à l'amélioration de la production des données.</p>
+      <details class="detail"><summary>Voir les 15 anomalies</summary>
+        <div class="table-wrap" tabindex="0"><table class="doc">
+          <thead><tr><th>N°</th><th>Anomalie</th><th>Nombre</th></tr></thead>
+          <tbody><tr><td>A01</td><td>Colonne « statut » : les lettres accentuées ont été supprimées dans les 11 valeurs distinctes.</td><td class="num">3771</td></tr><tr><td>A02</td><td>Couche « hôpital » : elle mêle des hôpitaux, des annexes, des établissements de médecine traditionnelle, des établissements psychiatriques et un hôpital militaire.</td><td class="num">13</td></tr><tr><td>A03</td><td>La couche compte 44 hôpitaux publics (et 6 privés) ; le rapport de suivi de la carte sanitaire 2021 du Ministère de la Santé compte 40 établissements publics de santé (EPS 1, 2 et 3). 8 régions sur 14 sont identiques.</td><td class="num">4</td></tr><tr><td>A04</td><td>La couche compte 2 124 postes de santé ; trois documents du Ministère de la Santé en donnent 1 531, 1 680 et 1 731, et ne s'accordent pas entre eux.</td><td class="num">393 à 593</td></tr><tr><td>A05</td><td>Classification des établissements secondaires : 1 collège public sur 481 collèges, alors que 474 lycées sur 861 sont publics. Les collèges d'enseignement moyen publics sont peut-être classés avec les lycées.</td><td class="num">481</td></tr><tr><td>A06</td><td>Des communes de départements différents portent le même nom, sans identifiant unique dans les couches.</td><td class="num">10</td></tr><tr><td>A07</td><td>Des structures de même type, de même nom, dans la même commune et le même département apparaissent plusieurs fois, parfois à des kilomètres l'une de l'autre : homonymes ou géolocalisation à vérifier.</td><td class="num">103</td></tr><tr><td>A08</td><td>Des libellés de région ou de département ne sont pas écrits de la même façon dans les deux couches. Nos calculs les rapprochent sans perte, mais un autre utilisateur perdrait des lignes.</td><td class="num">344</td></tr><tr><td>A09</td><td>Des communes n'ont pas de coordonnées géographiques : elles sont absentes de la carte et des calculs de distance.</td><td class="num">2</td></tr><tr><td>A10</td><td>Dans les séries régionales du portail, les lignes « Kolda » et « Kédougou » sont inversées : le portail donne 0 hôpital à Kolda depuis 2012 et 42 postes de santé en 2019, alors que l'annuaire 2020 lui compte un hôpital (EPS de niveau 2) et 74 postes, et compte 0 hôpital et 41 postes à Kédougou.</td><td class="num">2</td></tr><tr><td>A11</td><td>La série officielle des postes de santé donne 1 948 en 2018, entre 1 373 en 2017 et 1 431 en 2019.</td><td class="num">517 à 575</td></tr><tr><td>A12</td><td>La couche compte 1 342 établissements du moyen et du secondaire, dont 475 publics ; le recensement scolaire en dénombre 2 649, dont 1 556 publics (hors 6 établissements communautaires ou associatifs). Elle ne couvre que la moitié des établissements et moins du tiers des publics.</td><td class="num">1307</td></tr><tr><td>A13</td><td>Pour 9 communes, la population 2023 du tableau de projections de l'ANSD diffère de celle du fichier du recensement : 7 d'entre elles échangent leurs populations (deux à deux ou trois à trois), 2 ont un petit écart. La projection officielle n'est pas utilisée pour ces communes.</td><td class="num">9</td></tr><tr><td>A14</td><td>Dans les trois régions où l'ANSD a remis ses points géoréférencés (Dakar, Diourbel, Thiès), notre couche compte 788 collèges et lycées contre 1 143 chez l'ANSD (69 %). L'écart vient des collèges : 358 chez nous contre 713 (dont 357 privés) ; les lycées sont identiques. L'isolement scolaire en est surestimé.</td><td class="num">355</td></tr><tr><td>A15</td><td>Dans le classeur de l'ANSD, la même commune est écrite de deux façons selon la feuille : cinq communes sont concernées.</td><td class="num">5</td></tr></tbody>
+        </table></div>
+        <p>Nos calculs rapprochent sans perte les libellés qui diffèrent d'une couche à l'autre (anomalie A08) et laissent de côté les deux communes non géolocalisées (A09). Les anomalies A02 et A04 jouent sur les totaux, et A12 explique pourquoi l'isolement scolaire est probablement surestimé : elles sont traitées dans les limites (le manque de postes est un ordre de grandeur ; 23 à 25 départements sont sans hôpital selon la définition retenue).</p>
+        <p><a class="btn" href="donnees-ouvertes/anomalies_signalees.csv" download>Télécharger le registre complet (CSV)</a></p>
+        <p class="note">Certaines anomalies ont peut-être une explication légitime que nous ignorons (périmètre, date de collecte) : nous les signalons, nous ne les jugeons pas.</p>
+      </details>
+      </section>
+
+      <!-- 10 -->
+      <section id="limites">
+        <h2>Ce que nous ne savons pas encore</h2>
+      <p class="sens">Voici, sans détour, ce que ces chiffres ne permettent pas de dire.</p>
+      
+        <ul class="limites">
+          <li>Le personnel n'est pas mesuré, en santé comme en éducation : un poste de santé sans infirmier ni sage-femme, ou un collège sans assez d'enseignants, compte pour une structure. Des normes de personnel existent (l'ANSD compare elle-même médecins, infirmiers et sages-femmes aux normes de l'OMS) et des effectifs sont publiés par région dans les annuaires du Ministère de la Santé, mais nous n'avons trouvé aucune liste de personnel par structure ni par commune : nous ne les avons ni intégrés au calcul, ni estimés. C'est la limite la plus importante du site. Un éclairage par région existe pourtant, d'après l'annuaire des ressources humaines 2022 du Ministère de la Santé (le plus récent que nous ayons trouvé : ces effectifs ont quatre ans et ont évolué depuis), qui applique les normes du plan national (1 médecin pour 10 000 habitants, 1 infirmier diplômé d'État pour 5 000, 1 sage-femme pour 1 500 femmes en âge de procréer) : seules Dakar et Ziguinchor atteignent la norme pour les médecins, trois régions pour les infirmiers, six sur quatorze pour les sages-femmes. Kaolack, Saint-Louis, Diourbel (la région de Touba) et Kolda sont les moins bien couvertes (50 à 59 % des trois normes réunies). Le rapport de suivi de la carte sanitaire 2021, un autre document du Ministère, décrit la même géographie pour les médecins : Dakar et Ziguinchor en tête, Kolda, Sédhiou et Kaolack parmi les plus mal dotées. Le Ministère évalue à 61 % la satisfaction de ses besoins en personnel en 2022. Ces effectifs ne comptent pas le secteur privé ; ils éclairent une région et ne servent pas à calculer un manque par commune.</li>
+      <li>Un établissement recensé n'est pas forcément fonctionnel ni pleinement utilisé : nous n'avons aucune donnée sur son état de fonctionnement, et certains accueillent leurs élèves en deux groupes, le matin et l'après-midi. Compter les établissements ne dit rien de leur capacité réelle d'accueil.</li>
+      <li>Le chiffre de 553 dépend de la convention d'arrondi : le besoin de chaque commune est arrondi au supérieur (une commune de 3 000 habitants « requiert » un poste). Sans arrondi, le total est de 447 ; avec l'arrondi à l'entier le plus proche, de 440. Le classement des communes ne change pas : les dix premières sont les mêmes dans tous les cas.</li>
+      <li>Le périmètre de la couche « postes de santé » (2 124 points) est à clarifier avec l'ANSD, face aux 1 680 postes cités par une brochure du Ministère, aux 1 731 postes de santé publics de son annuaire 2021 et aux 1 531 de son rapport de suivi de la carte sanitaire 2021 : les documents du Ministère ne s'accordent pas entre eux.</li>
+          <li>Le déficit de postes ne compte que les postes de santé. Une commune dotée d'un centre de santé ou d'un hôpital mais d'aucun poste (c'est le cas des 20 communes sans poste, dont Oussouye) affiche un manque de poste, alors qu'une structure de niveau supérieur la dessert sur place : son déficit est à lire avec prudence, et la fiche le signale.</li>
+          <li>Jàppale mesure la présence de structures, c'est-à-dire des intrants. Les cadres internationaux de performance des soins de santé primaires, comme celui de la PHCPI (partenariat fondé par la Fondation Gates, la Banque mondiale et l'OMS, en coopération avec Results for Development), examinent aussi la prestation de services, les produits et les résultats de santé : ces dimensions, dont la qualité des soins, ne sont pas mesurées ici.</li>
+          <li>« 0 hôpital » signifie aucun hôpital dans le département, pas aucun accès : à Kanel, l'hôpital d'Ourossogui est à 21 km. Additionner les besoins départementaux arrondis gonfle aussi le total (7 hôpitaux requis pour les trois départements de Matam, 6 à l'échelle de la région).</li>
+          <li>Pour « l'hôpital le plus proche », les 6 établissements psychiatriques ou de médecine traditionnelle sont écartés ; ils restent comptés dans les effectifs départementaux.</li>
+          <li>L'éducation ne couvre que le secondaire (collèges et lycées) et reste un constat, faute de norme de densité. L'enseignement supérieur est présenté à part, d'après l'étiquette « publique » de la source, non vérifiée campus par campus. Une analyse complémentaire mesure l'isolement : la distance de chaque commune au collège ou au lycée le plus proche (voir la section sur l'éducation).</li>
+          <li>Deux communes de la région de Sédhiou, Sama Kanta Peulh et Diouboudou, n'ont aucune structure dans la source : leur déficit est probablement surestimé et leur position est inconnue.</li>
+          <li>Le scénario 2033 est un prolongement de tendance, fragile pour les communes à très forte croissance ; il est indicatif pour les communes dont la croissance n'a pas été mesurée.</li>
+          <li>Le rayon de 15 km de la vue bassin et de l'algorithme est estimé, pas mesuré sur le terrain sénégalais. Le Ministère publie un rayon moyen d'action théorique par poste de santé (6,4 km en 2021, de 1,2 km à Dakar à 11,3 km à Kédougou) : ce n'est pas une norme de desserte, mais il montre que 15 km est un rayon large ; les trois premiers choix du simulateur sont identiques de 5 à 25 km.</li>
+          <li>L'algorithme suppose un coût identique pour chaque structure et ignore la disponibilité foncière : une vérification de terrain reste indispensable avant toute implantation.</li>
+      <li>L'assistant répond de deux façons. Sans IA (cas du site en ligne), il reconnaît des mots-clés et signale les questions qu'il ne comprend pas plutôt que de deviner. Si un modèle de langage tourne sur l'ordinateur (Ollama, par défaut phi4-mini), ce modèle rédige la réponse à partir des seules données de la plateforme ; chaque nombre de sa réponse est contrôlé, ainsi que le lieu qu'elle désigne, et la réponse est remplacée par le calcul de la plateforme si un nombre n'y figure pas ou si le lieu ne correspond pas. Un petit modèle peut encore mal formuler une réponse (confondre une commune et son département, par exemple) : sous chaque réponse de l'IA, le calcul exact reste consultable, et la fiche de la commune fait foi.</li>
+          <li>L'assistant répond par reconnaissance de mots-clés, pas par compréhension du langage ; il signale les questions qu'il ne reconnaît pas plutôt que de deviner.</li>
+          <li>Dix-sept personnes de profils différents ont donné leur avis sur ce site, et leurs remarques ont modifié plusieurs de ses pages. Il n'a pas encore été utilisé en situation réelle par des élus, des responsables d'ONG ou des journalistes.</li>
+        </ul>
+      </section>
+
+      <section id="accessibilite">
+  <h2>Le site est-il utilisable par tous ?</h2>
+  <p class="sens">Le site est conçu pour les personnes malvoyantes, malentendantes, âgées ou peu à l'aise avec le numérique, et pas seulement pour les plus jeunes. Voici ce qui est en place, ce qui a été vérifié et ce qui ne l'a pas été.</p>
+  <p><button type="button" class="btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Ouvrir les réglages d'affichage</button></p>
+  <h3>À qui s'adresse quoi</h3>
+  <ul>
+    <li><b>Personnes malvoyantes ou âgées</b> : le bouton « Aa » (Affichage) agrandit le texte, renforce le contraste et réduit les animations ; la fiche d'une commune peut être lue à voix haute.</li>
+    <li><b>Personnes malentendantes</b> : le site ne contient ni son ni vidéo, donc aucune information ne leur échappe ; le bouton « Aa » ne les concerne pas directement. Toute vidéo de présentation serait sous-titrée et accompagnée d'une transcription.</li>
+  </ul>
+  <h3>Ce qui est en place</h3>
+  <ul>
+    <li>Un bouton « Affichage » en haut de chaque page : texte normal, grand ou très grand (jusqu'à 150 %), contraste renforcé, animations réduites, thème clair ou sombre. Les réglages sont mémorisés sur l'appareil.</li>
+    <li>Le site suit les réglages de l'appareil : contraste renforcé et mouvement réduit s'ils sont demandés, et taille de texte choisie dans le navigateur.</li>
+    <li>Un texte de base de 17 px, des boutons d'au moins 44 px sur écran tactile, un mode d'emploi en trois étapes sur l'accueil.</li>
+    <li>La lecture à voix haute de la fiche d'une commune, en français, quand l'appareil la propose.</li>
+    <li>La navigation au clavier, avec un lien « Aller au contenu » sur chaque page.</li>
+    <li>Aucun son ni vidéo : rien ne repose sur l'écoute. Une vidéo de présentation serait sous-titrée et accompagnée d'une transcription.</li>
+    <li>Sept phrases clés en wolof.</li>
+  </ul>
+  <h3>Ce qui a été vérifié</h3>
+  <p>Un audit automatique (axe-core, normes WCAG 2.0 à 2.2, niveaux A et AA) ne détecte aucune violation sur neuf vues, en thèmes clair et sombre, y compris avec le texte très grand et le contraste renforcé de niveau AAA. Des tests dans un navigateur réel contrôlent le clavier, les pages à 360 px de large et les cibles tactiles.</p>
+  <h3>Ce qui n'a pas été vérifié</h3>
+  <p>Aucun passage au lecteur d'écran (VoiceOver, TalkBack), aucun essai avec des personnes malvoyantes, malentendantes ou âgées, aucun essai sur de vrais appareils. La lecture à voix haute dépend de la voix de l'appareil, existe en français seulement et n'a pas été essayée avec une vraie voix. Il n'existe pas encore de canal pour signaler un problème : il reste à le définir avec l'ANSD.</p>
+</section>
+
+<section id="perspectives">
+        <h2>Et après le hackathon ?</h2>
+      <p class="sens">Le projet est conçu pour être repris : le code est ouvert, les calculs se refont avec des scripts et chaque limite est écrite. À ce stade, aucune structure n'est chargée de la mise à jour : c'est la première décision à prendre avec l'ANSD.</p>
+      <details class="detail"><summary>Ce qui pourrait venir ensuite</summary>
+        <ul>
+          <li>Le personnel de santé par structure ou par district, à la place des ratios régionaux de 2022 (il faut obtenir les données).</li>
+          <li>Des temps de trajet par la route, à la place des distances à vol d'oiseau (il faut un réseau routier à jour).</li>
+          <li>Des indicateurs d'éducation avec les effectifs d'élèves et un critère officiel de carte scolaire, s'il existe.</li>
+          <li>Une mise à jour à chaque nouvelle publication : recensement, couches d'infrastructures, annuaire des ressources humaines.</li>
+          <li>Un suivi des anomalies avec l'ANSD, ligne par ligne.</li>
+          <li>Un assistant en wolof (texte, puis voix) qui comprend la question et répond avec des chiffres lus dans nos fichiers, jamais générés, dans des phrases écrites et relues par des locuteurs. Seul le wolof est envisagé à ce stade.</li>
+          <li>Un serveur MCP (Model Context Protocol), en lecture seule, pour que les assistants numériques interrogent les données du projet et répondent avec des chiffres vérifiés plutôt qu'en devinant.</li>
+        </ul>
+        <p class="note">Nous ne promettons ni calendrier ni maintenance après le hackathon. Détail : <code>methodologie/PERSPECTIVES_ET_DURABILITE.md</code> dans le dépôt.</p>
+      </details>
+      </section>
+
+      <!-- 11 -->
+      <section id="donnees">
+        <h2>Besoin de toutes les données ?</h2>
+      <p class="sens">Pour la plupart des usages, la fiche d'une commune suffit : elle propose son propre téléchargement. Le fichier de tout le pays s'adresse aux analystes, aux journalistes et aux chercheurs qui en ont un besoin précis.</p>
+      <details class="detail"><summary>Pour les analystes : télécharger toutes les données</summary>
+      
+        <p>Le fichier contient une ligne par commune, avec les mêmes valeurs que ce site. Séparateur point-virgule, encodage UTF-8 et virgule décimale, pour une ouverture directe dans un tableur réglé en français.</p>
+        <button type="button" class="btn" id="telecharger">Télécharger les <span data-k="communes">…</span> communes (CSV)</button>
+        <p class="note" id="telechargerMsg" role="status"></p>
+        <details class="dictionnaire">
+          <summary>Dictionnaire des colonnes</summary>
+          <div class="table-wrap" tabindex="0"><table class="doc">
+            <tbody>
+              <tr><td><code>region</code>, <code>departement</code>, <code>commune</code></td><td>Identification administrative. Plusieurs communes portent le même nom (Médina Gounass, Missirah, Vélingara, Dinguiraye, Mlomp) : utiliser le trio.</td></tr>
+              <tr><td><code>population</code></td><td>Population résidente RGPH-5 2023</td></tr>
+              <tr><td><code>postes_existants</code>, <code>postes_requis</code></td><td>Postes recensés ; population ÷ 10 000 arrondie au supérieur</td></tr>
+              <tr><td><code>deficit_postes_commune</code></td><td>Postes manquants, échelle commune</td></tr>
+              <tr><td><code>deficit_postes_vue_bassin</code></td><td>Postes manquants en vue bassin (non arrondi)</td></tr>
+              <tr><td><code>centres_manquants_departement</code>, <code>hopitaux_manquants_departement</code></td><td>Déficits de centres et d'hôpitaux du département</td></tr>
+              <tr><td><code>centres_ou_hopitaux_commune</code></td><td>Centres de santé et hôpitaux rattachés à la commune (ils ne comptent pour la norme qu'à l'échelle du département)</td></tr>
+              <tr><td><code>etablissements_secondaires</code></td><td>Collèges et lycées recensés, publics et privés</td></tr>
+              <tr><td><code>campus_universites_publiques</code></td><td>Campus d'universités publiques (lignes d'une même commune à moins de 1,5 km regroupées, chantiers exclus)</td></tr>
+              <tr><td><code>espaces_numeriques_unchk</code></td><td>Espaces numériques ouverts en service de l'Université numérique Cheikh Hamidou Kane</td></tr>
+              <tr><td><code>deficit_postes_2033_indicatif</code></td><td>Postes manquants en 2033, scénario amorti</td></tr>
+              <tr><td><code>score_combine_sante_education</code></td><td>Moyenne des rangs percentiles santé et éducation (0 à 100)</td></tr>
+              <tr><td><code>donnees_confirmees</code>, <code>croissance_mesuree</code></td><td><code>oui</code> / <code>non</code></td></tr>
+              <tr><td><code>hopital_le_plus_proche</code>, <code>distance_hopital_km</code></td><td>Hôpital général le plus proche, distance à vol d'oiseau</td></tr>
+              <tr><td><code>latitude</code>, <code>longitude</code></td><td>Moyenne des positions des infrastructures rattachées</td></tr>
+          <tr><td><code>sources</code>, <code>norme_postes</code></td><td>Sources des données et ratio de référence des postes de santé, identiques sur toutes les lignes</td></tr>
+            </tbody>
+          </table></div>
+        </details>
+        <p class="note">Les fichiers complets du pipeline, le code et les tests sont dans les dossiers <code>donnees/</code>, <code>code/</code> et <code>tests/</code> du dépôt du projet.</p>
+      </details>
+    </section>
+
+      <section id="ouvertes">
+        <h2>Peut-on réutiliser les données ?</h2>
+      <p class="sens">Oui. Les valeurs du site sont publiées dans des formats que tout outil peut lire, avec un dictionnaire et une licence ouverte, pour que d'autres projets puissent s'y brancher.</p>
+      <details class="detail"><summary>Fichiers et licence</summary>
+        <ul>
+          <li><a href="donnees-ouvertes/communes.json">communes.json</a> : une entrée par commune (553 communes).</li>
+          <li><a href="donnees-ouvertes/regions.json">regions.json</a> : le personnel de santé par région, d'après l'annuaire des ressources humaines 2022.</li>
+          <li><a href="donnees-ouvertes/anomalies_signalees.csv">anomalies_signalees.csv</a> : le registre des anomalies.</li>
+          <li><a href="donnees-ouvertes/LISEZ-MOI.md">LISEZ-MOI.md</a> : dictionnaire des champs, sources, limites et licence.</li>
+        </ul>
+        <p>Mention de source exigée par l'accord de licence de données ouvertes de l'ANSD : « Source : Agence Nationale de la Statistique et de la Démographie. Contient des informations sous licence conformément à l'Accord de licence de données ouvertes de l'ANSD. » Pour les produits adaptés : « Ce produit a été adapté à partir des informations de l'Agence Nationale de la Statistique et de la Démographie, qui sont sous licence conformément à l'Accord de licence de données ouvertes de l'ANSD. »</p>
+        <p>Ce site est un projet de hackathon : ce n'est pas une publication officielle de l'ANSD, et l'ANSD ne l'a pas approuvé.</p>
+        <p>Licence : Open Data Commons Attribution (ODC-By 1.0), à condition de citer « Jàppale Sénégal, d'après les données de l'ANSD ». Les données sources appartiennent à l'ANSD et à ses partenaires : leurs conditions continuent de s'appliquer, et la compatibilité reste à confirmer auprès de l'ANSD.</p>
+      </details>
+        <p>Où sont stockées les données, comment elles sont mises à jour et où les héberger : le site n'est qu'un dossier de fichiers (environ 1,8 Mo), sans serveur ni base de données. Les options de mise en ligne, le plan pour des données plus détaillées et ce qui reste à décider avec l'ANSD sont décrits dans <i>methodologie/GESTION_DES_DONNEES.md</i>.</p>
+</section>
+
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Jàppale Sénégal, hackathon des 20 ans de l'ANSD, 2026</span>
+    <span>Données : RGPH-5 (ANSD), infrastructures Géo Sénégal</span>
+  </div>
+  <div class="wrap pied-liens">
+    <nav aria-label="Liens utiles"><b>Liens utiles</b>
+      <a href="https://www.ansd.sn" target="_blank" rel="noopener">ANSD</a>
+      <a href="https://www.geosenegal.gouv.sn" target="_blank" rel="noopener">Géo Sénégal</a>
+      <a href="https://www.vie-publique.sn" target="_blank" rel="noopener">Vie publique Sénégal</a>
+      <a href="methode.html">Source et méthode</a>
+      <a href="methode.html#ouvertes">Télécharger les données</a>
+      <a href="communes.html">Toutes les communes</a>
+      <a href="comparer.html">Comparer des communes</a>
+      <a href="synthese.html">À propos</a>
+    <a href="methode.html#accessibilite">Accessibilité</a>
+      <a href="index.html#credits">Crédits</a>
+      <a href="index.html#contact">Nous contacter</a>
+      <a href="explorer.html#assistant">Poser une question</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="site.js"></script>
+<script src="methode.js"></script>
+<script src="assistant.js"></script>
+<script src="assistant-llm.js"></script>
+<script src="assistant-page.js"></script>
+<script src="confort.js"></script>
+</body>
+</html>

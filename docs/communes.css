@@ -1,0 +1,191 @@
+/* Page Communes (liste + fiche). Les jetons de couleur, la navigation et le pied de page viennent d'accueil.css. */
+.page { padding-block: 36px 0; }
+.page-head h1, .fiche-head h1 { font-size: 1.75rem; font-size: clamp(1.75rem, 3.6vw, 2.5rem); margin-top: 8px; }
+.page-head h1::after, .fiche-head h1::after { content: "."; color: var(--sky); }
+.page-head h1.question::after { content: none; }   /* un titre qui finit par « ? » ne reçoit pas de point décoratif */
+.page-head .lede { color: var(--ink-soft); max-width: 70ch; margin: 16px 0 24px; }
+
+/* ----- filtres ----- */
+.filtres { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; background: var(--panel-2); border-radius: 14px; padding: 16px; }
+.champ { display: flex; flex-direction: column; gap: 5px; flex: 1 1 160px; min-width: 0; }
+.champ-large { flex: 2 1 220px; }
+.champ label { font-size: 0.8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
+.champ input, .champ select { font: inherit; font-size: 0.875rem; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); min-width: 0; }
+.btn-ghost { font: inherit; font-weight: 600; font-size: 0.875rem; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--blue); background: transparent; color: var(--blue); cursor: pointer; white-space: nowrap; text-decoration: none; }
+.btn-ghost:hover { background: var(--panel-2); }
+.resume { margin: 18px 0 10px; color: var(--ink-soft); font-size: 0.875rem; }
+.resume b { color: var(--ink); }
+
+/* ----- tableau ----- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; max-height: 70vh; }
+.tableau { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 900px; }
+.tableau thead th { position: sticky; top: 0; background: var(--panel-2); z-index: 1; text-align: left; border-bottom: 1px solid var(--line); }
+.tableau th button { all: unset; display: block; box-sizing: border-box; width: 100%; padding: 11px 12px; font-size: 0.8125rem; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
+.tableau th button:hover { color: var(--ink); }
+.tableau th button:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+.tableau th[aria-sort="ascending"] button::after { content: " ↑"; color: var(--blue); }
+.tableau th[aria-sort="descending"] button::after { content: " ↓"; color: var(--blue); }
+.tableau .nb, .tableau .nb button { text-align: right; }
+.tableau tbody th, .tableau td { padding: 9px 12px; border-bottom: 1px solid var(--line); text-align: left; font-weight: 400; white-space: nowrap; }
+.tableau tbody tr:hover { background: var(--panel-2); }
+.tableau tbody th a { color: var(--ink); font-weight: 700; text-decoration: none; }
+.tableau tbody th a:hover { color: var(--blue); text-decoration: underline; }
+.tableau td.nb { text-align: right; }
+.niv { display: inline-block; min-width: 2.4em; text-align: center; padding: 1px 8px; border-radius: 999px; font-weight: 700;
+  background: color-mix(in srgb, var(--c) 24%, transparent); color: color-mix(in srgb, var(--c) 55%, var(--ink)); }
+.a-confirmer { font-size: 0.8125rem; font-weight: 600; color: var(--ochre); margin-left: 4px; }
+.vide { padding: 20px; color: var(--ink-soft); }
+
+/* ----- fiche ----- */
+.fil { display: flex; flex-wrap: wrap; gap: 8px; font-size: 0.8438rem; color: var(--ink-soft); margin-bottom: 18px; }
+.fil a { color: var(--blue); text-decoration: none; }
+.fil a:hover { text-decoration: underline; }
+.fiche-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 18px; }
+.fiche-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.fiche-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge { display: inline-block; font-size: 0.8125rem; font-weight: 700; padding: 4px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--c) 24%, transparent); color: color-mix(in srgb, var(--c) 55%, var(--ink)); }
+.pill { display: inline-block; font-size: 0.8125rem; font-weight: 600; padding: 4px 12px; border-radius: 999px; color: var(--ink); }
+.pill.ok { background: color-mix(in srgb, var(--sky) 22%, transparent); }
+.pill.warn { background: color-mix(in srgb, var(--ochre) 22%, transparent); }
+.alerte { margin: 16px 0 0; padding: 12px 16px; border-radius: 12px; background: color-mix(in srgb, var(--ochre) 14%, transparent); font-size: 0.875rem; }
+
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 26px 0; }
+.kpi { background: var(--panel-2); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px; }
+.kpi-lab { font-size: 0.8125rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
+.kpi b { font-family: var(--f-display); font-size: 2.125rem; line-height: 1.1; }
+.kpi-fort b { color: var(--ochre); }
+.kpi-sub { font-size: 0.8125rem; color: var(--ink-soft); }
+
+.fiche-grille { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.fiche-col { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.carte-bloc { border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+.carte-bloc h2 { font-size: 1.125rem; margin-bottom: 10px; }
+.carte-bloc h3 { font-family: var(--f-body); font-size: 0.875rem; font-weight: 700; margin: 16px 0 8px; }
+.carte-bloc p { margin: 8px 0 0; font-size: 0.9062rem; }
+.carte-bloc .note { font-size: 0.8125rem; color: var(--ink-soft); }
+
+.barres { display: flex; flex-direction: column; gap: 8px; }
+.barre { display: grid; grid-template-columns: minmax(90px, 34%) 1fr 3.2em; gap: 10px; align-items: center; font-size: 0.8438rem; }
+.b-nom { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-soft); }
+.barre.soi .b-nom { color: var(--ink); font-weight: 700; }
+.b-piste { position: relative; height: 12px; background: var(--panel-2); border-radius: 6px; }
+.b-piste i { display: block; height: 100%; border-radius: 6px; background: var(--m-faible); }
+.barre.soi .b-piste i { background: var(--blue); }
+.b-piste em { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ochre); }
+.b-val { text-align: right; font-weight: 700; }
+.b-unite { font-size: 0.8125rem; color: var(--ink-soft); }
+
+.tableau-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 0; }
+.tableau-mini div { background: var(--panel-2); border-radius: 12px; padding: 12px 14px; }
+.tableau-mini dt { font-size: 0.8125rem; color: var(--ink-soft); }
+.tableau-mini dd { margin: 2px 0 0; }
+.tableau-mini dd.num { font-family: var(--f-display); font-size: 1.375rem; font-weight: 700; }
+.tableau-mini .etat { font-size: 0.8125rem; font-weight: 700; color: color-mix(in srgb, var(--c) 55%, var(--ink)); }
+
+.edu { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+.edu b { font-family: var(--f-display); font-size: 1.75rem; }
+.edu span:last-child { color: var(--ink-soft); font-size: 0.875rem; }
+
+.minicarte { width: 100%; height: auto; display: block; background: var(--panel-2); border-radius: 12px; }
+.minicarte path { fill: var(--m-faible); opacity: .45; stroke: var(--bg); stroke-width: 1; }
+.minicarte path.ici { fill: var(--blue); opacity: 1; }
+
+.voisines { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 18px; }
+.voisines li { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--line); break-inside: avoid; font-size: 0.875rem; }
+.voisines a { color: var(--ink); text-decoration: none; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.voisines a:hover { color: var(--blue); text-decoration: underline; }
+.voisines .num { font-weight: 700; color: color-mix(in srgb, var(--c) 55%, var(--ink)); }
+
+@media (max-width: 980px) {
+  .kpis { grid-template-columns: 1fr 1fr; }
+  .fiche-grille { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .kpis { grid-template-columns: 1fr; }
+  .voisines { columns: 1; }
+  .tableau-mini { grid-template-columns: 1fr; }
+}
+
+/* Sur téléphone, le tableau ne garde que ce qui sert à décider : la commune (son département passe en dessous, pour les homonymes),
+   la population et les postes manquants. Région, postes existants, scénario 2033, vue bassin et établissements restent sur ordinateur,
+   et sur la fiche de chaque commune. */
+.dep-mob { display: none; }
+@media (max-width: 640px) {
+  #tableau tr > :nth-child(2), #tableau tr > :nth-child(3), #tableau tr > :nth-child(5), #tableau tr > :nth-child(7), #tableau tr > :nth-child(8), #tableau tr > :nth-child(9) { display: none; }
+  #tableau { min-width: 0; }   /* le tableau avait une largeur minimale de 900 px : il ne rétrécissait pas, même avec moins de colonnes */
+  #tableau th, #tableau td { padding: 10px 8px; font-size: 0.8125rem; }
+  #tableau th button { padding: 10px 8px; font-size: 0.8125rem; white-space: normal; line-height: 1.2; }   /* « Manquants 2023 » passe sur deux lignes */
+  #tableau th.nb, #tableau td.nb { width: 1%; }   /* les colonnes de nombres prennent la place de leur contenu, la commune garde le reste */
+  #tableau tbody th { white-space: normal; }
+  .dep-mob { display: block; font-weight: 400; font-size: 0.8125rem; color: var(--ink-soft); }
+  .table-wrap { max-height: none; }   /* sur téléphone, c'est la page qui défile, pas une boîte dans la page */
+}
+
+/* La fiche d'une commune est divisée en deux groupes : ce qui concerne la commune, puis ce qui sert à la situer */
+.groupe { margin: 6px 0 -2px; font-size: 0.8125rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); }
+.groupe:not(:first-child) { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
+
+/* Les étiquettes de statut ne se cliquent pas : elles ont l'allure d'une étiquette (carrée, avec un point), pas celle d'un bouton */
+.fiche-tags .pill, .fiche-tags .badge { border: 0; border-radius: 6px; padding: 5px 10px 5px 24px; position: relative; cursor: default; font-weight: 600; }
+.fiche-tags .pill::before, .fiche-tags .badge::before { content: ""; position: absolute; left: 10px; top: 50%; width: 8px; height: 8px; margin-top: -4px; border-radius: 50%; background: currentColor; }
+.fiche-actions .btn-ghost { border: 1.5px solid var(--blue); color: var(--blue); font-weight: 700; }
+.fiche-actions .btn-ghost:hover, .fiche-actions .btn-ghost:focus-visible { background: var(--blue); color: var(--on-blue); }
+.alerte-info { background: color-mix(in srgb, var(--blue) 12%, transparent); border-color: var(--blue); }
+
+/* ---- Fiche de décision (communes.html) : cachée à l'écran ; à l'impression, seule cette partie reste, sur une page A4 ---- */
+.decision { display: none; }
+@media print {
+  @page { size: A4; margin: 10mm 13mm; }
+  body.page-fiche { background: #fff !important; color: #111 !important; }
+  body.page-fiche > *:not(main) { display: none !important; }
+  body.page-fiche #vueFiche > *:not(.decision) { display: none !important; }
+  body.page-fiche main.wrap { padding: 0 !important; margin: 0 !important; max-width: none !important; width: auto !important; }
+  body.page-fiche .decision { display: block; font: 9.4pt/1.32 system-ui, "Segoe UI", Arial, sans-serif; color: #111; }
+  body.page-fiche .decision * { color: #111 !important; background: none !important; box-shadow: none !important; }
+  .decision .d-marque { display: flex; justify-content: space-between; font-weight: 700; font-size: 9.5pt; letter-spacing: .06em; text-transform: uppercase; border-bottom: 2px solid #111; padding-bottom: 4px; margin-bottom: 8px; }
+  .decision h2 { font-size: 18pt; margin: 2px 0; }
+  .decision .d-lieu { margin: 0 0 8px; }
+  .decision .d-haut { display: grid; grid-template-columns: 1fr 60mm; gap: 6mm; align-items: start; margin-bottom: 4px; }
+  .decision .d-haut.sans-carte { grid-template-columns: 1fr; }
+  .decision .d-carte { margin: 0; }
+  .decision .d-carte svg { display: block; width: 60mm; height: auto; border: 1px solid #888; border-radius: 4px; }
+  .decision .d-carte figcaption { font-size: 6.5pt; margin-top: 2px; line-height: 1.25; }
+  .decision .d-legende { font-size: 9pt; margin: 6px 0 0; padding-left: 14px; }
+  .decision .d-sources { font-size: 7.5pt; }
+  .decision .d-sources li { margin: 0; }
+  .decision .d-chiffres { display: flex; gap: 8px; margin: 4px 0 2px; }
+  .decision .d-chiffres > div { flex: 1; border: 1.5px solid #111; border-radius: 6px; padding: 4px 8px; }
+  .decision .d-chiffres b { display: block; font-size: 16pt; line-height: 1.1; }
+  .decision .d-chiffres span { font-size: 8.5pt; }
+  .decision h3 { font-size: 10.5pt; margin: 7px 0 2px; border-bottom: 1px solid #888; padding-bottom: 2px; }
+  .decision ul { margin: 3px 0; padding-left: 16px; }
+  .decision li { margin: 1px 0; }
+  .decision .d-pied { margin-top: 6px; border-top: 1px solid #888; padding-top: 4px; font-size: 7.5pt; }
+}
+
+/* Aide sous les boutons de la fiche : garder ou transmettre la fiche (impression, PDF, Word). */
+.fiche-aide { flex-basis: 100%; margin: 4px 0 0; font-size: 0.875rem; color: var(--ink-soft); }
+
+.pagination { margin: 14px 0 6px; }
+.pagination p { margin: 0 0 8px; color: var(--ink-soft); }
+
+/* Actions secondaires de la fiche (impression, PDF, Word, liens, cartes) dans un volet : sur téléphone, le chiffre principal reste visible sans défiler. */
+.fiche-plus { margin-top: 8px; }
+.fiche-plus > summary { display: inline-flex; align-items: center; cursor: pointer; list-style: none; }
+.fiche-plus > summary::-webkit-details-marker { display: none; }
+.fiche-plus > summary::after { content: "\25BE"; margin-left: 8px; }
+.fiche-plus[open] > summary::after { content: "\25B4"; }
+.fiche-plus > .fiche-actions { margin-top: 8px; }
+
+/* Comprendre le chiffre principal, puis agir */
+.comprendre { margin: 14px 0 0; }
+.comprendre > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 700; color: var(--bas); }
+.comprendre dl { margin: 6px 0 0; }
+.comprendre dt { margin-top: 10px; font-weight: 700; }
+.comprendre dd { margin: 2px 0 0; }
+.agir table { width: 100%; border-collapse: collapse; }
+.agir th { width: 30%; padding: 10px 14px 10px 0; text-align: left; vertical-align: top; }
+.agir td { padding: 10px 0; vertical-align: top; }
+.agir tr + tr th, .agir tr + tr td { border-top: 1px solid var(--line); }
+@media (max-width: 640px) { .agir th, .agir td { display: block; width: auto; padding: 8px 0 0; } .agir tr + tr td { border-top: 0; } }

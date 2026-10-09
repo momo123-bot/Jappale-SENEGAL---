@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>(function(){var t=null,k="jappale-theme-v3",tel=false;try{tel=(navigator.maxTouchPoints>0||"ontouchstart" in window)&&screen.width>0&&Math.min(screen.width,screen.height)<=640;}catch(e){}try{t=sessionStorage.getItem(k)||(tel?null:localStorage.getItem(k));}catch(e){}t=t||window.__THEME||"dark";document.documentElement.dataset.theme=t;})();</script><style>html{background:#FFFFFF}html[data-theme="dark"]{background:#0F1A2B;color-scheme:dark}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>À propos : l'essentiel en une page - Jàppale Sénégal</title>
+<meta name="description" content="À propos de Jàppale Sénégal : pourquoi ce site existe, pour qui, ce qu'il montre, sur quoi reposent ses chiffres et ce qu'il ne dit pas. L'essentiel en une page, à imprimer ou enregistrer en PDF.">
+<link rel="stylesheet" href="polices.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#437FC7">
+<link rel="stylesheet" href="accueil.css">
+<link rel="stylesheet" href="communes.css">
+<link rel="stylesheet" href="synthese.css">
+<link rel="stylesheet" href="confort.css">
+<link rel="stylesheet" href="illustrations.css">
+</head>
+<body>
+<a class="evitement" href="#contenu">Aller au contenu</a>
+<script>(function () { var ok = typeof Symbol === "function" && typeof Promise === "function" && typeof Object.assign === "function" && typeof Object.entries === "function" && typeof Array.prototype.includes === "function" && typeof window.fetch === "function" && typeof window.URLSearchParams === "function" && window.CSS && typeof CSS.supports === "function" && CSS.supports("display", "grid"); if (ok) return; var d = document.createElement("div"); d.id = "navigateurAncien"; d.setAttribute("role", "alert"); d.style.cssText = "padding:14px 16px;background:#fff3cd;color:#111;font:16px/1.45 Arial,Helvetica,sans-serif;border-bottom:2px solid #b8860b"; d.appendChild(document.createTextNode("Ce navigateur est trop ancien pour afficher correctement ce site. Ouvrez-le avec une version récente de Chrome, Firefox ou Safari, ou sur un autre appareil.")); document.body.insertBefore(d, document.body.firstChild); })();</script>
+
+<nav class="nav" aria-label="Navigation principale">
+  <div class="wrap">
+    <a class="brand" href="index.html"><svg class="logo-mark" viewBox="0 0 110 110" aria-hidden="true"><rect class="lm-fond" x="4" y="4" width="102" height="102" rx="24"/><path class="lm-j" d="M64 24 V60 A28 28 0 0 1 36 88 H25" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle class="lm-point" cx="25" cy="88" r="9"/></svg>Jàppale <em>Sénégal</em></a>
+    <ul class="links" id="links">
+      <li><a href="synthese.html" aria-current="page">Comprendre</a></li>
+      <li><a href="explorer.html">Explorer</a></li>
+      <li><a href="simulateur.html">Agir</a></li>
+    <li class="confort-li"><button type="button" class="confort-btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Affichage : texte, contraste, thème</button></li>
+    </ul>
+    <div class="nav-tools">
+      <form id="navForm" role="search">
+        <input class="nav-search" id="navSearch" type="search" list="listeCommunes" placeholder="Chercher une commune" aria-label="Chercher une commune">
+      </form>
+      <button type="button" class="icon-btn confort-icone" id="confortBtn" aria-expanded="false" aria-controls="confortPanneau" aria-label="Affichage : taille du texte, contraste, thème" title="Affichage : taille du texte, contraste, thème"><span class="confort-lib">Affichage</span></button>
+    <button class="icon-btn" id="themeBtn" aria-label="Changer de thème" title="Changer de thème">◑</button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="Ouvrir le menu" aria-expanded="false">☰ Menu</button>
+    </div>
+  </div>
+</nav>
+<datalist id="listeCommunes"></datalist>
+
+<main id="contenu" tabindex="-1" class="wrap page">
+  <header class="page-head page-head--comprendre">
+    <div class="eyebrow">À propos</div>
+    <img class="page-ill" src="images/pourquoi.webp" alt="" width="88" height="88" loading="lazy" decoding="async">
+    <h1>L'essentiel, en une page</h1>
+    <span class="rule"></span>
+    <p class="lede">À propos de Jàppale Sénégal, pour décider sans lire tout le site : la situation, les priorités, ce que le site calcule et ce qu'il ne dit pas. Imprimez-la ou enregistrez-la en PDF.</p>
+    <div class="sy-actions"><button class="btn" type="button" id="syImprimer">Imprimer ou enregistrer en PDF</button><span class="sy-date" id="syDate"></span></div>
+  </header>
+
+  <section class="sy-bloc"><h2>En deux phrases</h2><p class="sy-phrase" id="syPhrase"></p></section>
+
+  <section class="sy-bloc"><h2>La situation en quatre chiffres</h2><div class="cartes-chiffres" id="syKpis"></div><p class="sy-note" id="syNoteEdu"></p></section>
+
+  <section class="sy-bloc sy-deux">
+    <div><h2>Les communes où il manque le plus de postes</h2><ol class="sy-liste" id="syCommunes"></ol></div>
+    <div><h2>Les régions les plus touchées</h2><ol class="sy-liste" id="syRegions"></ol></div>
+  </section>
+
+  <section class="sy-bloc"><h2>Que peut-on faire avec 10 postes ?</h2><div id="syBudget"></div></section>
+
+  <section class="sy-bloc">
+    <h2>Sur quoi reposent ces chiffres ?</h2>
+    <ul class="sy-points">
+      <li><b>Le manque de postes</b> : la norme du Ministère de la Santé, un poste pour 10 000 habitants, appliquée à la population de chaque commune (recensement RGPH-5 de 2023, ANSD) et aux structures géolocalisées de Géo Sénégal.</li>
+      <li><b>Le chiffre de 2033</b> : on prolonge la croissance de chaque commune mesurée entre 2013 et 2023, à nombre de postes inchangé. C'est une extrapolation de tendance, <b>ni une prévision officielle, ni un modèle économique</b> : selon les hypothèses testées, le chiffre va d'environ 920 à 1 190, c'est un ordre de grandeur.</li>
+      <li><b>Le classement du simulateur</b> : un algorithme qui retient, à chaque étape, la commune qui dessert le plus d'habitants pas encore desservis, à coût supposé identique.</li>
+      <li class="sy-web">Tout est vérifiable : la page <a href="methode.html#previsions">Méthode et données</a> donne les formules, et le calcul est reproductible.</li>
+    </ul>
+  </section>
+
+  <section class="sy-bloc">
+    <h2>Ce que ces chiffres ne disent pas</h2>
+    <ul class="sy-points">
+      <li>La qualité des soins, le personnel (médecins, infirmiers, enseignants), le fonctionnement réel des établissements, les coûts et l'effet sur la santé ne sont pas mesurés : les résultats donnent un ordre de grandeur et un ordre de priorité.</li>
+      <li>Le chiffre de 553 arrondit au supérieur le besoin de chaque commune : sans arrondi, il est de 447. Le classement des communes ne change pas.</li>
+      <li>Les distances sont à vol d'oiseau (rayon de 15 km, une hypothèse), pas des temps de trajet.</li>
+      <li>Deux communes de la région de Sédhiou sont à confirmer : leur déficit est probablement surestimé.</li>
+      <li>L'éducation est un constat, sans norme officielle : ce n'est pas un déficit.</li>
+    </ul>
+  </section>
+
+  <section class="sy-bloc sy-suite">
+    <h2>Pour aller plus loin, selon votre profil</h2>
+    <div class="paths">
+      <a class="path" href="simulateur.html"><img class="path-img" src="images/simuler.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Vous décidez ou vous financez</span><h3>Simuler un budget</h3><p>Combien de postes pouvez-vous financer ? Voyez où les construire.</p><span class="go">Lancer le simulateur</span></div></a>
+      <a class="path" href="methode.html"><img class="path-img" src="images/methode.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Vous êtes technicien ou partenaire</span><h3>Méthode et données</h3><p>D'où viennent les chiffres, les formules, ce qu'ils ne disent pas.</p><span class="go">Lire la méthode</span></div></a>
+      <a class="path" href="communes.html"><img class="path-img" src="images/chercher-commune.webp" alt="" width="96" height="96" loading="lazy" decoding="async"><div class="path-txt"><span class="who">Vous cherchez votre commune</span><h3>Chercher une commune</h3><p>Population, postes de santé, établissements, commune par commune.</p><span class="go">Voir les communes</span></div></a>
+    </div>
+    <p class="sy-note">Les crédits des images et des données, la liste des contributions et le formulaire de contact se trouvent en bas de <a href="index.html#credits">l'accueil</a> et dans <a href="index.html#contact">la section contact</a>.</p>
+  </section>
+</main>
+
+</main>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Jàppale Sénégal, hackathon des 20 ans de l'ANSD, 2026</span>
+    <span>Données : RGPH-5 (ANSD), infrastructures Géo Sénégal</span>
+  </div>
+  <div class="wrap pied-liens">
+    <nav aria-label="Liens utiles"><b>Liens utiles</b>
+      <a href="https://www.ansd.sn" target="_blank" rel="noopener">ANSD</a>
+      <a href="https://www.geosenegal.gouv.sn" target="_blank" rel="noopener">Géo Sénégal</a>
+      <a href="https://www.vie-publique.sn" target="_blank" rel="noopener">Vie publique Sénégal</a>
+      <a href="methode.html">Source et méthode</a>
+      <a href="methode.html#ouvertes">Télécharger les données</a>
+      <a href="communes.html">Toutes les communes</a>
+      <a href="comparer.html">Comparer des communes</a>
+      <a href="synthese.html">À propos</a>
+    <a href="methode.html#accessibilite">Accessibilité</a>
+      <a href="index.html#credits">Crédits</a>
+      <a href="index.html#contact">Nous contacter</a>
+      <a href="explorer.html#assistant">Poser une question</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="simulation.js"></script>
+<script src="site.js"></script>
+<script src="synthese.js"></script>
+<script src="assistant.js"></script>
+<script src="assistant-llm.js"></script>
+<script src="assistant-page.js"></script>
+<script src="confort.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<script>(function(){var t=null,k="jappale-theme-v3",tel=false;try{tel=(navigator.maxTouchPoints>0||"ontouchstart" in window)&&screen.width>0&&Math.min(screen.width,screen.height)<=640;}catch(e){}try{t=sessionStorage.getItem(k)||(tel?null:localStorage.getItem(k));}catch(e){}t=t||window.__THEME||"dark";document.documentElement.dataset.theme=t;})();</script><style>html{background:#FFFFFF}html[data-theme="dark"]{background:#0F1A2B;color-scheme:dark}</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jàppale Sénégal - Explorer la carte</title>
+<link rel="stylesheet" href="polices.css">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#437FC7">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="confort.css">
+<link rel="stylesheet" href="illustrations.css">
+</head>
+<body>
+<a class="evitement" href="#stage">Aller au contenu</a>
+<script>(function () { var ok = typeof Symbol === "function" && typeof Promise === "function" && typeof Object.assign === "function" && typeof Object.entries === "function" && typeof Array.prototype.includes === "function" && typeof window.fetch === "function" && typeof window.URLSearchParams === "function" && window.CSS && typeof CSS.supports === "function" && CSS.supports("display", "grid"); if (ok) return; var d = document.createElement("div"); d.id = "navigateurAncien"; d.setAttribute("role", "alert"); d.style.cssText = "padding:14px 16px;background:#fff3cd;color:#111;font:16px/1.45 Arial,Helvetica,sans-serif;border-bottom:2px solid #b8860b"; d.appendChild(document.createTextNode("Ce navigateur est trop ancien pour afficher correctement ce site. Ouvrez-le avec une version récente de Chrome, Firefox ou Safari, ou sur un autre appareil.")); document.body.insertBefore(d, document.body.firstChild); })();</script>
+
+<nav class="site-nav" aria-label="Navigation principale">
+  <a class="wordmark" href="index.html"><svg class="logo-mark" viewBox="0 0 110 110" aria-hidden="true"><rect class="lm-fond" x="4" y="4" width="102" height="102" rx="24"/><path class="lm-j" d="M64 24 V60 A28 28 0 0 1 36 88 H25" fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle class="lm-point" cx="25" cy="88" r="9"/></svg>Jàppale <em>Sénégal</em></a>
+  <ul class="site-links" id="siteLinks">
+    <li><a href="synthese.html">Comprendre</a></li>
+    <li><a href="explorer.html" aria-current="page">Explorer</a></li>
+    <li><a href="simulateur.html">Agir</a></li>
+    <li class="confort-li"><button type="button" class="confort-btn" data-confort-ouvrir aria-expanded="false" aria-controls="confortPanneau">Affichage : texte, contraste, thème</button></li>
+  </ul>
+  <button type="button" class="site-confort-btn" id="confortBtn" aria-expanded="false" aria-controls="confortPanneau" aria-label="Affichage : taille du texte, contraste, thème" title="Affichage : taille du texte, contraste, thème"><span class="confort-lib">Affichage</span></button>
+  <button class="site-menu-btn" id="siteMenuBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="siteLinks">☰ Menu</button>
+</nav>
+
+<div id="stage" role="main" tabindex="-1">
+  <div id="mapWrap">
+    <svg id="mapSvg" viewBox="0 10 420 295" xmlns="http://www.w3.org/2000/svg">
+      <defs><linearGradient id="seaGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--sea-a)"/><stop offset="1" style="stop-color:var(--sea-b)"/></linearGradient></defs>
+      <rect x="0" y="0" width="420" height="400" fill="url(#seaGradient)" />
+      <path d="M 70.74,211.07 L 45.3,163.03 L 14.51,141.06 L 41.65,129.34 L 71.54,86.02 L 86.21,54.33 L 107.34,34.55 L 138.0,39.87 L 168.11,26.42 L 202.57,25.75 L 232.05,43.89 L 273.01,60.23 L 310.35,105.63 L 351.07,148.01 L 353.9,186.4 L 366.07,221.74 L 389.16,239.07 L 394.44,262.93 L 391.6,282.15 L 382.69,285.63 L 349.04,280.75 L 344.41,287.61 L 330.81,288.99 L 286.46,273.95 L 256.68,273.31 L 142.64,270.72 L 126.1,277.67 L 105.67,275.69 L 72.98,285.74 L 62.86,238.44 L 119.02,239.74 L 133.85,231.1 L 144.91,230.59 L 167.78,216.34 L 194.25,229.38 L 221.06,230.47 L 247.76,216.62 L 235.29,198.78 L 214.95,209.17 L 195.8,208.88 L 171.44,193.69 L 151.88,194.69 L 137.95,209.3 L 70.74,211.07 Z" fill="var(--land)" stroke="var(--line)" stroke-width="1.4" />
+      <g id="regionLayer"></g>
+    </svg>
+    <div id="zoomCtl" role="group" aria-label="Zoom de la carte">
+      <button type="button" id="zoomPlus" aria-label="Zoomer" title="Zoomer">+</button>
+      <button type="button" id="zoomMoins" aria-label="Dézoomer" title="Dézoomer" disabled>−</button>
+      <button type="button" id="zoomTout" aria-label="Voir tout le Sénégal" title="Voir tout le Sénégal" disabled>Tout</button>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="pill">
+      <input id="searchInput" type="text" placeholder="Chercher une commune" autocomplete="off">
+      <div class="pill-tools">
+        <button class="theme-btn" id="aboutBtn" title="Comprendre ces résultats" aria-label="Comprendre ces résultats">ℹ</button>
+        <button class="theme-btn" id="askBtn" title="Assistant (question en français)" aria-label="Assistant">?</button>
+        <button class="theme-btn" id="simBtn" title="Simulateur budgétaire" aria-label="Simulateur budgétaire">⚙</button>
+        <button class="theme-btn" id="themeBtn" title="Changer de thème" aria-label="Changer de thème">◑</button>
+      </div>
+    </div>
+  </div>
+  <div id="searchResults"></div>
+
+  <div class="bottom-stack">
+  <div class="legend" id="legend"></div>
+
+  <div class="bottombar">
+    <div class="switch" id="carteSwitch">
+      <button class="active" id="btnCarteCommunes" title="Un point par commune : la taille suit la population, la couleur suit le manque">Communes</button>
+      <button id="btnCarteRegions" title="Les 14 régions, colorées les unes par rapport aux autres">Régions</button>
+    </div>
+    <div class="switch">
+      <button class="active mode-sante" id="btnSante">Santé</button>
+      <button class="mode-education" id="btnEducation">Éducation</button>
+    </div>
+    <div class="switch" id="vueSwitch">
+      <button class="active" id="btnVueCommunale" title="Déficit propre à chaque commune">Vue commune</button>
+      <button id="btnVueBassin" title="Tient compte des postes de santé des communes voisines (15 km)">Vue bassin</button>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div id="card">
+  <button class="card-close" id="cardClose" aria-label="Fermer">✕</button>
+  <div id="cardBody"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="regions.js"></script>
+<script src="assistant.js"></script>
+<script src="assistant-llm.js"></script>
+<script src="simulation.js"></script>
+<script src="script.js"></script>
+<script src="confort.js"></script>
+</body>
+</html>

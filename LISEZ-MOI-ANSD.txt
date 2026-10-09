@@ -1,0 +1,35 @@
+JÀPPALE SÉNÉGAL - Hackathon des 20 ans de l'ANSD
+Remise du code source et de la documentation - version du 8 octobre 2026
+(Projet de hackathon : ce n'est pas une publication officielle de l'ANSD.)
+
+CE QUE CONTIENT CETTE ARCHIVE
+- docs/ : le site. Pour l'essayer sans rien installer : ouvrir docs/index.html (double-clic) dans un navigateur. Il fonctionne hors connexion.
+- code/ : les scripts (Python) qui produisent les chiffres, de la donnée source jusqu'au site.
+- donnees/ : les fichiers de données utilisés, leur dictionnaire et le registre des anomalies relevées dans les couches de données.
+- methodologie/ : la documentation (note de présentation, gestion des données, méthode, limites, retour à l'ANSD, perspectives, déclaration d'accessibilité, fiche technique, procédure de déploiement).
+- tests/ : les contrôles automatiques (calculs, interface, navigateur, accessibilité).
+- documents/ : documents complémentaires.
+- Procedure_de_deploiement_Jappale_Senegal.pdf : la procédure de déploiement détaillée (deux pages).
+- Note_de_presentation_Jappale_Senegal.pdf : le projet en une page, pour une lecture rapide.
+- README.md : la présentation du projet.
+
+PAR OÙ COMMENCER
+0. Note_de_presentation_Jappale_Senegal.pdf : une page pour comprendre le projet en deux minutes.
+1. README.md, pour la présentation et l'organisation des dossiers.
+2. La page « Méthode et données » du site (docs/methode.html), et methodologie/GESTION_DES_DONNEES.md (où sont les données, où les héberger) : d'où viennent les chiffres, comment ils sont calculés, ce qui n'est pas connu, les anomalies relevées, l'accessibilité.
+3. La procédure de déploiement (le PDF ci-dessus, ou methodologie/PROCEDURE_DEPLOIEMENT.md).
+
+DÉPLOYER LE SITE
+Il suffit de publier le contenu du dossier docs/ sur n'importe quel hébergement de pages statiques, par exemple GitHub Pages.
+
+ILLUSTRATIONS
+Les pages Comprendre, Explorer et Agir ont une illustration décorative en dégradé, avec une version claire et une version pour le thème sombre, choisies automatiquement (docs/illustrations.css et docs/images/rubrique-*.webp). Elles sont purement décoratives et ne remplacent aucune donnée. Elles se déploient avec le dossier docs/, sans étape supplémentaire.
+
+FORMAT
+Cette archive est au format ZIP, que WinRAR, 7-Zip et les systèmes courants ouvrent. Son contenu peut être recompressé dans un autre format (RAR, 7z) sans rien changer.
+
+VÉRIFIER UN DÉPLOIEMENT EN UNE COMMANDE
+Depuis le dossier de l'archive, avec Python 3 (rien à installer) : python3 tests/verifier_deploiement.py vérifie le dossier docs/ ; python3 tests/verifier_deploiement.py https://adresse-du-site/ vérifie un site déjà en ligne. Résultat attendu : « tout est conforme, le déploiement est réussi ».
+
+REFAIRE LES CALCULS (facultatif)
+Voir code/ et methodologie/FICHE_TECHNIQUE.md, qui décrit chaque script et chaque fichier de données.

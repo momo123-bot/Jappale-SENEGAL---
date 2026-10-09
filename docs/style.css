@@ -1,0 +1,397 @@
+/* Charte commune avec l'accueil (documents/maquette_couleurs.png) : #437FC7, #6DAFFE, #EDF6FF, blanc, #B9732F.
+   Les noms --clay / --gold / --teal sont gardés car script.js les utilise : ils désignent désormais
+   les niveaux fort / moyen / faible (ocre -> ocre clair -> bleu clair), comme sur la carte de l'accueil. */
+:root {
+    --bg: #FFFFFF;
+    --surface: #EDF6FF;
+    --panel: #FFFFFFF0;
+    --ink: #1F2A3C;
+    --ink-soft: #5A6578;
+    --clay: #B9732F;
+    --gold: #E3B484;
+    --teal: #6FAAE8;
+    --bas: #2B63AE; --edu-hi: #7B3FA0; --edu-mid: #C7A6DD; --edu-lo: #2E8F8A;   /* bas : le bleu des points les moins touchés, plus foncé en thème clair ; edu-* : palette propre à l'éducation */
+    --sky: #6DAFFE;
+    --line: rgba(67,127,199,0.18);
+    --water: #EDF6FF;
+    --land: #DCE8F5;
+    --ansd: #437FC7; --on-ansd: #FFFFFF;
+    --sea-a: #EDF6FF; --sea-b: #EDF6FF;
+    --f-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --f-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    --nav-h: 58px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0F1A2B; --surface: #132136; --panel: #15243AF0; --ink: #EAF2FD; --ink-soft: #A3B3C9;
+      --clay: #DA9A5A; --gold: #9C7550; --teal: #3E6FA8; --sky: #8DC0FF; --bas: #6DAFFE; --edu-hi: #C792EA; --edu-mid: #8F7BB5; --edu-lo: #4DB8AE;
+      --line: rgba(109,175,254,0.2); --water: #132136; --land: #1B2D47;
+      --ansd: #6DAFFE; --on-ansd: #0B1626; --sea-a: #132136; --sea-b: #132136;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0F1A2B; --surface: #132136; --panel: #15243AF0; --ink: #EAF2FD; --ink-soft: #A3B3C9;
+    --clay: #DA9A5A; --gold: #9C7550; --teal: #3E6FA8; --sky: #8DC0FF; --bas: #6DAFFE; --edu-hi: #C792EA; --edu-mid: #8F7BB5; --edu-lo: #4DB8AE;
+    --line: rgba(109,175,254,0.2); --water: #132136; --land: #1B2D47;
+    --ansd: #6DAFFE; --on-ansd: #0B1626; --sea-a: #132136; --sea-b: #132136;
+  }
+
+  * { box-sizing: border-box; }
+  html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0; height: 100%; min-height: 100vh;
+    background: var(--bg); color: var(--ink);
+    font-family: var(--f-body);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3 { font-family: var(--f-display); font-weight: 700; margin: 0; }
+
+  #stage { position: fixed; top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); right: 0; bottom: 0; left: 0; overflow: hidden; background: var(--sea-a); }
+  /* la carte reste entre la barre de recherche (haut) et les sélecteurs (bas) */
+  #mapWrap { position: absolute; top: 76px; right: 0; bottom: 76px; left: 0; }
+  #mapSvg { width: 100%; height: 100%; display: block; }
+
+  .region-shape { cursor: pointer; stroke: var(--bg); stroke-width: 1.4; vector-effect: non-scaling-stroke; transition: filter 0.2s ease, transform 0.2s ease; transform-box: fill-box; transform-origin: center; }
+  .region-shape:hover { filter: brightness(1.12); }
+  .region-shape.active { stroke: var(--clay); stroke-width: 3.4; stroke-linejoin: round; }   /* la région choisie : un pourtour bronze épais, ni noir ni carré */
+  .region-shape:focus, .region-shape:focus-visible, svg path:focus, svg circle:focus { outline: none; }   /* le cadre de focus du navigateur dessinait un carré qui débordait */
+  .region-shape:focus-visible { stroke: var(--clay); stroke-width: 3; }
+  .region-leader { stroke: var(--ink); stroke-width: 0.8; stroke-opacity: 0.7; pointer-events: none; }
+  .region-centroid-label {
+    font-family: var(--f-body);
+    font-size: 8.5px; font-weight: 600; fill: var(--ink);
+    pointer-events: none; paint-order: stroke; stroke: var(--bg); stroke-width: 2.5px;
+    text-anchor: middle;
+  }
+
+  /* top search pill */
+  .topbar {
+    position: absolute; top: 14px; left: 0; right: 0;
+    display: flex; justify-content: center; padding: 0 16px; z-index: 40;
+  }
+  .pill {
+    background: var(--panel);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--line);
+    box-shadow: 0 12px 34px rgba(10,15,30,0.14);
+    border-radius: 100px;
+    display: flex; align-items: center;
+    padding: 10px 8px 10px 20px;
+    gap: 10px;
+    max-width: 480px; width: 100%;
+  }
+  .wordmark { font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
+  .wordmark em { font-style: normal; color: var(--ansd); }
+  a.wordmark { color: inherit; text-decoration: none; }
+  .wordmark::after { content: "."; color: var(--sky); }
+  .divider { width: 1px; height: 20px; background: var(--line); flex-shrink: 0; }
+  #searchInput {
+    border: none; outline: none; background: transparent; color: var(--ink);
+    font-family: var(--f-body); font-size: 0.9rem; width: 100%;
+  }
+  #searchInput::placeholder { color: var(--ink-soft); }
+  .theme-btn {
+    flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;
+  }
+
+  /* search results dropdown */
+  #searchResults {
+    position: absolute; top: 66px; left: 50%; transform: translateX(-50%);
+    width: 92%; max-width: 480px; max-height: 260px; overflow-y: auto;
+    background: var(--panel); backdrop-filter: blur(14px);
+    border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: 0 12px 34px rgba(10,15,30,0.16);
+    z-index: 41; display: none;
+  }
+  #searchResults.show { display: block; }
+  .result-row { padding: 10px 18px; cursor: pointer; border-bottom: 1px solid var(--line); font-size: 0.86rem; display: flex; justify-content: space-between; gap: 10px; }
+  .result-row:last-child { border-bottom: none; }
+  .result-row:hover { background: var(--surface); }
+  .result-row .rn { font-weight: 600; }
+  .result-row .rr { color: var(--ink-soft); font-size: 0.78rem; }
+  .result-row .rd { font-variant-numeric: tabular-nums; color: var(--clay); font-weight: 600; font-size: 0.82rem; white-space: nowrap; }
+
+  /* bottom mode switch */
+  .bottombar {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; width: 100%;
+  }
+  .switch { background: var(--panel); backdrop-filter: blur(14px); border: 1px solid var(--line);
+    border-radius: 100px; padding: 5px; display: flex; gap: 4px; box-shadow: 0 12px 34px rgba(10,15,30,0.14); }
+  .switch button {
+    border: none; background: transparent; font-family: var(--f-body);
+    font-weight: 600; font-size: 0.84rem; padding: 9px 18px; border-radius: 100px; cursor: pointer;
+    color: var(--ink-soft);
+  }
+  .switch button.active.mode-sante { background: var(--ansd); color: var(--on-ansd); }
+  .switch button.active.mode-education { background: var(--edu-hi); color: #fff; }
+  #vueSwitch button.active, #carteSwitch button.active { background: var(--ink); color: var(--bg); }   /* #carteSwitch n'avait aucune règle : on ne voyait pas « Communes » sélectionné */
+  #vueSwitch.disabled { opacity: 0.4; pointer-events: none; }
+
+  /* legend */
+  .legend {
+    align-self: flex-start;
+    background: var(--panel); backdrop-filter: blur(14px); border: 1px solid var(--line);
+    border-radius: 12px; padding: 10px 14px; font-size: 0.74rem; color: var(--ink-soft); z-index: 39;
+    line-height: 1.9;
+  }
+  .legend .sw { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; }
+
+  /* info card */
+  #card {
+    position: fixed; z-index: 100;
+    left: 0; right: 0; bottom: 0;
+    background: var(--panel); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+    border-radius: 26px 26px 0 0;
+    box-shadow: 0 -14px 44px rgba(10,15,30,0.22);
+    padding: 22px 22px calc(26px + env(safe-area-inset-bottom, 0px));
+    transform: translateY(115%);
+    transition: transform 0.38s cubic-bezier(0.16,1,0.3,1);
+    max-height: 52vh;   /* téléphone : la fiche laisse presque la moitié de l'écran à la carte */ overflow-y: auto;
+  }
+  #card.active { transform: translateY(0); }
+  /* Grand écran : la fiche est un panneau rangé à droite (la carte se réduit), plus une fenêtre au milieu qui la masque. */
+@media (min-width: 900px) {
+  #card { left: auto; right: 0; top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); bottom: 0; width: 400px; max-height: none; overflow-y: auto; border-radius: 0; border-left: 1px solid var(--line); box-shadow: -14px 0 44px rgba(10, 15, 30, .18); transform: translateX(100%); opacity: 1; pointer-events: none; transition: transform .3s ease; padding: 22px 22px 26px; }
+  #card.active { transform: translateX(0); pointer-events: auto; }
+  body.fiche-ouverte #mapWrap { right: 400px; }
+  body.fiche-ouverte .topbar { right: 400px; }
+  body.fiche-ouverte #searchResults { left: calc((100% - 400px) / 2); }
+  body.fiche-ouverte .bottom-stack { right: 400px; }
+}
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) { #card { transition: none; } }
+  .card-close {
+    position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; border-radius: 50%;
+    border: none; background: var(--surface); color: var(--ink-soft); cursor: pointer; font-size: 1rem;
+  }
+  .card-eyebrow { font-size: 0.76rem; color: var(--ink-soft); margin-bottom: 4px; }
+  .card-title { font-size: 1.5rem; margin-bottom: 14px; padding-right: 30px; }
+  .card-badge {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 4px 11px;
+    border-radius: 100px; margin-bottom: 14px;
+  }
+  .stat-block { background: var(--surface); border-radius: 14px; padding: 16px 18px; margin-bottom: 14px; }
+  .stat-head { font-size: 0.74rem; color: var(--ink-soft); margin-bottom: 4px; }
+  .stat-main { display: flex; align-items: baseline; gap: 8px; }
+  .stat-main .num { font-size: 2.1rem; font-weight: 700; font-family: var(--f-display); }
+  .stat-main .unit { font-size: 0.72rem; color: var(--ink-soft); }
+  .stat-sub { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+  .stat-sub div span { display: block; }
+  .stat-sub .lab { font-size: 0.66rem; color: var(--ink-soft); }
+  .stat-sub .val { font-size: 0.95rem; font-weight: 600; }
+  .provenance { font-size: 0.72rem; color: var(--ink-soft); line-height: 1.6; padding: 0 2px; margin-bottom: 16px; }
+  .actions { display: flex; gap: 8px; }
+  .actions button, .actions a {
+    flex: 1; padding: 12px 10px; border-radius: 12px; border: none; cursor: pointer;
+    font-family: var(--f-body); font-weight: 600; font-size: 0.76rem;
+  }
+  .actions .primary { background: var(--ansd); color: var(--on-ansd); }
+  .actions a { text-align: center; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+  .actions .secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--line); }
+
+  .sim-field { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .sim-field label { font-size: 0.84rem; color: var(--ink-soft); flex: 1; }
+  .sim-field input[type="number"] {
+    width: 64px; font-family: var(--f-body); font-size: 0.95rem; font-weight: 600;
+    padding: 7px 9px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  }
+  .sim-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+  .sim-toggle button {
+    flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink-soft); font-family: var(--f-body); font-size: 0.78rem; font-weight: 600; cursor: pointer;
+  }
+  .sim-toggle button.active { background: var(--ansd); color: var(--on-ansd); border-color: var(--ansd); }
+  .sim-run { width: 100%; padding: 11px; border-radius: 10px; border: none; background: var(--ansd); color: var(--on-ansd);
+    font-family: var(--f-body); font-weight: 600; font-size: 0.86rem; cursor: pointer; margin-bottom: 14px; }
+  .sim-list { list-style: none; margin: 0; padding: 0; }
+  .sim-list li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); font-size: 0.84rem; }
+  .sim-list .sn { font-weight: 600; }
+  .sim-list .sm { color: var(--ink-soft); font-size: 0.74rem; }
+  .sim-list .sc { color: var(--ansd); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  .chat-log { max-height: 320px; overflow-y: auto; margin-bottom: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-msg { padding: 10px 14px; border-radius: 12px; font-size: 0.86rem; line-height: 1.5; max-width: 92%; }
+  .chat-msg.user { background: var(--ink); color: var(--bg); align-self: flex-end; }
+  .chat-msg.bot { background: var(--surface); color: var(--ink); align-self: flex-start; border: 1px solid var(--line); }
+  .chat-input-row { display: flex; gap: 8px; }
+  .chat-input-row input { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--f-body); font-size: 0.86rem; }
+  .chat-input-row button { padding: 10px 16px; border-radius: 10px; border: none; background: var(--ansd); color: var(--on-ansd); font-weight: 600; font-size: 0.84rem; cursor: pointer; }
+  .chat-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .chat-suggestions button { font-size: 0.72rem; padding: 6px 10px; border-radius: 100px; border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft); cursor: pointer; }
+
+  @media (max-width: 420px) {
+    .wordmark { font-size: 0.92rem; }
+    .stat-main .num { font-size: 1.7rem; }
+    #card { padding: 18px 16px calc(22px + env(safe-area-inset-bottom,0px)); }
+  }
+
+  /* fiabilité affichée sur chaque fiche */
+  .fiab-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 12px; }
+  .fiab-lab { font-size: 0.72rem; color: var(--ink-soft); margin-right: 2px; }
+  .fiab-pill { font-size: 0.7rem; font-weight: 600; padding: 4px 10px; border-radius: 100px; color: var(--ink); }
+  .fiab-pill.ok { background: color-mix(in srgb, var(--sky) 24%, transparent); }
+  .fiab-pill.warn { background: color-mix(in srgb, var(--clay) 24%, transparent); }
+
+  /* comparaison en direct : classement simple contre Jàppale */
+  .sim-compare { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; }
+  .cmp-title { font-size: 0.74rem; color: var(--ink-soft); margin-bottom: 8px; }
+  .cmp-row { display: flex; justify-content: space-between; gap: 10px; font-size: 0.84rem; padding: 4px 0; }
+  .cmp-row b { font-variant-numeric: tabular-nums; }
+  .cmp-gain { font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; color: var(--ansd); margin: 8px 0 6px; }
+
+  .sim-export, .legend-btn {
+    font-family: var(--f-body); font-weight: 600; font-size: 0.74rem; cursor: pointer;
+    background: transparent; color: var(--ansd); border: 1px solid var(--ansd); border-radius: 8px; padding: 7px 12px;
+  }
+  .sim-export { margin-top: 12px; width: 100%; }
+  .legend-btn { margin-top: 8px; display: block; }
+
+  /* bas d'écran : légende et sélecteurs dans une même pile, pour qu'ils ne se superposent jamais */
+  .bottom-stack { position: absolute; left: 0; right: 0; bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    padding: 0 16px; display: flex; flex-direction: column; gap: 10px; z-index: 40; pointer-events: none; }
+  .bottom-stack > * { pointer-events: auto; }
+  .legend-toggle { display: none; }
+  .legend-title { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .legend-note { opacity: 0.75; font-size: 0.68rem; line-height: 1.4; margin-top: 4px; }
+  .region-leader-dot { fill: var(--ink); pointer-events: none; }
+  .csv-texte { width: 100%; height: 170px; box-sizing: border-box; font-family: ui-monospace, Consolas, monospace;
+    font-size: 0.68rem; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 8px; margin-bottom: 12px; }
+  /* légende repliable dès que la carte n'a plus la place de l'afficher à côté */
+  @media (max-width: 1080px) {
+    .legend-toggle { display: inline-block; font-family: var(--f-body); font-weight: 600; font-size: 0.74rem;
+      background: transparent; color: var(--ink); border: none; padding: 0; cursor: pointer; }
+    .legend:not(.open) .legend-body { display: none; }
+    .legend.open .legend-toggle { margin-bottom: 6px; }
+    .legend { line-height: 1.6; padding: 7px 12px; }
+  }
+  @media (max-width: 640px) {
+    .switch button { padding: 8px 13px; font-size: 0.78rem; }
+  }
+  /* sur téléphone en hauteur, la carte occupe l'espace entre la barre du haut et la pile du bas */
+  @media (max-width: 640px) and (min-height: 560px) {
+    #mapWrap { top: 74px; right: 0; bottom: 168px; left: 0; }
+  }
+
+  /* badges et valeurs d'état : la couleur de niveau (--c, fournie par script.js) sert de fond léger,
+     et une version assombrie vers l'encre sert de texte, pour rester lisible même avec les teintes claires */
+  .card-badge { background: color-mix(in srgb, var(--c, var(--sky)) 22%, transparent); color: color-mix(in srgb, var(--c, var(--ansd)) 55%, var(--ink)); }
+  .val-etat { color: color-mix(in srgb, var(--c) 60%, var(--ink)); }
+
+  /* barre de navigation du site, identique à celle de l'accueil */
+  .site-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 120;   /* au-dessus de la fiche (100) : son menu déroulé ne doit pas être caché */ height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 20px 0; display: flex; align-items: center; gap: 22px;
+    background: var(--bg); border-bottom: 1px solid var(--line); }
+  .site-nav .wordmark { font-size: 1.25rem; }
+  .site-links { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; }
+  .site-links a { display: block; white-space: nowrap; padding: 7px 11px; text-decoration: none; font-weight: 600; font-size: 0.88rem; color: var(--ink-soft); border-radius: 8px; }
+  .site-links a:hover { color: var(--ink); background: var(--surface); }
+  .site-links a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--sky); border-radius: 0; }
+  .site-links .soon { opacity: .55; cursor: default; }
+  .site-links .soon:hover { background: none; color: var(--ink-soft); }
+  .site-links .soon small { font-size: 0.66rem; margin-left: 4px; }
+  .site-menu-btn { display: none; margin-left: auto; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink); cursor: pointer; font-size: 1rem; place-items: center; }
+  @media (max-width: 1080px) {
+    .site-menu-btn { display: grid; }
+    .site-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column;
+      background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px 14px; box-shadow: 0 14px 30px rgba(10,15,30,0.12); }
+    .site-links.open { display: flex; }
+  }
+
+/* ===== Carte à bulles : un point par commune ===== */
+.commune-dot { cursor: pointer; fill-opacity: 0.9; stroke: var(--on-ansd); stroke-width: 0.8; vector-effect: non-scaling-stroke; transition: stroke-width 0.12s; }
+.commune-dot:hover { stroke: var(--ink); stroke-width: 1.6; }
+/* mode Communes : les frontières des régions doivent se voir, en clair comme en sombre (couleur du texte, à moitié transparente) */
+.region-shape.neutre:not(.active) { stroke: var(--ink); stroke-opacity: 0.5; stroke-width: 1.1; }
+
+/* ===== Logo dans la barre de navigation ===== */
+.wordmark .logo-mark { display: inline-block; width: 28px; height: 28px; vertical-align: middle; margin: -4px 9px 0 0; }
+.logo-mark .lm-fond { fill: var(--ansd); }
+.logo-mark .lm-j { stroke: var(--on-ansd); }
+.logo-mark .lm-point { fill: var(--clay); }
+
+/* ===== Boutons d'action : ils passent à la ligne plutôt que de s'écraser ===== */
+.actions { flex-wrap: wrap; }
+.actions button, .actions a { flex: 1 1 130px; }
+
+/* ===== Recherche : outils groupés ; sur téléphone, la saisie occupe une ligne entière ===== */
+.pill-tools { display: contents; }
+@media (min-width: 641px) { .pill { max-width: 520px; } #searchResults { max-width: 520px; } }
+@media (max-width: 640px) {
+  .pill { flex-wrap: wrap; row-gap: 8px; border-radius: 26px; padding: 8px 8px 10px 14px; }
+  #searchInput { order: 1; flex: 1 1 100%; width: 100%; height: 38px; box-sizing: border-box; padding: 0 14px; font-size: 1rem; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); }
+  .pill-tools { display: flex; order: 2; gap: 10px; width: 100%; justify-content: flex-end; }
+  #searchResults { top: 118px; }
+  #mapWrap { top: 124px; right: 0; bottom: 168px; left: 0; }
+  .switch button { padding: 7px 10px; font-size: 0.74rem; }
+  .bottombar { gap: 8px; }
+}
+@media (max-width: 640px) and (max-height: 559px) { #mapWrap { top: 124px; right: 0; bottom: 60px; left: 0; } }
+
+/* Le bouton de l'assistant se voit : bronze, et non bleu sur bleu */
+#askBtn { background: var(--clay); color: var(--on-ansd); border-color: transparent; font-weight: 700; }
+
+/* Légende : « Ce que vous voyez » explique chaque commutateur du bas */
+.legend-sub { margin-top: 10px; font-weight: 700; font-size: .7rem; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-soft); }
+.site-menu-btn { width: auto; padding: 0 14px; border-radius: 999px; font-weight: 700; font-size: .84rem; }
+.sim-field.sim-col { display: block; }
+.sim-field.sim-col label { display: block; margin-bottom: 4px; }
+.sim-field select { width: 100%; padding: 9px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font: inherit; }
+.sim-field select:disabled { opacity: .5; }
+.sim-annee { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 14px 0 4px; font-size: .82rem; color: var(--ink-soft); }
+
+/* Zoom et déplacement de la carte */
+#mapSvg { touch-action: none; cursor: grab; }
+#mapSvg.glisse { cursor: grabbing; }
+#mapSvg > path, .region-leader { vector-effect: non-scaling-stroke; }
+#zoomCtl { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; z-index: 30; }
+#zoomCtl button { width: 42px; height: 42px; border-radius: 50%; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font: 700 20px/1 var(--f-body); cursor: pointer; box-shadow: 0 8px 22px rgba(10, 15, 30, .18); backdrop-filter: blur(10px); }
+#zoomCtl button#zoomTout { font-size: 11.5px; letter-spacing: .02em; }
+#zoomCtl button:hover:not(:disabled), #zoomCtl button:focus-visible { background: var(--ansd); color: var(--on-ansd); outline: none; }
+#zoomCtl button:disabled { opacity: .4; cursor: default; }
+.dept-label, .commune-label { font-family: var(--f-body); fill: var(--ink); paint-order: stroke; stroke: var(--bg); stroke-linejoin: round; pointer-events: none; }
+.dept-label { font-weight: 700; opacity: .88; letter-spacing: .02em; }
+.commune-label { font-weight: 600; opacity: .95; }
+#mapSvg.z-region .region-centroid-label { opacity: .3; }
+#mapSvg.z-fin .region-centroid-label, #mapSvg.z-fin .region-leader, #mapSvg.z-fin .region-leader-dot { display: none; }
+@media (max-width: 640px) { #zoomCtl { top: auto; bottom: 8px; transform: none; flex-direction: row; right: 8px; } #zoomCtl button { width: 38px; height: 38px; } }
+
+/* Passage d'une page à l'autre en douceur (navigateurs qui le permettent) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .16s; }
+}
+
+/* Sur un écran de 900 à 1699 px, la légende (en bas à gauche) recouvrait le nom « Dakar » : la carte démarre à droite de la légende. */
+@media (min-width: 900px) and (max-width: 1699px) { #mapWrap { left: 330px; } }
+
+/* Fiche d'une commune : santé et éducation, chacune repliable */
+.fiche-section { margin-top: 14px; padding-top: 6px; border-top: 1px solid var(--line); }
+.fiche-section[data-domaine="sante"] { --dom: var(--clay); }
+.fiche-section[data-domaine="education"] { --dom: var(--edu-mid, #8E6BD6); }
+.fiche-section > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 9px; padding: 8px 0; font-weight: 700; font-size: 1.05rem; }
+.fiche-section > summary::-webkit-details-marker { display: none; }
+.fiche-section > summary::before { content: ""; flex: none; width: 11px; height: 11px; border-radius: 50%; background: var(--dom, var(--ansd)); }
+.fiche-section > summary::after { content: "\2212"; margin-left: auto; color: var(--ink-soft); font-weight: 400; }
+.fiche-section:not([open]) > summary::after { content: "+"; }
+
+/* Lien d'évitement : invisible tant qu'il n'a pas le focus clavier, puis visible en haut de page. */
+.evitement { position: absolute; left: 12px; top: -80px; z-index: 1000; padding: 10px 16px; background: #fff; color: #0b1f33; border: 3px solid #0b1f33; border-radius: 8px; font-weight: 700; text-decoration: none; }
+.evitement:focus { top: 12px; }
+main:focus, #stage:focus { outline: none; }
+
+/* Assistant avec IA locale, fiche « Posez votre question » de l'explorateur */
+.chat-msg.bot { white-space: pre-wrap; }
+.chat-msg.en-cours { opacity: .85; }
+.chat-msg .assist-source { display: block; margin-top: 6px; font-size: 0.8125rem; color: var(--ink-soft); white-space: normal; }
+.chat-msg .assist-calcul { margin-top: 6px; font-size: 0.8125rem; color: var(--ink-soft); white-space: normal; }
+.chat-msg .assist-calcul summary { cursor: pointer; }
+.chat-msg .assist-calcul p { margin: 6px 0 0; color: var(--ink); }
+.chat-msg .assist-sans-ia { display: block; margin-top: 8px; padding: 8px 14px; min-height: 44px; box-sizing: border-box; font: inherit; font-size: 0.875rem; background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; cursor: pointer; }

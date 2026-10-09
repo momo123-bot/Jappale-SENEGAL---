@@ -1,0 +1,9 @@
+Polices embarquées dans le site (dossier docs/polices/)
+
+- Source Sans 3 : le texte courant.
+- Source Serif 4 : les titres et les grands chiffres.
+
+Auteur : Adobe (Source Sans et Source Serif). Licence : SIL Open Font License 1.1 (texte complet dans LICENCE-Source-Sans-3.txt et LICENCE-Source-Serif-4.txt).
+Les fichiers .woff2 sont ceux du paquet « fontsource » (npm : @fontsource/source-sans-3 et @fontsource/source-serif-4), reproduits sans modification.
+Pourquoi les embarquer : le site n'envoie aucune requête à un service extérieur pour s'afficher, et il a le même aspect hors connexion.
+Ces polices contiennent les lettres du wolof (ŋ, Ŋ, ñ, ë, ó, à...), ce que d'autres polices lisibles ne font pas.

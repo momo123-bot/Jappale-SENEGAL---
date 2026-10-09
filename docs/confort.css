@@ -1,0 +1,84 @@
+/* Confort de lecture : taille du texte, contraste renforcé, animations réduites, cibles tactiles. Chargé par les sept pages, après leurs propres styles. */
+:root { --k: 1; }
+html[data-taille="g"] { --k: 1.25; }
+html[data-taille="tg"] { --k: 1.5; }
+html { font-size: calc(100% * var(--k)); }
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Bouton d'ouverture, dans la barre de navigation */
+.confort-btn { font: inherit; color: inherit; background: none; border: 0; padding: 4px 2px; cursor: pointer; text-decoration: underline; text-underline-offset: 4px; }
+.icon-btn.confort-icone { width: auto; padding: 0 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.site-confort-btn { font: inherit; font-weight: 700; color: inherit; background: transparent; border: 1px solid var(--line, currentColor); border-radius: 999px; min-height: 40px; padding: 0 12px; margin-right: 6px; cursor: pointer; }
+.confort-lib { display: none; }
+@media (min-width: 521px) and (max-width: 1180px), (min-width: 1561px) { .confort-lib { display: inline; } }
+@media (min-width: 1181px) { .confort-li { display: none; } }
+@media (max-width: 480px) { .nav-tools #themeBtn { display: none; } }   /* sur téléphone le thème se règle dans le panneau « Affichage » : de la place pour le mot « Menu » */
+.confort-note { margin: 0 0 12px; padding: 10px 12px; border: 2px solid currentColor; border-radius: 10px; font-size: .95rem; }
+.confort-btn[aria-expanded="true"] { font-weight: 700; }
+
+/* Panneau */
+.confort-panneau { position: fixed; top: 72px; right: 12px; z-index: 900; width: min(92vw, 420px); max-height: calc(100vh - 90px); overflow: auto; background: var(--panel); color: var(--ink); border: 2px solid var(--ink); border-radius: 14px; padding: 16px 18px; box-shadow: 0 10px 34px rgba(0, 0, 0, .28); }
+.confort-panneau[hidden] { display: none; }
+.confort-panneau h2 { margin: 0 0 10px; font-size: 1.2rem; }
+.confort-groupe { margin: 0 0 14px; padding: 0; border: 0; }
+.confort-groupe legend { font-weight: 700; padding: 0; margin: 0 0 6px; }
+.confort-choix { display: flex; flex-wrap: wrap; gap: 8px; }
+.confort-choix button, .confort-actions button { font: inherit; min-height: 44px; padding: 8px 14px; border: 2px solid currentColor; border-radius: 10px; background: transparent; color: inherit; cursor: pointer; }
+.confort-choix button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.confort-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.confort-etat { margin: 10px 0 0; font-size: .95rem; min-height: 1.4em; }
+
+/* Mode d'emploi en trois étapes (accueil) */
+.etapes { margin: 16px 0 0; padding-left: 1.3em; font-size: 1.05rem; line-height: 1.55; max-width: 46em; }
+.etapes li { margin: 4px 0; }
+
+/* Contraste renforcé : texte noir sur blanc (ou blanc sur noir), liens soulignés, contours épais */
+html[data-contraste="fort"] { --bg: #FFFFFF; --panel: #FFFFFF; --panel-2: #FFFFFF; --pale: #FFFFFF; --ink: #000000; --ink-soft: #1A1A1A; --line: #000000; --blue: #0B3D91; --sky: #0B3D91; --ochre: #7A3B00; --on-blue: #FFFFFF; --hero-a: #0B2A5E; --hero-b: #0B3D91; --bas: #0B3D91; --edu-hi: #4B1D73; --edu-mid: #4B1D73; --edu-lo: #00504B; --land: #FFFFFF; --sea-a: #FFFFFF; --sea-b: #FFFFFF; --m-fort: #7A3B00; --m-moyen: #B8661A; --m-faible: #8FB7F0; color-scheme: light; }
+html[data-contraste="fort"][data-theme="dark"] { --bg: #000000; --panel: #000000; --panel-2: #000000; --pale: #000000; --ink: #FFFFFF; --ink-soft: #F2F2F2; --line: #FFFFFF; --blue: #9CCBFF; --sky: #9CCBFF; --ochre: #FFB26B; --on-blue: #000000; --hero-a: #000000; --hero-b: #0B2A5E; --bas: #9CCBFF; --edu-hi: #E0B8FF; --edu-mid: #E0B8FF; --edu-lo: #7EE0D8; --land: #111111; --sea-a: #000000; --sea-b: #000000; --m-fort: #FFB26B; --m-moyen: #C98D50; --m-faible: #7FB2EE; color-scheme: dark; }
+@media (prefers-color-scheme: dark) { html[data-contraste="fort"]:not([data-theme="light"]) { --bg: #000000; --panel: #000000; --panel-2: #000000; --pale: #000000; --ink: #FFFFFF; --ink-soft: #F2F2F2; --line: #FFFFFF; --blue: #9CCBFF; --sky: #9CCBFF; --ochre: #FFB26B; --on-blue: #000000; --hero-a: #000000; --hero-b: #0B2A5E; --bas: #9CCBFF; --edu-hi: #E0B8FF; --edu-mid: #E0B8FF; --edu-lo: #7EE0D8; --land: #111111; --sea-a: #000000; --sea-b: #000000; --m-fort: #FFB26B; --m-moyen: #C98D50; --m-faible: #7FB2EE; color-scheme: dark; } }
+html[data-contraste="fort"] a { text-decoration: underline; text-underline-offset: 3px; }
+html[data-contraste="fort"] :focus-visible { outline: 4px solid var(--ink); outline-offset: 3px; }
+html[data-contraste="fort"] .btn, html[data-contraste="fort"] button { border: 2px solid currentColor; }
+
+/* Animations réduites */
+html[data-mouvement="reduit"] *, html[data-mouvement="reduit"] *::before, html[data-mouvement="reduit"] *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+
+/* Écrans tactiles : cibles d'au moins 44 px */
+@media (pointer: coarse) {
+  button, .btn, .lien-bouton, .chip, summary, select, input[type="text"], input[type="search"] { min-height: 44px; }
+}
+
+/* Points d'entrée visibles dans la page (le bouton de la barre est dans le menu replié sur téléphone) */
+.langue { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.fiche-actions { flex-wrap: wrap; }
+.fiche-actions button { max-width: 100%; }
+
+/* Texte agrandi sur petit écran : la marque garde sa taille (elle n'a pas besoin de grandir), les rangées se replient, les champs ne dépassent plus, les mots longs se coupent */
+@media (max-width: 640px) {
+  html:is([data-taille], [data-agrandi]) .brand { font-size: 18px; }
+  html:is([data-taille], [data-agrandi]) .wordmark { font-size: 16px; }
+  html:is([data-taille], [data-agrandi]) .fiche-actions, html:is([data-taille], [data-agrandi]) .bascule, html:is([data-taille], [data-agrandi]) .hero-actions, html:is([data-taille], [data-agrandi]) div:has(> b.num) { flex-wrap: wrap; row-gap: 6px; }
+  html:is([data-taille], [data-agrandi]) select, html:is([data-taille], [data-agrandi]) input, html:is([data-taille], [data-agrandi]) textarea { max-width: 100%; min-width: 0; box-sizing: border-box; }
+  html:is([data-taille], [data-agrandi]) .chiffres, html:is([data-taille], [data-agrandi]) .cartes-chiffres { grid-template-columns: 1fr !important; }
+  html:is([data-taille], [data-agrandi]) .sim-col-gauche > *, html:is([data-taille], [data-agrandi]) .sim-resultats > *, html:is([data-taille], [data-agrandi]) .contenu > * { min-width: 0; }
+  html:is([data-taille], [data-agrandi]) button, html:is([data-taille], [data-agrandi]) .btn, html:is([data-taille], [data-agrandi]) .btn-ghost, html:is([data-taille], [data-agrandi]) .lien-bouton { white-space: normal; max-width: 100%; }
+  html:is([data-taille], [data-agrandi]) h1, html:is([data-taille], [data-agrandi]) h2, html:is([data-taille], [data-agrandi]) h3, html:is([data-taille], [data-agrandi]) p, html:is([data-taille], [data-agrandi]) li, html:is([data-taille], [data-agrandi]) .eyebrow, html:is([data-taille], [data-agrandi]) button, html:is([data-taille], [data-agrandi]) .btn, html:is([data-taille], [data-agrandi]) label { overflow-wrap: anywhere; }
+}
+@media print { .confort-panneau, .confort-btn, .confort-icone, .site-confort-btn { display: none !important; } }
+
+/* Un tableau qui défile horizontalement se parcourt au clavier : il reçoit le focus et le montre. */
+.table-wrap:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* Entre 1181 et 1560 px la barre du haut est serrée : on resserre un peu les liens pour y loger le bouton « Aa ». */
+@media (min-width: 1181px) and (max-width: 1560px) { .links a { padding: 7px 8px; } .nav .wrap { gap: 14px; } }
+
+/* Impression : l'interligne de l'écran (1,6, plus aéré pour la lecture) ferait déborder la page « À propos » de sa feuille A4. */
+@media print { body { line-height: 1.5; } }
+
+/* Explorateur sur téléphone : sa barre (marque, « Affichage », « Menu ») dépassait de l'écran ; on resserre les marges et la marque. */
+@media (max-width: 480px) { .site-nav { padding-left: 12px; padding-right: 12px; gap: 8px; } .site-nav .wordmark { font-size: 16px; } .site-confort-btn { padding: 0 10px; margin-right: 0; } }
+
+/* Le « Aa » est un décor : il n'est pas dans le texte du bouton, dont le seul texte visible (« Affichage ») est contenu dans son nom accessible. */
+.confort-icone::before, .site-confort-btn::before { content: "Aa"; }
+.confort-lib { margin-left: 5px; }
