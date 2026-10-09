@@ -1,0 +1,189 @@
+Communes chargées : 553 (dont 551 avec coordonnées géographiques réelles)
+Communes avec un déficit santé en 2023 : 184
+
+============================================================================
+BUDGET : 3 structures finançables (population 2023)
+============================================================================
+
+-- Méthode gloutonne (distance géographique réelle, rayon 15 km) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75  + 743,910 hab.  cumul=  743,910
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19  + 185,675 hab.  cumul=  929,585
+3. Mbour                     (MBOUR          ) déficit= 18  + 176,393 hab.  cumul=1,105,978
+
+-- Méthode naïve (tri par déficit brut) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19
+3. Mbour                     (MBOUR          ) déficit= 18
+
+>> Couverture réelle (chevauchement retiré pour les deux méthodes) :
+   Glouton :  1,105,978 habitants réellement desservis
+   Naïf    :  1,105,978 habitants réellement desservis
+   Écart   : le glouton dessert -0.0% de population réelle en plus que le tri naïf.
+
+============================================================================
+BUDGET : 5 structures finançables (population 2023)
+============================================================================
+
+-- Méthode gloutonne (distance géographique réelle, rayon 15 km) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75  + 743,910 hab.  cumul=  743,910
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19  + 185,675 hab.  cumul=  929,585
+3. Mbour                     (MBOUR          ) déficit= 18  + 176,393 hab.  cumul=1,105,978
+4. Grand Yoff                (DAKAR          ) déficit= 11  + 108,133 hab.  cumul=1,214,111
+5. Saint Louis               (SAINT LOUIS    ) déficit=  9  +  87,982 hab.  cumul=1,302,094
+
+-- Méthode naïve (tri par déficit brut) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19
+3. Mbour                     (MBOUR          ) déficit= 18
+4. Grand Yoff                (DAKAR          ) déficit= 11
+5. Mbao                      (PIKINE         ) déficit= 11
+
+>> Couverture réelle (chevauchement retiré pour les deux méthodes) :
+   Glouton :  1,302,094 habitants réellement desservis
+   Naïf    :  1,245,171 habitants réellement desservis
+   Écart   : le glouton dessert +4.6% de population réelle en plus que le tri naïf.
+
+============================================================================
+BUDGET : 10 structures finançables (population 2023)
+============================================================================
+
+-- Méthode gloutonne (distance géographique réelle, rayon 15 km) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75  + 743,910 hab.  cumul=  743,910
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19  + 185,675 hab.  cumul=  929,585
+3. Mbour                     (MBOUR          ) déficit= 18  + 176,393 hab.  cumul=1,105,978
+4. Grand Yoff                (DAKAR          ) déficit= 11  + 108,133 hab.  cumul=1,214,111
+5. Saint Louis               (SAINT LOUIS    ) déficit=  9  +  87,982 hab.  cumul=1,302,094
+6. Tivaouane                 (TIVAOUANE      ) déficit=  9  +  83,993 hab.  cumul=1,386,086
+7. Medina Gounass            (VELINGARA      ) déficit=  8  +  72,868 hab.  cumul=1,458,954
+8. Thies Est                 (THIES          ) déficit=  6  +  58,679 hab.  cumul=1,517,633
+9. Tambacounda               (TAMBACOUNDA    ) déficit=  4  +  39,752 hab.  cumul=1,557,385
+10. Kolda                     (KOLDA          ) déficit=  4  +  37,663 hab.  cumul=1,595,049
+
+-- Méthode naïve (tri par déficit brut) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19
+3. Mbour                     (MBOUR          ) déficit= 18
+4. Grand Yoff                (DAKAR          ) déficit= 11
+5. Mbao                      (PIKINE         ) déficit= 11
+6. Tivaouane Peulh Niagha    (RUFISQUE       ) déficit= 11
+7. Parcelles Assainies       (DAKAR          ) déficit= 10
+8. Yeumbeul Nord             (KEUR MASSAR    ) déficit= 10
+9. Saint Louis               (SAINT LOUIS    ) déficit=  9
+10. Diamaguene Sicap Mbao     (PIKINE         ) déficit=  9
+
+>> Couverture réelle (chevauchement retiré pour les deux méthodes) :
+   Glouton :  1,595,049 habitants réellement desservis
+   Naïf    :  1,371,193 habitants réellement desservis
+   Écart   : le glouton dessert +16.3% de population réelle en plus que le tri naïf.
+
+============================================================================
+BUDGET : 15 structures finançables (population 2023)
+============================================================================
+
+-- Méthode gloutonne (distance géographique réelle, rayon 15 km) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75  + 743,910 hab.  cumul=  743,910
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19  + 185,675 hab.  cumul=  929,585
+3. Mbour                     (MBOUR          ) déficit= 18  + 176,393 hab.  cumul=1,105,978
+4. Grand Yoff                (DAKAR          ) déficit= 11  + 108,133 hab.  cumul=1,214,111
+5. Saint Louis               (SAINT LOUIS    ) déficit=  9  +  87,982 hab.  cumul=1,302,094
+6. Tivaouane                 (TIVAOUANE      ) déficit=  9  +  83,993 hab.  cumul=1,386,086
+7. Medina Gounass            (VELINGARA      ) déficit=  8  +  72,868 hab.  cumul=1,458,954
+8. Thies Est                 (THIES          ) déficit=  6  +  58,679 hab.  cumul=1,517,633
+9. Tambacounda               (TAMBACOUNDA    ) déficit=  4  +  39,752 hab.  cumul=1,557,385
+10. Kolda                     (KOLDA          ) déficit=  4  +  37,663 hab.  cumul=1,595,049
+11. Tivaouane Peulh Niagha    (RUFISQUE       ) déficit= 11  +  36,811 hab.  cumul=1,631,860
+12. Joal Fadhiouth            (MBOUR          ) déficit=  4  +  35,190 hab.  cumul=1,667,050
+13. Kedougou                  (KEDOUGOU       ) déficit=  3  +  29,616 hab.  cumul=1,696,665
+14. Diourbel                  (DIOURBEL       ) déficit=  3  +  29,541 hab.  cumul=1,726,206
+15. Darou Khoudoss            (TIVAOUANE      ) déficit=  3  +  28,458 hab.  cumul=1,754,664
+
+-- Méthode naïve (tri par déficit brut) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19
+3. Mbour                     (MBOUR          ) déficit= 18
+4. Grand Yoff                (DAKAR          ) déficit= 11
+5. Mbao                      (PIKINE         ) déficit= 11
+6. Tivaouane Peulh Niagha    (RUFISQUE       ) déficit= 11
+7. Parcelles Assainies       (DAKAR          ) déficit= 10
+8. Yeumbeul Nord             (KEUR MASSAR    ) déficit= 10
+9. Saint Louis               (SAINT LOUIS    ) déficit=  9
+10. Diamaguene Sicap Mbao     (PIKINE         ) déficit=  9
+11. Tivaouane                 (TIVAOUANE      ) déficit=  9
+12. Ouakam                    (DAKAR          ) déficit=  8
+13. Djidah Thiaroye Kao       (PIKINE         ) déficit=  8
+14. Medina Gounass            (VELINGARA      ) déficit=  8
+15. Golf Sud                  (GUEDIAWAYE     ) déficit=  8
+
+>> Couverture réelle (chevauchement retiré pour les deux méthodes) :
+   Glouton :  1,754,664 habitants réellement desservis
+   Naïf    :  1,535,935 habitants réellement desservis
+   Écart   : le glouton dessert +14.2% de population réelle en plus que le tri naïf.
+
+============================================================================
+BUDGET : 25 structures finançables (population 2023)
+============================================================================
+
+-- Méthode gloutonne (distance géographique réelle, rayon 15 km) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75  + 743,910 hab.  cumul=  743,910
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19  + 185,675 hab.  cumul=  929,585
+3. Mbour                     (MBOUR          ) déficit= 18  + 176,393 hab.  cumul=1,105,978
+4. Grand Yoff                (DAKAR          ) déficit= 11  + 108,133 hab.  cumul=1,214,111
+5. Saint Louis               (SAINT LOUIS    ) déficit=  9  +  87,982 hab.  cumul=1,302,094
+6. Tivaouane                 (TIVAOUANE      ) déficit=  9  +  83,993 hab.  cumul=1,386,086
+7. Medina Gounass            (VELINGARA      ) déficit=  8  +  72,868 hab.  cumul=1,458,954
+8. Thies Est                 (THIES          ) déficit=  6  +  58,679 hab.  cumul=1,517,633
+9. Tambacounda               (TAMBACOUNDA    ) déficit=  4  +  39,752 hab.  cumul=1,557,385
+10. Kolda                     (KOLDA          ) déficit=  4  +  37,663 hab.  cumul=1,595,049
+11. Tivaouane Peulh Niagha    (RUFISQUE       ) déficit= 11  +  36,811 hab.  cumul=1,631,860
+12. Joal Fadhiouth            (MBOUR          ) déficit=  4  +  35,190 hab.  cumul=1,667,050
+13. Kedougou                  (KEDOUGOU       ) déficit=  3  +  29,616 hab.  cumul=1,696,665
+14. Diourbel                  (DIOURBEL       ) déficit=  3  +  29,541 hab.  cumul=1,726,206
+15. Darou Khoudoss            (TIVAOUANE      ) déficit=  3  +  28,458 hab.  cumul=1,754,664
+16. Medina                    (DAKAR          ) déficit=  7  +  25,819 hab.  cumul=1,780,483
+17. Diaobe Kabendou           (VELINGARA      ) déficit=  3  +  24,847 hab.  cumul=1,805,330
+18. Sedhiou                   (SEDHIOU        ) déficit=  3  +  23,633 hab.  cumul=1,828,963
+19. Nguekhokh                 (MBOUR          ) déficit=  3  +  20,227 hab.  cumul=1,849,191
+20. Thiadiaye                 (MBOUR          ) déficit=  3  +  20,168 hab.  cumul=1,869,359
+21. Kaolack                   (KAOLACK        ) déficit=  2  +  19,927 hab.  cumul=1,889,285
+22. Pout                      (THIES          ) déficit=  2  +  19,916 hab.  cumul=1,909,201
+23. Ziguinchor                (ZIGUINCHOR     ) déficit=  2  +  19,534 hab.  cumul=1,928,735
+24. Mboro                     (TIVAOUANE      ) déficit=  3  +  19,312 hab.  cumul=1,948,047
+25. Linguere                  (LINGUERE       ) déficit=  2  +  19,191 hab.  cumul=1,967,238
+
+-- Méthode naïve (tri par déficit brut) --
+1. Touba Mosquee             (MBACKE         ) déficit= 75
+2. Keur Massar Nord          (KEUR MASSAR    ) déficit= 19
+3. Mbour                     (MBOUR          ) déficit= 18
+4. Grand Yoff                (DAKAR          ) déficit= 11
+5. Mbao                      (PIKINE         ) déficit= 11
+6. Tivaouane Peulh Niagha    (RUFISQUE       ) déficit= 11
+7. Parcelles Assainies       (DAKAR          ) déficit= 10
+8. Yeumbeul Nord             (KEUR MASSAR    ) déficit= 10
+9. Saint Louis               (SAINT LOUIS    ) déficit=  9
+10. Diamaguene Sicap Mbao     (PIKINE         ) déficit=  9
+11. Tivaouane                 (TIVAOUANE      ) déficit=  9
+12. Ouakam                    (DAKAR          ) déficit=  8
+13. Djidah Thiaroye Kao       (PIKINE         ) déficit=  8
+14. Medina Gounass            (VELINGARA      ) déficit=  8
+15. Golf Sud                  (GUEDIAWAYE     ) déficit=  8
+16. Medina                    (DAKAR          ) déficit=  7
+17. Yoff                      (DAKAR          ) déficit=  7
+18. Sangalkam                 (RUFISQUE       ) déficit=  7
+19. Rufisque Nord             (RUFISQUE       ) déficit=  7
+20. Biscuiterie               (DAKAR          ) déficit=  6
+21. Camberene                 (DAKAR          ) déficit=  6
+22. Thies Est                 (THIES          ) déficit=  6
+23. Wakhinane Nimzatt         (GUEDIAWAYE     ) déficit=  6
+24. Yeumbeul Sud              (KEUR MASSAR    ) déficit=  6
+25. Gueule Tapee Fass Colobane (DAKAR          ) déficit=  5
+
+>> Couverture réelle (chevauchement retiré pour les deux méthodes) :
+   Glouton :  1,967,238 habitants réellement desservis
+   Naïf    :  1,600,573 habitants réellement desservis
+   Écart   : le glouton dessert +22.9% de population réelle en plus que le tri naïf.
+
+============================================================================
+COMPARAISON HORIZON : optimiser pour 2023 vs optimiser pour 2033 (budget=5)
+============================================================================
+Choisies pour 2023 : Grand Yoff, Keur Massar Nord, Mbour, Saint Louis, Touba Mosquee
+Choisies pour 2033 : Grand Yoff, Keur Massar Nord, Mbour, Saint Louis, Touba Mosquee
