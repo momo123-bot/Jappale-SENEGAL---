@@ -1,0 +1,94 @@
+// Vérifie le site sur cinq tailles de téléphone simulées (écran tactile, agent utilisateur de téléphone) et dans un navigateur dont on a retiré les fonctions JavaScript récentes.
+// Il simule des écrans et retire des fonctions : il ne remplace PAS un essai sur un vrai téléphone. Usage : cd tests/navigateur, npm install, npm run test:mobiles. Sortie 0 si tout est conforme.
+const http = require('http'), fs = require('fs'), path = require('path');
+const DOCS = path.join(__dirname, '..', '..', 'docs') + path.sep;
+const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json' };
+const attendre = ms => new Promise(r => setTimeout(r, ms));
+async function lancer() { try { return await require('puppeteer').launch({ headless: true }); } catch (e) { const c = require('@sparticuz/chromium'), chromium = c.default || c; return require('puppeteer-core').launch({ args: chromium.args, executablePath: await chromium.executablePath(), headless: 'shell' }); } }
+const UA_IOS = 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1';
+const UA_AND = v => `Mozilla/5.0 (Linux; Android ${v}; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.162 Mobile Safari/537.36`;
+const APPAREILS = [{ nom: 'iPhone SE (375 x 667)', w: 375, h: 667, dpr: 2, ua: UA_IOS }, { nom: 'Galaxy S5 (360 x 640)', w: 360, h: 640, dpr: 3, ua: UA_AND('5.0') }, { nom: 'Moto G4 (360 x 640)', w: 360, h: 640, dpr: 3, ua: UA_AND('6.0.1') },
+  { nom: 'petit téléphone (320 x 568)', w: 320, h: 568, dpr: 2, ua: UA_AND('7.0') }, { nom: 'téléphone en paysage (851 x 393)', w: 851, h: 393, dpr: 2.6, ua: UA_AND('11') }];
+const PAGES = [['index.html', 'accueil', () => { const m = document.getElementById('menuBtn'); return { menu: !!m && m.getBoundingClientRect().width > 0, regions: document.querySelectorAll('svg path.reg').length === 14, chiffre: /553/.test(document.querySelector('.constat').textContent) }; }],
+  ['explorer.html', 'explorateur', () => { const w = document.getElementById('mapWrap').getBoundingClientRect(); return { cadre: w.height > 150 && w.width > 150, carte: document.querySelectorAll('#mapWrap path').length > 10 }; }],
+  ['communes.html?commune=Oussouye', 'fiche', () => ({ fiche: !!document.getElementById('ficheDecision'), chiffre: (document.querySelector('.kpi-fort .num') || {}).textContent === '1', liens: !!document.getElementById('carteGoogle') && !!document.getElementById('carteOsm') })],
+  ['communes.html?commune=Touba%20Mosquee', 'fiche pilote', () => ({ pilote: !!document.getElementById('pilote'), chiffre: !!document.querySelector('.kpi-fort .num') })],
+  ['comparer.html', 'comparaison', () => ({ titre: /Compar/i.test((document.querySelector('h1') || {}).textContent || '') })],
+  ['methode.html', 'méthode', () => ({ section: !!document.getElementById('accessibilite') })],
+  ['simulateur.html', 'simulateur', () => ({ champs: document.querySelectorAll('select').length >= 2 })],
+  ['synthese.html', 'à propos', () => ({ texte: document.querySelector('main').textContent.length > 500 })]];
+const DEBORD = () => { const W = innerWidth; const contenu = e => { for (let x = e.parentElement; x && x !== document.body; x = x.parentElement) { const o = getComputedStyle(x).overflowX; if (o === 'auto' || o === 'scroll' || o === 'hidden') return true; } return false; };
+  const f = [...document.querySelectorAll('body *')].filter(e => { const b = e.getBoundingClientRect(); return b.width > 0 && b.right > W + 1 && !contenu(e) && getComputedStyle(e).position !== 'fixed'; }); return { document: document.documentElement.scrollWidth, largeur: W, depassent: f.length }; };
+(async () => {
+  const srv = http.createServer((q, r) => { const f = path.join(DOCS, decodeURIComponent(q.url.split('?')[0]).replace(/^\//, '') || 'index.html'); fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'content-type': TYPES[path.extname(f)] || 'application/octet-stream' }); r.end(d); } }); });
+  await new Promise(r => srv.listen(0, r)); const base = 'http://localhost:' + srv.address().port + '/'; const nav = await lancer(); let echecs = 0, total = 0;
+  const ok = (nom, cond, detail = '') => { total++; if (!cond) echecs++; console.log(`${cond ? 'OK   ' : 'ECHEC'} ${nom}${detail ? ' ' + detail : ''}`); };
+  // 1. cinq tailles de téléphone x sept pages : aucune erreur de script, aucun débordement, éléments clés présents
+  for (const ap of APPAREILS) for (const [adresse, nom, controle] of PAGES) {
+    const p = await nav.newPage(); const err = []; p.on('pageerror', e => err.push(e.message)); p.on('requestfailed', r => { if (!/fonts\.g/.test(r.url())) err.push('fichier manquant : ' + r.url().slice(-30)); });
+    await p.setUserAgent(ap.ua); await p.setViewport({ width: ap.w, height: ap.h, deviceScaleFactor: ap.dpr, isMobile: true, hasTouch: true }); await p.goto(base + adresse, { waitUntil: 'load' }); await attendre(700);
+    const r = await p.evaluate(DEBORD), cles = await p.evaluate(controle), manque = Object.keys(cles).filter(k => !cles[k]);
+    ok(`${ap.nom}, ${nom} : s'affiche sans erreur, ne déborde pas, éléments clés présents`, err.length === 0 && r.document <= r.largeur && r.depassent === 0 && manque.length === 0, err.length || r.document > r.largeur || r.depassent || manque.length ? JSON.stringify({ erreurs: err.slice(0, 2), debordement: r, absents: manque }) : ''); await p.close(); }
+  // 1 bis. fiche sur téléphone : le volet des actions est replié et le chiffre principal est visible sans défiler
+  for (const ap of APPAREILS.filter(a => a.h >= 640 && a.w < 700)) {
+    const p = await nav.newPage(); await p.setUserAgent(ap.ua); await p.setViewport({ width: ap.w, height: ap.h, deviceScaleFactor: ap.dpr, isMobile: true, hasTouch: true }); await p.goto(base + 'communes.html?commune=Touba%20Mosquee', { waitUntil: 'load' }); await attendre(700);
+    const r = await p.evaluate(() => { const k = document.querySelector('.kpi-fort'), v = document.querySelector('.fiche-plus'); return { haut: Math.round(k.getBoundingClientRect().top), hauteur: innerHeight, replie: !v.open, resume: v.querySelector('summary').getBoundingClientRect().height }; });
+    ok(`${ap.nom}, fiche : actions repliées, chiffre principal visible sans défiler, bouton du volet d'au moins 44 px`, r.replie && r.haut < r.hauteur - 60 && r.resume >= 44, JSON.stringify(r)); await p.close(); }
+  // 1 ter. accueil sur téléphone : recherche sous le titre et avant la carte, titre court, blocs repliés, boutons du pli d'au moins 44 px, pas de devise
+  for (const ap of APPAREILS.filter(a => a.w < 700)) {
+    const p = await nav.newPage(); await p.setUserAgent(ap.ua); await p.setViewport({ width: ap.w, height: ap.h, deviceScaleFactor: ap.dpr, isMobile: true, hasTouch: true }); await p.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(900);
+    const r = await p.evaluate(() => { const h1 = document.querySelector('.hero h1'), cs = getComputedStyle(h1), lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.1, f = document.getElementById('finder').getBoundingClientRect(), m = document.querySelector('.mapcard').getBoundingClientRect(), d = [...document.querySelectorAll('details.repli')];
+      return { lignesTitre: Math.round(h1.getBoundingClientRect().height / lh), rechercheAvantCarte: f.top < m.top, rechercheVisible: f.top < innerHeight - 40, plis: d.length, fermes: d.every(x => !x.open), hauteurs: d.map(x => Math.round(x.querySelector('summary').getBoundingClientRect().height)), devise: !!document.querySelector('.devise') }; });
+    ok(`${ap.nom}, accueil : titre en 3 lignes au plus, recherche visible juste sous le titre et avant la carte, cinq blocs repliés avec des boutons d'au moins 44 px, aucune devise`, r.lignesTitre <= 3 && r.rechercheAvantCarte && r.rechercheVisible && r.plis === 5 && r.fermes && r.hauteurs.every(h => h >= 44) && !r.devise, JSON.stringify(r));
+    const cycle = await p.evaluate(async () => { const d = document.querySelector('.hero details.repli'), s = d.querySelector('summary'), h = () => Math.round(d.getBoundingClientRect().height), pause = () => new Promise(r => setTimeout(r, 200)); const ferme = h(); s.click(); await pause(); const ouvert = h(), etat = d.open; s.click(); await pause(); return { ferme, ouvert, ouvertAttr: etat, refermeAttr: !d.open, apres: h() }; });
+    ok(`${ap.nom}, accueil : le bouton « Voir le chiffre et ses limites » déroule le texte (le bloc grandit), un second toucher le masque (il retrouve sa hauteur)`, cycle.ferme <= 70 && cycle.ouvert >= cycle.ferme + 80 && cycle.ouvertAttr && cycle.refermeAttr && cycle.apres === cycle.ferme, JSON.stringify(cycle)); await p.close(); }
+  // 1 quater. explorateur sur téléphone : la commune choisie reste visible au-dessus de la fiche avec son repère ; fermer la fiche ou vider la recherche ramène la carte à sa vue de départ
+  for (const ap of APPAREILS.filter(a => a.w < 700 && a.h >= 640)) {
+    const p = await nav.newPage(); await p.setUserAgent(ap.ua); await p.setViewport({ width: ap.w, height: ap.h, deviceScaleFactor: ap.dpr, isMobile: true, hasTouch: true }); await p.goto(base + 'explorer.html', { waitUntil: 'load' }); await attendre(1200);
+    const vue = () => p.evaluate(() => document.querySelector('#mapWrap svg').getAttribute('viewBox').split(' ').map(Number)), depart = await vue();
+    await p.click('#searchInput'); await p.type('#searchInput', 'ogo'); await attendre(400); await p.click('#searchResults .result-row'); await attendre(1600);
+    const choix = await p.evaluate(() => { const a = document.getElementById('reperCommune'), c = document.getElementById('card').getBoundingClientRect(), b = document.querySelector('.pill').getBoundingClientRect(); if (!a) return null; const r = a.getBoundingClientRect(), y = r.top + r.height / 2, x = r.left + r.width / 2; return { y: Math.round(y), x: Math.round(x), hautBande: Math.round(b.bottom), basBande: Math.round(c.top), dansBande: y > b.bottom && y < c.top && x > 0 && x < innerWidth }; });
+    ok(`${ap.nom}, explorateur : « ogo » zoome et place la commune, repérée par un anneau, au-dessus de la fiche (pas cachée derrière)`, !!choix && choix.dansBande, JSON.stringify(choix));
+    await p.click('#cardClose'); await attendre(1200); const apresFermer = await vue(), champ = await p.evaluate(() => ({ valeur: document.getElementById('searchInput').value, repere: !!document.getElementById('reperCommune'), carte: document.getElementById('card').classList.contains('active') }));
+    const meme = (a, b) => a.every((v, i) => Math.abs(v - b[i]) < 0.6);
+    ok(`${ap.nom}, explorateur : fermer la fiche ramène la carte à sa vue de départ, retire le repère et vide la recherche`, meme(apresFermer, depart) && champ.valeur === '' && !champ.repere && !champ.carte, JSON.stringify({ depart, apresFermer, champ }));
+    await p.click('#searchInput'); await p.type('#searchInput', 'ogo'); await attendre(400); await p.click('#searchResults .result-row'); await attendre(1600);
+    await p.focus('#searchInput'); await p.evaluate(() => { const i = document.getElementById('searchInput'); i.setSelectionRange(i.value.length, i.value.length); }); for (let k = 0; k < 3; k++) await p.keyboard.press('Backspace'); await attendre(1300); const apresVider = await vue(), etat2 = await p.evaluate(() => ({ repere: !!document.getElementById('reperCommune'), carte: document.getElementById('card').classList.contains('active') }));
+    ok(`${ap.nom}, explorateur : effacer la commune dans la recherche dézoome la carte et ferme la fiche`, meme(apresVider, depart) && !etat2.repere && !etat2.carte, JSON.stringify({ depart, apresVider, etat2 })); await p.close(); }
+  // 1 quinquies. liste des communes sur téléphone : 25 lignes d'abord, puis « Afficher 25 de plus » ; un filtre repart de 25
+  for (const ap of APPAREILS.filter(a => a.w < 700 && a.h >= 640)) {
+    const p = await nav.newPage(); await p.setUserAgent(ap.ua); await p.setViewport({ width: ap.w, height: ap.h, deviceScaleFactor: ap.dpr, isMobile: true, hasTouch: true }); await p.goto(base + 'communes.html', { waitUntil: 'load' }); await attendre(900);
+    const lignes = () => p.evaluate(() => document.querySelectorAll('#lignes tr').length), pag = () => p.evaluate(() => { const g = document.getElementById('pagination'); return g && !g.hidden ? { texte: document.getElementById('paginationTexte').textContent, bouton: document.getElementById('plusCommunes').textContent, h: Math.round(document.getElementById('plusCommunes').getBoundingClientRect().height) } : null; });
+    const n1 = await lignes(), p1 = await pag(); await p.click('#plusCommunes'); await attendre(300); const n2 = await lignes(), p2 = await pag();
+    await p.select('#fRegion', 'KEDOUGOU').catch(() => {}); await attendre(500); const n3 = await lignes();
+    ok(`${ap.nom}, liste des communes : 25 lignes d'abord (pas 553), un bouton d'au moins 44 px en ajoute 25, un filtre repart de 25 ou moins`, n1 === 25 && !!p1 && /25 communes affichées sur 553/.test(p1.texte) && p1.h >= 44 && n2 === 50 && /50 communes affichées sur 553/.test(p2.texte) && n3 <= 25 && n3 > 0, JSON.stringify({ n1, p1, n2, n3 })); await p.close(); }
+  // 1 sexies. thème : un téléphone démarre toujours en sombre, même réglé en clair et même avec une ancienne préférence « clair » ; un passage en clair ne dure que la visite ; en clair, la bande bleue ne passe plus derrière le texte
+  { const tel = { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
+    const p = await nav.newPage(); await p.setUserAgent(APPAREILS[0].ua); await p.setViewport(tel); await p.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]);
+    await p.evaluateOnNewDocument(() => { try { localStorage.setItem('jappale-theme-v2', 'light'); localStorage.setItem('jappale-theme-v3', 'light'); } catch (e) {} });
+    await p.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(600); const t1 = await p.evaluate(() => document.documentElement.dataset.theme);
+    await p.evaluate(() => { const b = document.querySelector('[data-reglage="theme"][data-valeur="light"]'); if (b) b.click(); }); await attendre(250);
+    await p.goto(base + 'communes.html', { waitUntil: 'load' }); await attendre(500); await p.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(600);
+    const t2 = await p.evaluate(() => ({ theme: document.documentElement.dataset.theme, session: sessionStorage.getItem('jappale-theme-v3'), bande: getComputedStyle(document.querySelector('.hero-zone'), '::before').display })); await p.close();
+    const p2 = await nav.newPage(); await p2.setUserAgent(APPAREILS[0].ua); await p2.setViewport(tel); await p2.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: 'light' }]); await p2.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(500);
+    const t3 = await p2.evaluate(() => document.documentElement.dataset.theme); await p2.close();
+    ok('téléphone : démarre en sombre (appareil en clair, ancienne préférence « clair » ignorée), le passage en clair tient pendant la visite, sans bande bleue derrière le texte, et la visite suivante redémarre en sombre', t1 === 'dark' && t2.theme === 'light' && t2.session === 'light' && t2.bande === 'none' && t3 === 'dark', JSON.stringify({ t1, t2, t3 })); }
+  // 2. navigateur sans les fonctions JavaScript récentes : les pages s'ouvrent et la fiche se télécharge en PDF et en Word
+  const retirer = () => { try { delete Array.prototype.flat; delete Array.prototype.flatMap; delete String.prototype.matchAll; delete String.prototype.replaceAll; delete Array.prototype.at; delete Object.fromEntries; } catch (e) {} };
+  { const erreurs = []; for (const [adresse, nom] of PAGES) { const p = await nav.newPage(); p.on('pageerror', e => erreurs.push(nom + ' : ' + e.message)); await p.evaluateOnNewDocument(retirer); await p.setViewport({ width: 390, height: 800, isMobile: true, hasTouch: true }); await p.goto(base + adresse, { waitUntil: 'load' }); await attendre(600); await p.close(); }
+    ok('sans flat, flatMap, matchAll, replaceAll, at ni fromEntries : les sept pages s\'ouvrent sans erreur de script', erreurs.length === 0, erreurs.slice(0, 2).join(' | ')); }
+  { const dossier = fs.mkdtempSync(path.join(require('os').tmpdir(), 'jappale-mob-')); const p = await nav.newPage(); await p.evaluateOnNewDocument(retirer); const cdp = await p.createCDPSession(); await cdp.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: dossier });
+    await p.setViewport({ width: 390, height: 800, isMobile: true, hasTouch: true }); await p.goto(base + 'communes.html?commune=Oussouye', { waitUntil: 'load' }); await attendre(800);
+    await p.evaluate(() => { const v = document.querySelector('.fiche-plus'); if (v) v.open = true; });
+    await p.click('#pdfFiche'); await attendre(1200); await p.click('#wordFiche'); await attendre(1200); const f = fs.existsSync(dossier) ? fs.readdirSync(dossier) : [];
+    const pdf = f.find(x => x.endsWith('.pdf')), docx = f.find(x => x.endsWith('.docx'));
+    ok('sans les fonctions récentes : « Télécharger en PDF » dépose un vrai PDF', !!pdf && fs.readFileSync(path.join(dossier, pdf)).toString('latin1').startsWith('%PDF-1.4'), f.join(', '));
+    ok('sans les fonctions récentes : « Télécharger en Word » dépose un vrai fichier .docx', !!docx && fs.readFileSync(path.join(dossier, docx)).toString('latin1').startsWith('PK'), f.join(', ')); await p.close(); }
+  // 3. navigateur trop ancien : un message clair à la place d'une page muette ; aucun message sur un navigateur récent
+  { const p = await nav.newPage(); await p.evaluateOnNewDocument(() => { Object.entries = undefined; }); await p.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(400);
+    const m = await p.evaluate(() => { const d = document.getElementById('navigateurAncien'); return d ? { texte: d.textContent, role: d.getAttribute('role') } : null; });
+    ok('navigateur trop ancien (sans Object.entries) : un message d\'alerte clair s\'affiche', !!m && m.role === 'alert' && /trop ancien/.test(m.texte) && /Chrome, Firefox ou Safari/.test(m.texte), JSON.stringify(m)); await p.close(); }
+  { const p = await nav.newPage(); await p.goto(base + 'index.html', { waitUntil: 'load' }); await attendre(400);
+    ok('navigateur récent : aucun message « trop ancien »', await p.evaluate(() => !document.getElementById('navigateurAncien')), ''); await p.close(); }
+  console.log(echecs ? `\n${echecs} ECHEC(S) sur ${total}` : `\nTout est OK (${total} mesures)`); await nav.close(); srv.close(); process.exit(echecs ? 1 : 0);
+})().catch(e => { console.error(e); process.exit(1); });

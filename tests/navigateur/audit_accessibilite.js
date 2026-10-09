@@ -1,0 +1,27 @@
+// Audit automatique d'accessibilité : neuf vues d'ordinateur et quatre vues de téléphone, x deux thèmes (clair, sombre). Sortie 0 si aucune violation, 1 sinon. Usage : npm install, puis npm run audit.
+// Il ne remplace pas un test au lecteur d'écran ni un essai avec des personnes en situation de handicap.
+const CONFORT = process.argv.includes('confort');   // mode confort : texte très grand, contraste renforcé, animations réduites, et contraste de niveau AAA (7 pour 1)
+const http = require('http'), fs = require('fs'), path = require('path'); const puppeteer = require('puppeteer-core'); const _c = require('@sparticuz/chromium'), chromium = _c.default || _c;
+const DOCS = path.join(__dirname, '..', '..', 'docs') + path.sep; const T = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.json': 'application/json' };
+const srv = http.createServer((q, r) => { const f = path.join(DOCS, decodeURIComponent(q.url.split('?')[0]).replace(/^\//, '') || 'index.html'); fs.readFile(f, (e, d) => { if (e) { r.writeHead(404); r.end(); } else { r.writeHead(200, { 'content-type': T[path.extname(f)] || 'application/octet-stream' }); r.end(d); } }); });
+const PAGES = [['accueil', 'index.html'], ['explorateur', 'explorer.html'], ['communes (liste)', 'communes.html'], ['fiche commune', 'communes.html?commune=Touba%20Mosquee'], ['fiche en wolof', 'communes.html?commune=Touba%20Mosquee&langue=wo'], ['comparer', 'comparer.html'], ['méthode', 'methode.html'], ['simulateur', 'simulateur.html'], ['à propos', 'synthese.html']];
+// vues sur téléphone (écran de 390 px, tactile) : c'est là que les blocs repliés et la bande bleue du haut de l'accueil posent des questions de contraste
+const TEL = CONFORT ? [['accueil (téléphone)', 'index.html']] : [['accueil (téléphone)', 'index.html'], ['fiche commune (téléphone)', 'communes.html?commune=Touba%20Mosquee'], ['communes liste (téléphone)', 'communes.html'], ['méthode (téléphone)', 'methode.html']];
+const VUES = (process.argv.includes('tel') ? [] : PAGES.map(([n, u]) => [n, u, 'pc'])).concat(TEL.map(([n, u]) => [n, u, 'tel']));   // « tel » seul : uniquement les vues sur téléphone
+(async () => {
+  await new Promise(r => srv.listen(0, r)); const base = 'http://localhost:' + srv.address().port; const axeSrc = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
+  const b = await puppeteer.launch({ args: chromium.args, executablePath: await chromium.executablePath(), headless: 'shell' }); const tout = {};
+  for (const theme of ['light', 'dark']) for (const [nom, url, appareil] of VUES) {
+    const p = await b.newPage(); await p.setViewport(appareil === 'tel' ? { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } : { width: 1100, height: 900 }); await p.emulateMediaFeatures([{ name: 'prefers-color-scheme', value: theme }]); if (CONFORT) await p.evaluateOnNewDocument(() => { try { localStorage.setItem('jappale-confort', JSON.stringify({ taille: 'tg', contraste: 'fort', mouvement: 'reduit' })); } catch (e) {} });
+    await p.goto(base + '/' + url, { waitUntil: 'networkidle0' }); await new Promise(r => setTimeout(r, 900));
+    if (nom.startsWith('méthode')) await p.evaluate(() => document.querySelectorAll('details').forEach(d => d.open = true));
+    await p.evaluate(axeSrc); await p.evaluate(c => { window.__CONFORT = c; }, CONFORT);
+    // on laisse finir les animations d'apparition (sinon axe mesure des couleurs à mi-fondu), sans attendre celles qui ne s'arrêtent jamais
+    await p.evaluate(async () => { await Promise.race([Promise.all(document.getAnimations().map(an => an.finished.catch(() => {}))), new Promise(r => setTimeout(r, 4000))]); await new Promise(r => setTimeout(r, 150)); }); const res = await p.evaluate(async () => { const r0 = await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'] } }); const r = { violations: r0.violations.concat(window.__CONFORT ? (await axe.run(document, { runOnly: { type: 'rule', values: ['color-contrast-enhanced'] } })).violations : []) }; return r.violations.map(v => ({ id: v.id, impact: v.impact, n: v.nodes.length, aide: v.help, ex: v.nodes.slice(0, 2).map(x => x.target.join(' ') + ' :: ' + (x.failureSummary || '').split('\n')[1]).join(' | ') })); });
+    for (const v of res) { const k = v.id; (tout[k] ||= { impact: v.impact, aide: v.aide, pages: [], n: 0, ex: v.ex }); tout[k].pages.push(`${nom}/${theme}`); tout[k].n += v.n; }
+    console.log(`${theme.padEnd(5)} ${nom.padEnd(18)} ${res.length} règle(s) en échec : ${res.map(v => v.id + '×' + v.n).join(', ') || 'aucune'}`); await p.close();
+  }
+  console.log('\n===== SYNTHÈSE DES VIOLATIONS (WCAG 2.0 à 2.2 A et AA, et bonnes pratiques) =====');
+  for (const [k, v] of Object.entries(tout).sort((a, b) => b[1].n - a[1].n)) console.log(`\n${k} [${v.impact}] ${v.aide}\n  ${v.n} élément(s) sur ${v.pages.length} page(s) : ${[...new Set(v.pages.map(x => x.split('/')[0]))].join(', ')}\n  exemple : ${v.ex.slice(0, 330)}`);
+  const nb = Object.keys(tout).length; console.log(nb ? `\n${nb} règle(s) en échec` : '\nAucune violation détectée par axe-core.'); await b.close(); srv.close(); process.exit(nb ? 1 : 0);
+})().catch(e => { console.log('ERREUR', e.message); process.exit(1); });
