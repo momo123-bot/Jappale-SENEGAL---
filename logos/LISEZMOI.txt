@@ -1,0 +1,22 @@
+Jappale Senegal - kit logo
+
+Logo retenu : le monogramme J, dont le crochet se termine par un point dore (le lieu ou l'on construit).
+Couleurs : bleu #1D4E9E (fond clair) ou #7FB0F5 (fond sombre), dore #B8802B ou #E3A94D, encre #1A2540.
+Le texte des logos horizontaux est converti en tracés : il s'affiche à l'identique partout (Word, diaporama, GitHub),
+sans installer de police. Polices d'origine : Fraunces Bold (taille optique 72) et IBM Plex Sans SemiBold, toutes deux
+sous licence SIL Open Font License, qui autorise cet usage.
+
+Quel fichier pour quel usage
+- jappale-logo-horizontal.svg / .png : en-tête de document, diaporama, fond clair
+- jappale-logo-horizontal-sombre.svg / .png : fond sombre
+- jappale-icone.svg, jappale-icone-1024.png, jappale-icone-512.png : photo de profil, icône d'application
+- jappale-icone-sombre.svg / -512.png : fond sombre
+- favicon.svg, favicon.ico, favicon-32.png : onglet du navigateur
+- apple-touch-icon.png : icône d'écran d'accueil sur iPhone (fond plein, iOS arrondit les angles)
+- jappale-declinaison.png : planche de présentation (fond clair, fond sombre, tailles 128, 64, 32 et 20 px)
+
+Les PNG des logos horizontaux ont un fond transparent.
+
+Variante sur fond blanc (dossier fond-blanc), ajoutee le 3 octobre 2026
+- Fond blanc, liseré et J bleus #1D4E9E, point dore #B8802B. Elle ressort sur un onglet sombre et reste lisible sur un onglet clair.
+- C'est celle du site (favicon, icone iPhone, logo de la barre de navigation). Les logos horizontaux et l'icone bleue d'origine restent inchanges.
